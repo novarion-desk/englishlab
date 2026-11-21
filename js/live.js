@@ -28,7 +28,7 @@ function mqDraw(el){
  }
  el.innerHTML=`${mqCfg()}<div class="mqtop"><span>${L('Niveau','Level')}</span><div class="seg mqlv">${['C','B','A'].map(l=>`<button data-mqlv="${l}" class="${S.lvl===l?'on':''}">${l}</button>`).join('')}</div><span class="mqsc">⭐ ${m.ok} / ${m.n}</span></div>${body}<div class="mqfb"></div>`;
  const inp=el.querySelector('[data-mqin]');
- if(inp){inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();m.ans?mqNew(el):mqCheck(el)}};if(!T.pres)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(x){}},0)}
+ if(inp){inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();m.ans?mqNew(el):mqCheck(el)}};if(!T.pres&&FINE)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(x){}},0)}
 }
 function mqDone(el,ok,val){
  const m=el._m,it=m.cur;m.ans=true;m.n++;if(ok)m.ok++;

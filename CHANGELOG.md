@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.8
+- Neu: Reiter Theorie / Üben / Folien oben in jedem Thema (Wechsel ohne Umweg über die Startseite)
+- Behoben: Rückkehr zur Themenliste scrollt zuverlässiger an die vorherige Stelle
+- Behoben: Auf Handy und iPad öffnet sich die Tastatur nicht mehr automatisch
+- Neu: Theorie aller Themen als farbige, nummerierte Karten (auch bei Themen mit Regelliste)
+
 ## 0.7
 - Neu: Kein Zwischenschritt mehr: Karten-Knöpfe führen direkt zu Theorie, Üben und Folien; Zurück führt zur Themenliste an dieselbe Scroll-Stelle
 - Neu: Theorie-Knopf blau, Text zentriert; Knöpfe gleich breit

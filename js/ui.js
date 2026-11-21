@@ -26,6 +26,15 @@ function setHeader(){
 }
 /* ===== Start ===== */
 let homeY=0;
+const FINE=(()=>{try{return matchMedia('(hover:hover) and (pointer:fine)').matches}catch(e){return true}})();
+try{history.scrollRestoration='manual'}catch(e){}
+function tabsBar(act){
+ const tabs=[['theory','📘',L('Theorie','Theory')]];
+ if(hasEx(topic))tabs.push(['prac','✏️',L('Üben','Practise')]);
+ if(teacher()&&topic.slides)tabs.push(['slides','🎬',L('Folien','Slides')]);
+ return `<div class="ttabs">${tabs.map(t=>`<button data-tab="${t[0]}" class="${t[0]===act?'on':''}">${t[1]} ${t[2]}</button>`).join('')}</div>`;
+}
+document.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b||!topic)return;e.stopPropagation();const k=b.dataset.tab;if(k===screen)return;if(k==='theory')renderTheory();else if(k==='prac')renderPractice();else if(k==='slides')openSlides()},true);
 function renderHome(q,keep){
  screen='home';topic=null;setHeader();
  q=(q||'').trim().toLowerCase();
@@ -38,7 +47,7 @@ function renderHome(q,keep){
   ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}`;
  app.onclick=e=>{const t=e.target.closest('[data-topic]');if(!t)return;const g=e.target.closest('[data-go]');topic=TOPICS.find(x=>x.id===t.dataset.topic);
   homeY=window.scrollY;if(!g)return renderTheory();const k=g.dataset.go;if(k==='theory')return renderTheory();if(k==='prac')return renderPractice();if(k==='slides')return openSlides()};
- if(keep)window.scrollTo(0,homeY);else window.scrollTo(0,0);
+ if(keep){const y=homeY;window.scrollTo(0,y);requestAnimationFrame(()=>window.scrollTo(0,y));setTimeout(()=>window.scrollTo(0,y),120)}else window.scrollTo(0,0);
  const qi=document.getElementById('q');qi.oninput=()=>{const v=qi.value;renderHome(v);const n=document.getElementById('q');n.focus();n.setSelectionRange(v.length,v.length)};
 }
 function openTopic(id){topic=TOPICS.find(t=>t.id===id);renderTheory()}
@@ -52,7 +61,7 @@ function renderTheory(){
  screen='theory';setHeader();
  const prac=hasEx(topic)?`<button class="primary" id="pracOpen" style="margin-top:14px">✏️ ${L('Jetzt üben →','Practise now →')}</button>`:`<a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:14px" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a>`;
  app.innerHTML=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
- <div class="thead" style="--c:${grpOf(topic).c}"><span class="ic">${topic.ic}</span><div><h1>${L('Theorie','Theory')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>
+ <div class="thead" style="--c:${grpOf(topic).c}"><span class="ic">${topic.ic}</span><div><h1>${L('Theorie','Theory')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>${tabsBar('theory')}
  <div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div>${hasEx(topic)?`<div class="card mqcard"><h3>✏️ ${L('Kurz üben','Quick practice')}</h3><div class="mq" data-mq></div></div>`:''}${prac}`;
  mqInit(app);
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderSetup();if(b.id==='pracOpen')return renderPractice()};
@@ -63,7 +72,7 @@ function renderPractice(){
  screen='prac';items=[];setHeader();
  const g=grpOf(topic);
  const head=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
- <div class="thead" style="--c:${g.c}"><span class="ic">${topic.ic}</span><div><h1>${L('Üben','Practise')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>
+ <div class="thead" style="--c:${g.c}"><span class="ic">${topic.ic}</span><div><h1>${L('Üben','Practise')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>${tabsBar('prac')}
  <div class="rowbtn"><button class="secondary" id="rulesOpen">📘 ${L('Regeln nachlesen','Read the rules')}</button></div>`;
  const st=ST[topic.id],subs=topic.subs(),C0=S.lvl==='C';
  const subOn=k=>st.subs.includes(k)&&!(topic.id==='q'&&C0&&k==='PaS');
@@ -137,7 +146,7 @@ function renderTask(){
   if(b.id==='reset'&&!answered){built=[];app.querySelectorAll('#wb button').forEach(x=>x.disabled=false);drawBuilt();return}
   if(b.id==='go')return answered?next():check();
  };
- const inp=document.getElementById('inp');if(inp){inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();answered?next():check()}}}
+ const inp=document.getElementById('inp');if(inp){if(FINE)inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();answered?next():check()}}}
 }
 function drawBuilt(){const el=document.getElementById('built');if(el)el.innerHTML=built.map(w=>`<button disabled>${esc(w)}</button>`).join('')}
 function done(ok,val){
@@ -212,14 +221,14 @@ function renderSheet(){
 }
 /* ===== Regeln ===== */
 function rulesHtml(){
- if(topic.rules)return `<ul class="rl">${topic.rules().map(r=>`<li><b>${r[0]}</b>${r[1]?'<br>'+r[1]:''}${r[2]?'<br><em>'+r[2]+'</em>':''}</li>`).join('')}</ul>`;
+ if(topic.rules)return topic.rules().map((r,i)=>`<section class="rsec"><h3><span class="rn">${i+1}</span>${r[0]}</h3><div class="rb">${r[1]||''}${r[2]?'<div class="rex">'+r[2]+'</div>':''}</div></section>`).join('');
  if(topic.slides)return topic.slides().filter(s=>s.kind!=='try').map((s,i)=>`<section class="rsec"><h3><span class="rn">${i+1}</span>${s.t}</h3><div class="rb">${s.h}</div></section>`).join('');
  return '';
 }
 let modalMode='rules';
 function openRules(){
  modalMode='rules';
- modalBody.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">📘 ${L('Regeln','Rules')} – ${topic?topic.name():''}</h2><button class="btn-link" id="mClose">✕</button></div>${rulesHtml()}`;
+ modalBody.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">📘 ${L('Regeln','Rules')} – ${topic?topic.name():''}</h2><button class="btn-link" id="mClose">✕</button></div><div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div>`;
  modal.classList.remove('hidden');modal.scrollTop=0;
 }
 function closeModal(){modal.classList.add('hidden')}
@@ -259,7 +268,7 @@ function renderSlides(){
  screen='slides';setHeader();
  const V=slidesList();if(T.cur>=V.length)T.cur=V.length-1;
  const s=V[T.cur];
- app.innerHTML=`<div class="tbar"><button class="btn-link" id="slBack">‹ ${topic.name()}</button>
+ app.innerHTML=`${tabsBar('slides')}<div class="tbar"><button class="btn-link" id="slBack">‹ ${topic.name()}</button>
   <button class="primary sm" id="slPres">▶ ${L('Präsentieren','Present')}</button>
   <button class="secondary sm" id="slNotes">${L('Hinweise','Notes')}: ${T.notes?L('an','on'):L('aus','off')}</button>
   <span class="muted tinfo">${T.cur+1} / ${V.length}</span></div>

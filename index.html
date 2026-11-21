@@ -170,6 +170,11 @@ header{flex-wrap:wrap;gap:8px}
 .theory2 .rb .sl-ex>div{background:#f4f7ff;border-radius:10px;padding:8px 12px;margin:6px 0}
 .theory2 .rb .sl-tip{background:#ecfdf5;border-radius:12px;padding:10px 14px}
 .theory2 .rb .sl-warn{background:#fff1f2;border-radius:12px;padding:10px 14px}
+.theory2 .rex{margin-top:8px;background:#f4f7ff;border-radius:10px;padding:8px 12px;color:#1d4ed8;font-weight:600}
+/* Reiter */
+.ttabs{display:flex;gap:6px;background:#e8ecfa;border-radius:16px;padding:5px;margin:0 0 14px}
+.ttabs button{flex:1;border:0;background:transparent;border-radius:12px;padding:11px 8px;font-weight:800;font-size:15px;color:#334;white-space:nowrap}
+.ttabs button.on{background:#2563eb;color:#fff;box-shadow:0 3px 10px rgba(37,99,235,.35)}
 /* Hub-Karten, Einstellungen, Grafiken */
 .hub{border:0!important;color:#fff!important;background:linear-gradient(135deg,var(--c),color-mix(in srgb,var(--c) 60%,#fff))!important;box-shadow:0 6px 18px color-mix(in srgb,var(--c) 35%,transparent)!important;border-radius:20px!important;padding:22px!important}
 .hub small{color:rgba(255,255,255,.92)!important}.hub .hic{background:rgba(255,255,255,.25);width:58px;height:58px;border-radius:18px;display:grid;place-items:center;font-size:32px;margin-bottom:6px}
@@ -378,7 +383,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 #lform{display:grid;gap:10px}#lform label{font-size:13px;font-weight:700;color:var(--muted)}
 #lform input{width:100%;font:inherit;border:2px solid var(--line);border-radius:10px;padding:9px 12px}
 .lerr{color:var(--bad);font-weight:600}
-@media(max-width:600px){header{position:static}header .btn-link,header button{white-space:nowrap;font-size:14px!important;padding-left:8px!important;padding-right:8px!important}header{gap:6px!important}.hdr-r{gap:4px!important;flex-wrap:nowrap!important;width:100%;justify-content:space-between}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
+@media(max-width:600px){header{position:static}header .btn-link,header button{white-space:nowrap;font-size:14px!important;padding-left:8px!important;padding-right:8px!important}header{gap:6px!important}.hdr-r{gap:4px 8px!important;flex-wrap:wrap!important;width:100%}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
 @media print{.pres,dialog{display:none!important}}
 
 </style>
