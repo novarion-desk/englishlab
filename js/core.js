@@ -1,4 +1,4 @@
-const APP_VERSION='0.9';
+const APP_VERSION='1.0';
 const TOPICS=[];
 let LANG='de';try{const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
 const L=(de,en)=>LANG==='de'?de:en;
@@ -32,6 +32,7 @@ const TENSE_URL='https://novarion-desk.github.io/tensetrainer/';
 const GROUPS=[
  {id:'zeiten',ic:'⏱️',c:'#2f5bea',n:()=>L('Zeiten','Tenses')},
  {id:'verben',ic:'🧩',c:'#7c3aed',n:()=>L('Verben & Satzbau','Verbs & sentences')},
+ {id:'rede',ic:'💬',c:'#0891b2',n:()=>L('Indirekte Rede','Reported speech')},
  {id:'nomen',ic:'👤',c:'#e8590c',n:()=>L('Nomen & Pronomen','Nouns & pronouns')},
  {id:'adj',ic:'🎨',c:'#0ca678',n:()=>L('Adjektive & Adverbien','Adjectives & adverbs')},
  {id:'praep',ic:'📍',c:'#d6336c',n:()=>L('Präpositionen','Prepositions')}
@@ -76,7 +77,7 @@ function bankTopic(o){
   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:o.fillDesc?o.fillDesc():L('das passende Wort schreiben','write the right word')},
   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('das passende Wort wählen','pick the right word')},
   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
-  {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}];
+  {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}].filter(t=>!(o.noOrder&&t.k==='order'));
  return {id:o.id,grp:o.grp,ord:o.ord,ic:o.ic,ready:1,
   name:()=>L(o.de,o.en),desc:()=>o.desc,
   fillInstr:()=>o.fillInstr?o.fillInstr():L('Setze das passende Wort ein.','Fill in the correct word.'),

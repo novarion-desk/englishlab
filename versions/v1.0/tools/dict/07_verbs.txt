@@ -1,0 +1,379 @@
+# Wichtige Verben
+be|v|sein
+have|v|haben
+do|v|tun, machen
+go|v|gehen
+come|v|kommen
+get|v|bekommen, werden
+make|v|machen
+take|v|nehmen
+give|v|geben
+put|v|legen, stellen
+set|v|setzen, stellen
+let|v|lassen
+keep|v|behalten, halten
+hold|v|halten
+bring|v|bringen
+carry|v|tragen
+send|v|schicken
+show|v|zeigen
+see|v|sehen
+look|v|schauen
+watch|v|zuschauen
+hear|v|hören
+notice|v|bemerken
+find|v|finden
+seem|v|scheinen
+appear|v|erscheinen
+become|v|werden
+stay|v|bleiben
+remain|v|bleiben
+turn|v|drehen, werden
+change|v|ändern
+grow|v|wachsen
+get up|phr|aufstehen
+know|v|wissen, kennen
+think|v|denken
+believe|v|glauben
+imagine|v|sich vorstellen
+suppose|v|annehmen
+expect|v|erwarten
+decide|v|entscheiden
+plan|v|planen
+want|v|wollen
+need|v|brauchen
+try|v|versuchen
+manage|v|schaffen
+offer|v|anbieten
+refuse|v|ablehnen
+accept|v|annehmen
+allow|v|erlauben
+forbid|v|verbieten
+let|v|erlauben
+make sure|phr|sicherstellen
+help|v|helfen
+support|v|unterstützen
+join|v|beitreten
+meet|v|treffen
+visit|v|besuchen
+invite|v|einladen
+share|v|teilen
+use|v|benutzen
+open|v|öffnen
+close|v|schliessen
+shut|v|schliessen
+begin|v|beginnen
+continue|v|weitermachen
+stop|v|aufhören, anhalten
+finish|v|beenden
+wait|v|warten
+hurry|v|sich beeilen
+run|v|rennen
+walk|v|gehen
+jump|v|springen
+fall|v|fallen
+fall down|phr|hinfallen
+stand|v|stehen
+sit|v|sitzen
+lie|v|liegen
+lie|v|lügen
+sleep|v|schlafen
+wake|v|aufwachen
+eat|v|essen
+drink|v|trinken
+cook|v|kochen
+wash|v|waschen
+clean|v|putzen
+dress|v|anziehen
+wear|v|tragen
+buy|v|kaufen
+sell|v|verkaufen
+pay|v|bezahlen
+cost|v|kosten
+spend|v|ausgeben
+save|v|sparen
+lose|v|verlieren
+find|v|finden
+win|v|gewinnen
+play|v|spielen
+read|v|lesen
+write|v|schreiben
+draw|v|zeichnen
+sing|v|singen
+dance|v|tanzen
+swim|v|schwimmen
+fly|v|fliegen
+drive|v|fahren
+ride|v|reiten, fahren
+travel|v|reisen
+arrive|v|ankommen
+leave|v|verlassen
+return|v|zurückkehren
+enter|v|eintreten
+exit|v|hinausgehen
+follow|v|folgen
+lead|v|führen
+push|v|schieben
+pull|v|ziehen
+throw|v|werfen
+catch|v|fangen
+hit|v|schlagen
+kick|v|treten
+break|v|zerbrechen
+cut|v|schneiden
+tear|v|reissen
+burn|v|brennen
+build|v|bauen
+destroy|v|zerstören
+fix|v|reparieren
+repair|v|reparieren
+hide|v|verstecken
+seek|v|suchen
+search|v|suchen
+look for|phr|suchen
+look after|phr|aufpassen auf
+look forward to|phr|sich freuen auf
+look up|phr|nachschlagen
+look out|phr|aufpassen
+give up|phr|aufgeben
+give back|phr|zurückgeben
+get on with|phr|sich verstehen mit
+get along|phr|auskommen
+get back|phr|zurückkommen
+get over|phr|verkraften
+go on|phr|weitermachen
+go out|phr|ausgehen
+go back|phr|zurückgehen
+go away|phr|weggehen
+come back|phr|zurückkommen
+come on|phr|komm schon
+come out|phr|herauskommen
+turn up|phr|auftauchen, lauter stellen
+turn down|phr|leiser stellen, ablehnen
+put off|phr|verschieben
+put up|phr|aufstellen
+pick up|phr|abholen, aufheben
+take part|phr|teilnehmen
+take place|phr|stattfinden
+take care of|phr|sich kümmern um
+make up|phr|erfinden
+make a mistake|phr|einen Fehler machen
+run out of|phr|ausgehen (Vorrat)
+bring up|phr|aufziehen
+break up|phr|Schluss machen
+carry on|phr|weitermachen
+find out|phr|herausfinden
+set off|phr|aufbrechen
+show off|phr|angeben
+throw away|phr|wegwerfen
+wake up|phr|aufwachen
+work out|phr|ausrechnen, trainieren
+agree|v|zustimmen
+allow|v|erlauben
+appear|v|erscheinen
+argue|v|streiten
+arrange|v|arrangieren
+attack|v|angreifen
+attend|v|besuchen (Veranstaltung)
+avoid|v|vermeiden
+behave|v|sich benehmen
+belong|v|gehören
+borrow|v|ausleihen
+bother|v|stören
+breathe|v|atmen
+cancel|v|absagen
+cause|v|verursachen
+celebrate|v|feiern
+challenge|v|herausfordern
+chase|v|jagen
+choose|v|wählen
+climb|v|klettern
+collect|v|sammeln
+compare|v|vergleichen
+complete|v|vervollständigen
+concentrate|v|sich konzentrieren
+connect|v|verbinden
+consider|v|bedenken
+contain|v|enthalten
+cover|v|bedecken
+create|v|schaffen
+cross|v|überqueren
+damage|v|beschädigen
+deal with|phr|sich befassen mit
+decorate|v|schmücken
+depend|v|abhängen
+describe|v|beschreiben
+deserve|v|verdienen
+develop|v|entwickeln
+die|v|sterben
+disappear|v|verschwinden
+discover|v|entdecken
+disturb|v|stören
+dive|v|tauchen
+earn|v|verdienen
+employ|v|beschäftigen
+encourage|v|ermutigen
+escape|v|fliehen
+excuse|v|entschuldigen
+exist|v|existieren
+explore|v|erforschen
+fail|v|scheitern
+fetch|v|holen
+fight|v|kämpfen
+fill|v|füllen
+fit|v|passen
+float|v|schweben
+flow|v|fliessen
+fold|v|falten
+force|v|zwingen
+forgive|v|vergeben
+gather|v|sammeln
+guess|v|raten
+guide|v|führen
+handle|v|handhaben
+hang|v|hängen
+happen|v|passieren
+hate|v|hassen
+hesitate|v|zögern
+hire|v|mieten, einstellen
+hurt|v|verletzen
+ignore|v|ignorieren
+impress|v|beeindrucken
+include|v|einschliessen
+increase|v|zunehmen
+inform|v|informieren
+insist|v|bestehen auf
+introduce|v|vorstellen
+involve|v|beinhalten
+join|v|verbinden
+judge|v|urteilen
+kill|v|töten
+kiss|v|küssen
+knock|v|klopfen
+land|v|landen
+last|v|dauern
+laugh|v|lachen
+lay|v|legen
+lean|v|sich lehnen
+level|n|das Niveau
+lift|v|heben
+light|v|anzünden
+limit|v|beschränken
+list|v|auflisten
+live|v|leben, wohnen
+load|v|laden
+lock|v|abschliessen
+manage|v|leiten
+mark|v|markieren
+matter|v|wichtig sein
+measure|v|messen
+melt|v|schmelzen
+mind|v|etwas ausmachen
+miss|v|verpassen
+mix|v|mischen
+move|v|bewegen
+need|v|brauchen
+note|v|notieren
+obey|v|gehorchen
+observe|v|beobachten
+occur|v|vorkommen
+operate|v|bedienen
+organise|v|organisieren
+own|v|besitzen
+paint|v|malen
+park|v|parken
+pass|v|vorbeigehen
+perform|v|aufführen
+permit|v|erlauben
+pick|v|pflücken, auswählen
+place|v|platzieren
+plant|v|pflanzen
+point|v|zeigen
+pour|v|giessen
+praise|v|loben
+predict|v|vorhersagen
+prefer|v|bevorzugen
+prepare|v|vorbereiten
+present|v|präsentieren
+press|v|drücken
+pretend|v|so tun als ob
+prevent|v|verhindern
+print|v|drucken
+produce|v|herstellen
+protect|v|schützen
+prove|v|beweisen
+provide|v|liefern
+publish|v|veröffentlichen
+punish|v|bestrafen
+reach|v|erreichen
+realise|v|erkennen
+receive|v|erhalten
+recognise|v|erkennen
+recommend|v|empfehlen
+record|v|aufnehmen
+reduce|v|verringern
+refuse|v|verweigern
+regret|v|bereuen
+relax|v|entspannen
+release|v|freilassen
+rely|v|sich verlassen
+remind|v|erinnern
+remove|v|entfernen
+repair|v|reparieren
+replace|v|ersetzen
+rescue|v|retten
+respect|v|respektieren
+result|n|das Ergebnis
+return|v|zurückgeben
+reveal|v|enthüllen
+rise|v|steigen
+risk|v|riskieren
+roll|v|rollen
+rule|v|herrschen
+rush|v|hetzen
+save|v|retten
+scare|v|erschrecken
+separate|v|trennen
+serve|v|bedienen
+settle|v|sich niederlassen
+shake|v|schütteln
+share|v|teilen
+shine|v|scheinen
+shoot|v|schiessen
+shout|v|rufen
+shut|v|schliessen
+sign|v|unterschreiben
+slip|v|rutschen
+smell|v|riechen
+solve|v|lösen
+sort|v|sortieren
+spread|v|verbreiten
+stick|v|kleben
+store|v|lagern
+succeed|v|Erfolg haben
+suffer|v|leiden
+suit|v|passen
+supply|v|liefern
+surprise|v|überraschen
+survive|v|überleben
+swallow|v|schlucken
+switch|v|wechseln
+taste|v|schmecken
+tease|v|necken
+tie|v|binden
+touch|v|berühren
+train|v|trainieren
+trap|v|fangen
+trust|v|vertrauen
+twist|v|drehen
+unlock|v|aufschliessen
+vote|v|abstimmen
+wander|v|umherziehen
+warn|v|warnen
+waste|v|verschwenden
+weigh|v|wiegen
+wish|v|wünschen
+wonder|v|sich fragen
+worry|v|sich sorgen
+wrap|v|einpacken
+yell|v|schreien

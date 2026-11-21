@@ -1,5 +1,14 @@
 # Changelog
 
+## 1.0
+- Neu: Umschalter «Themen | Units» auf der Hauptseite. Units-Ansicht: Stufe 2 (Welcome bis Unit 8), danach Stufe 3, mit festen Kopfzeilen und Sprungleiste. Themen erscheinen in der Reihenfolge der Units, auch mehrfach
+- Neu: Sprungleiste mit den Gruppen in der Themen-Ansicht; Stufen-Tag auf den Karten
+- Neu: 14 neue Themen: Passiv, so / nor + Hilfsverb, Vermutungen (must, can't, might), Reflexivpronomen, had better / ought to, Verben der Wahrnehmung, Past perfect, used to, Indirekte Rede (Aussagen, Aufforderungen, Fragen), should have, Second conditional, Verbindungswörter
+- Erweitert: Gerund & Infinitiv um Adjektiv + to und Verb + Person + to
+- Neu: Gruppe «Indirekte Rede»
+- Neu: Wörterbuch mit über 3'000 Einträgen (Englisch und Deutsch), wird erst beim ersten Öffnen geladen
+- Neu: Einstiegsfolie «Worum geht's?» für alle neuen Themen
+
 ## 0.9
 - Neu: Feste Kopfzeile (auch auf dem Handy, kompakt mit Symbolen)
 - Neu: Verben-Knopf mit Verbenliste (unregelmässig und häufige regelmässige Verben, alle Formen beim Antippen)

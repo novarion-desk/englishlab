@@ -55,6 +55,36 @@ function runSearch(q){
  res.terms=terms;
  return res;
 }
+
+/* ===== Grosses Wörterbuch (js/dict.js, wird erst beim ersten Öffnen geladen) ===== */
+let DICT=null,dictLoading=false;
+function ensureDict(cb){
+ if(DICT)return cb&&cb();
+ if(dictLoading)return;dictLoading=true;
+ const sc=document.createElement('script');sc.src='js/dict.js';
+ sc.onload=()=>{DICT=DICT_DATA.split('\n').map(l=>{const p=l.split('|');return {en:p[0],pos:p[1],de:p[2],ef:fold(p[0]),df:fold(p[2]).replace(/^(der|die|das)\s+/,'')}});dictLoading=false;cb&&cb()};
+ sc.onerror=()=>{dictLoading=false;DICT=[];cb&&cb()};
+ document.head.appendChild(sc);
+}
+function dictSearch(q){
+ const f=fold(q).trim();if(!f||!DICT)return [];
+ const out=[];
+ for(const d of DICT){
+  let sc=9;
+  if(d.ef===f)sc=0;
+  else if(d.df===f||d.df.split(/[,;]\s*/).some(x=>x.replace(/^(der|die|das)\s+/,'')===f))sc=1;
+  else if(d.ef.startsWith(f))sc=2;
+  else if(d.df.startsWith(f))sc=3;
+  else if(d.ef.includes(' '+f))sc=4;
+  else if(d.df.includes(' '+f)||d.df.includes(', '+f))sc=5;
+  else if(f.length>=3&&(d.ef.includes(f)||d.df.includes(f)))sc=6;
+  if(sc<9)out.push([sc,d]);
+ }
+ out.sort((a,b)=>a[0]-b[0]||a[1].en.length-b[1].en.length);
+ return out.map(x=>x[1]);
+}
+const POSN={n:'Nomen',v:'Verb',adj:'Adjektiv',adv:'Adverb',prep:'Präposition',conj:'Konjunktion',pron:'Pronomen',det:'Wort',phr:'Wendung'};
+const POSE={n:'noun',v:'verb',adj:'adjective',adv:'adverb',prep:'preposition',conj:'conjunction',pron:'pronoun',det:'word',phr:'phrase'};
 const sbox={tab:'search',q:'',ai:''};
 function openSearch(keep){
  modalMode='search';
@@ -104,13 +134,20 @@ function drawSearch(){
  if(!box)return;
  let h='';
  if(sbox.tab==='dict'){
-  const r=q?runSearch(q):null;
-  const g=r?r.gl:[];
-  if(q){
-   h+=g.length?g.slice(0,40).map(x=>`<div class="gl"><div><b>${hl(x[0],r.terms)}</b><small>${x[2]?esc(x[2]):''}</small></div><div style="text-align:right">${hl(x[1],r.terms)}</div></div>`).join(''):`<p class="muted">${L('Nichts im Glossar gefunden.','Nothing found in the glossary.')}</p>`;
-   const eq=encodeURIComponent(q);
-   h+=`<p style="margin-top:12px">${L('Mehr Wörter:','More words:')} <a href="https://www.dict.cc/?s=${eq}" target="_blank" rel="noopener">dict.cc ↗</a> · <a href="https://www.linguee.de/deutsch-englisch/search?query=${eq}" target="_blank" rel="noopener">Linguee ↗</a></p>`;
-  }else h+=`<p class="muted">${L('Grammatikbegriffe und häufige Wörter aus den Übungen. Tippe ein Wort (Englisch oder Deutsch).','Grammar terms and common words from the exercises. Type a word (English or German).')}</p>`+GLOSS.slice(0,12).map(x=>`<div class="gl"><div><b>${esc(x[0])}</b><small>${esc(x[2]||'')}</small></div><div style="text-align:right">${esc(x[1])}</div></div>`).join('');
+  if(!DICT){h=`<p class="muted">${L('Wörterbuch wird geladen …','Loading the dictionary …')}</p>`;ensureDict(()=>{if(sbox.tab==='dict')drawSearch()})}
+  else{
+   const r=q?runSearch(q):null;
+   const g=r?r.gl:[];
+   const row=x=>`<div class="gl"><div><b>${q?hl(x.en,r.terms):esc(x.en)}</b><small>${L(POSN[x.pos]||'',POSE[x.pos]||'')}</small></div><div style="text-align:right">${q?hl(x.de,r.terms):esc(x.de)}</div></div>`;
+   if(q){
+    const dr=dictSearch(q);
+    h+=dr.length?`<h4>${L('Wörterbuch','Dictionary')} (${dr.length})</h4>`+dr.slice(0,60).map(row).join('')+(dr.length>60?`<p class="muted">${L('Weitere Treffer: Suche genauer eingeben.','More results: type a more exact search.')}</p>`:''):'';
+    h+=g.length?`<h4>${L('Grammatikbegriffe','Grammar terms')}</h4>`+g.slice(0,20).map(x=>`<div class="gl"><div><b>${hl(x[0],r.terms)}</b><small>${x[2]?esc(x[2]):''}</small></div><div style="text-align:right">${hl(x[1],r.terms)}</div></div>`).join(''):'';
+    if(!dr.length&&!g.length)h+=`<p class="muted">${L('Nichts gefunden.','Nothing found.')}</p>`;
+    const eq=encodeURIComponent(q);
+    h+=`<p style="margin-top:12px">${L('Mehr Wörter:','More words:')} <a href="https://www.dict.cc/?s=${eq}" target="_blank" rel="noopener">dict.cc ↗</a> · <a href="https://www.linguee.de/deutsch-englisch/search?query=${eq}" target="_blank" rel="noopener">Linguee ↗</a></p>`;
+   }else h+=`<p class="muted">${L(DICT.length+' Wörter und Wendungen, dazu Grammatikbegriffe. Tippe ein Wort (Englisch oder Deutsch).',DICT.length+' words and phrases plus grammar terms. Type a word (English or German).')}</p>`+GLOSS.slice(0,10).map(x=>`<div class="gl"><div><b>${esc(x[0])}</b><small>${esc(x[2]||'')}</small></div><div style="text-align:right">${esc(x[1])}</div></div>`).join('');
+  }
  }else{
   if(!q)h=`<p class="muted">${L('Suche in Themen, Regeln und Beispielsätzen.','Search topics, rules and example sentences.')}${teacher()?L(' Als Lehrperson auch in den Folien.',' As a teacher also in the slides.'):''}</p>`;
   else{

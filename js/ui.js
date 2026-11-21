@@ -35,17 +35,33 @@ function tabsBar(act){
  return `<div class="ttabs">${tabs.map(t=>`<button data-tab="${t[0]}" class="${t[0]===act?'on':''}">${t[1]} ${t[2]}</button>`).join('')}</div>`;
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b||!topic)return;e.stopPropagation();const k=b.dataset.tab;if(k===screen)return;if(k==='theory')renderTheory();else if(k==='prac')renderPractice();else if(k==='slides')openSlides()},true);
+let homeView='topics';try{if(localStorage.getItem('el-view')==='units')homeView='units'}catch(e){}
+function setHH(){const h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hh',(h.offsetHeight+(window.innerWidth<=600?0:8))+'px')}
+window.addEventListener('resize',setHH);
 function renderHome(q,keep){
- screen='home';topic=null;setHeader();
+ screen='home';topic=null;setHeader();setHH();
  q=(q||'').trim().toLowerCase();
  const match=t=>!q||(t.name()+' '+t.desc()).toLowerCase().includes(q);
- const card=t=>{const g=grpOf(t);return `<div class="tile${t.feat?' feat':''}" data-topic="${t.id}" style="--c:${g.c}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
- const sec=GROUPS.map(g=>{const ts=TOPICS.filter(t=>t.grp===g.id&&match(t));return ts.length?`<section class="grp" style="--c:${g.c}"><h2><span class="dot">${g.ic}</span>${g.n()}</h2><div class="tiles">${ts.map(card).join('')}</div></section>`:''}).join('');
+ const card=(t,stg)=>{const g=grpOf(t);const ss=stg?stagesOf(t.id):[];const tag=ss.length?`<i class="stg">${ss.length>1?L('Stufe 2 + 3','Stage 2 + 3'):stageName(ss[0])}</i>`:'';return `<div class="tile${t.feat?' feat':''}" data-topic="${t.id}" style="--c:${g.c}">${tag}<span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
+ let sec='',jump='';
+ if(homeView==='units'){
+  jump=[2,3].map(st=>`<div class="jrow"><b>${stageName(st)}</b>${UNITS.filter(x=>x.s===st).map(x=>`<button class="jb" data-jump="u-${st}-${x.u}">${x.u?x.u:'W'}</button>`).join('')}</div>`).join('');
+  sec=[2,3].map(st=>{const us=UNITS.filter(x=>x.s===st).map(x=>{const ts=x.t.map(id=>TOPICS.find(t=>t.id===id)).filter(t=>t&&match(t));return ts.length?`<section class="unit" id="u-${st}-${x.u}"><h2 class="uh"><span class="us">${stageName(st)}</span> · ${unitName(x)}</h2><div class="tiles">${ts.map(t=>card(t,false)).join('')}</div></section>`:''}).join('');return us?`<h2 class="stagehead">${stageName(st)}</h2>`+us:''}).join('');
+ }else{
+  const gs=GROUPS.filter(g=>TOPICS.some(t=>t.grp===g.id&&match(t)));
+  jump=`<div class="jrow">${gs.map(g=>`<button class="jb" data-jump="g-${g.id}" style="--c:${g.c}">${g.ic} ${g.n()}</button>`).join('')}</div>`;
+  sec=GROUPS.map(g=>{const ts=TOPICS.filter(t=>t.grp===g.id&&match(t));return ts.length?`<section class="grp" id="g-${g.id}" style="--c:${g.c}"><h2><span class="dot">${g.ic}</span>${g.n()}</h2><div class="tiles">${ts.map(t=>card(t,true)).join('')}</div></section>`:''}).join('');
+ }
  app.innerHTML=`<div class="hero"><h1>${L('Grammatik üben, nachlesen, verstehen','Practise, read and understand grammar')}</h1>
   <p>${L('Wähle ein Thema. Zu jedem Thema findest du die Regeln und Übungen auf deinem Niveau.','Pick a topic. Every topic has clear rules and exercises at your level.')}</p>
-  <input class="search" id="q" type="search" placeholder="${L('Thema suchen …','Search a topic …')}" value="${esc(q)}" autocomplete="off"></div>
+  <input class="search" id="q" type="search" placeholder="${L('Thema suchen …','Search a topic …')}" value="${esc(q)}" autocomplete="off">
+  <div class="seg viewseg"><button data-view="topics" class="${homeView==='topics'?'on':''}">${L('Themen','Topics')}</button><button data-view="units" class="${homeView==='units'?'on':''}">Units</button></div>
+  <div class="jump">${jump}</div></div>
   ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}`;
- app.onclick=e=>{const t=e.target.closest('[data-topic]');if(!t)return;const g=e.target.closest('[data-go]');topic=TOPICS.find(x=>x.id===t.dataset.topic);
+ app.onclick=e=>{
+  const vb=e.target.closest('[data-view]');if(vb){if(vb.dataset.view===homeView)return;homeView=vb.dataset.view;try{localStorage.setItem('el-view',homeView)}catch(_){}homeY=0;return renderHome(q)}
+  const jb=e.target.closest('[data-jump]');if(jb){const el=document.getElementById(jb.dataset.jump);if(el){const hh=(document.querySelector('header')||{}).offsetHeight||60;window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-hh-(el.classList.contains('unit')?44:20),behavior:'smooth'})}return}
+  const t=e.target.closest('[data-topic]');if(!t)return;const g=e.target.closest('[data-go]');topic=TOPICS.find(x=>x.id===t.dataset.topic);
   homeY=window.scrollY;if(!g)return renderTheory();const k=g.dataset.go;if(k==='theory')return renderTheory();if(k==='prac')return renderPractice();if(k==='slides')return openSlides()};
  if(keep){const y=homeY;window.scrollTo(0,y);requestAnimationFrame(()=>window.scrollTo(0,y));setTimeout(()=>window.scrollTo(0,y),120)}else window.scrollTo(0,0);
  const qi=document.getElementById('q');qi.oninput=()=>{const v=qi.value;renderHome(v);const n=document.getElementById('q');n.focus();n.setSelectionRange(v.length,v.length)};
