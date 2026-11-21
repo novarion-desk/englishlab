@@ -18,7 +18,7 @@ const typeLabel=k=>{const t=topic.types().find(x=>x.k===k);return t?t.icon+' '+t
 const tcol=t=>grpOf(t).c;
 function setTheme(t){document.documentElement.style.setProperty('--accent',t?tcol(t):'#4f46e5');document.documentElement.style.setProperty('--accent-bg',t?`color-mix(in srgb,${tcol(t)} 11%,#fff)`:'#eef2ff')}
 function setHeader(){
- const rb=document.getElementById('rulesBtn');rb.style.display=topic&&screen!=='slides'?'':'none';rb.textContent='📘 '+L('Regeln','Rules');
+ const rb=document.getElementById('rulesBtn');rb.style.display=topic&&screen!=='slides'?'':'none';rb.textContent='📘 '+L('Regeln','Rules');const sl=document.getElementById('searchLbl');if(sl)sl.textContent=L('Suche','Search');
  document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
  const lb=document.getElementById('loginBtn');lb.textContent=T.user?L('Lehrer ✓','Teacher ✓'):T.demo?'Demo':L('Lehrer','Teacher');lb.title=T.user?L('Abmelden','Log out'):'';
  document.body.classList.toggle('home',screen==='home');
@@ -40,17 +40,37 @@ function renderHome(q){
  const qi=document.getElementById('q');qi.oninput=()=>{const v=qi.value;renderHome(v);const n=document.getElementById('q');n.focus();n.setSelectionRange(v.length,v.length)};
 }
 function openTopic(id){topic=TOPICS.find(t=>t.id===id);renderSetup()}
+function hubHead(){
+ const g=grpOf(topic);
+ return `<button class="btn-link" id="homeBtn">‹ ${L('Themen','Topics')}</button>
+ <div class="thead" style="--c:${g.c}"><span class="ic">${topic.ic}</span><div><h1>${topic.name()}</h1><p>${topic.desc()}</p></div></div>`;
+}
 function renderSetup(){
  screen='setup';items=[];setHeader();
+ const prac=hasEx(topic)
+  ?`<button class="hub" id="pracOpen" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben','Practise')}</b><small>${L('Aufgaben auf deinem Niveau A, B oder C','Exercises at your level A, B or C')}</small></button>`
+  :`<a class="hub" href="${TENSE_URL}" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben im Tense Trainer','Practise in the Tense Trainer')}</b><small>${L('Alle Zeitformen mit Aufgaben','All tenses with exercises')}</small></a>`;
+ const sl=teacher()&&topic.slides?`<button class="hub tch" id="slidesOpen" style="--c:#d98a00"><span class="hic">🎬</span><b>${L('Folien','Slides')}</b><small>${L('Zum Präsentieren (nur Lehrperson)','For presenting (teacher only)')}</small></button>`:'';
+ app.innerHTML=hubHead()+`<div class="hubs"><button class="hub" id="theoryOpen" style="--c:${grpOf(topic).c}"><span class="hic">📘</span><b>${L('Theorie','Theory')}</b><small>${L('Regeln, Beispiele, typische Fehler','Rules, examples, typical mistakes')}</small></button>${prac}${sl}</div>`;
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderHome();if(b.id==='theoryOpen')return renderTheory();if(b.id==='pracOpen')return renderPractice();if(b.id==='slidesOpen')return openSlides()};
+ window.scrollTo({top:0});
+}
+function renderTheory(){
+ screen='theory';setHeader();
+ const prac=hasEx(topic)?`<button class="primary" id="pracOpen" style="margin-top:14px">✏️ ${L('Jetzt üben →','Practise now →')}</button>`:`<a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:14px" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a>`;
+ app.innerHTML=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
+ <div class="thead" style="--c:${grpOf(topic).c}"><span class="ic">${topic.ic}</span><div><h1>${L('Theorie','Theory')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>
+ <div class="card theory">${rulesHtml()}</div>${prac}`;
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderSetup();if(b.id==='pracOpen')return renderPractice()};
+ window.scrollTo({top:0});
+}
+function renderPractice(){
+ if(!hasEx(topic))return renderSetup();
+ screen='prac';items=[];setHeader();
  const g=grpOf(topic);
- const head=`<button class="btn-link" id="homeBtn">‹ ${L('Themen','Topics')}</button>
- <div class="thead" style="--c:${g.c}"><span class="ic">${topic.ic}</span><div><h1>${topic.name()}</h1><p>${topic.desc()}</p></div></div>
- <div class="rowbtn"><button class="secondary" id="rulesOpen">📘 ${L('Regeln nachlesen','Read the rules')}</button>${teacher()&&topic.slides?`<button class="secondary tbtn" id="slidesOpen">🎬 ${L('Folien','Slides')}</button>`:''}</div>`;
- if(!hasEx(topic)){
-  app.innerHTML=head+`<div class="card"><h2>${L('Üben','Practise')}</h2><p style="margin:0 0 12px">${L('Dieses Thema übst du im Tense Trainer, mit allen Zeitformen und Aufgaben.','Practise this topic in the Tense Trainer, with all tenses and exercises.')}</p><a class="primary" style="text-align:center;text-decoration:none" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a></div>`;
-  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderHome();if(b.id==='rulesOpen')return openRules();if(b.id==='slidesOpen')return openSlides()};
-  return;
- }
+ const head=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
+ <div class="thead" style="--c:${g.c}"><span class="ic">${topic.ic}</span><div><h1>${L('Üben','Practise')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>
+ <div class="rowbtn"><button class="secondary" id="rulesOpen">📘 ${L('Regeln nachlesen','Read the rules')}</button></div>`;
  const st=ST[topic.id],subs=topic.subs(),C0=S.lvl==='C';
  const subOn=k=>st.subs.includes(k)&&!(topic.id==='q'&&C0&&k==='PaS');
  app.innerHTML=head+`
@@ -67,9 +87,8 @@ function renderSetup(){
  <p class="err" id="err"></p>`;
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
-  if(b.id==='homeBtn')return renderHome();
+  if(b.id==='homeBtn')return renderSetup();
   if(b.id==='rulesOpen')return openRules();
-  if(b.id==='slidesOpen')return openSlides();
   if(b.dataset.lv){S.lvl=b.dataset.lv}
   else if(b.dataset.t){
    const k=b.dataset.t;if(b.disabled)return;
@@ -81,7 +100,7 @@ function renderSetup(){
   else if(b.id==='start')return start();
   else if(b.id==='sheetBtn')return openSheet();
   else return;
-  renderSetup();
+  renderPractice();
  };
 }
 function chk(){const err=document.getElementById('err');if(!effTypes().length){err.textContent=L('Wähle mindestens eine Übungsart.','Choose at least one exercise type.');return false}return true}
@@ -117,7 +136,7 @@ function renderTask(){
   if(b.id==='quit'){
    if(infinite&&results.length)return renderResults();
    if(results.length&&!confirm(L('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.','Really quit this round?\nYour answers so far will be lost.')))return;
-   return renderSetup();
+   return renderPractice();
   }
   if(b.dataset.o!==undefined&&!answered)return answerChoice(+b.dataset.o);
   if(b.dataset.w!==undefined&&!answered){built.push(it.words[+b.dataset.w]);b.disabled=true;drawBuilt();return}
@@ -159,7 +178,7 @@ function renderResults(){
  ${wrong.length?`<div class="card"><h2>${L('Zum Nachschauen','To review')}</h2><ul class="rl">${wrong.map(r=>`<li>${r.it.src?'<div class="src" style="font-size:17px">'+r.it.src+'</div>':''}${r.val?`<span class="err2">${esc(r.val)}</span><br>`:''}<b>${esc(r.it.sol)}</b></li>`).join('')}</ul></div>`:''}
  <button class="primary" id="again">${L('Nochmal','Again')}</button>
  <button class="secondary" id="setup" style="margin-top:10px">${L('‹ Einstellungen','‹ Settings')}</button>`;
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='again')return start();if(b.id==='setup')return renderSetup()};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='again')return start();if(b.id==='setup')return renderPractice()};
 }
 /* ===== Arbeitsblatt ===== */
 function openSheet(){
@@ -192,7 +211,7 @@ function renderSheet(){
  <div class="sheet sol"><h1>${L('Lösungen','Answers')}</h1><p class="sub">${esc(title)}</p>
   <div class="sol-list">${sheetItems.map((it,i)=>`<div><b>${i+1}.</b> ${esc(it.sol)}</div>`).join('')}</div></div>`;
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;
-  if(b.id==='shBack')return renderSetup();
+  if(b.id==='shBack')return renderPractice();
   if(b.id==='shMix'){seenG.clear();sheetItems=build(sheetItems.length);renderSheet();window.scrollTo({top:0});return}
   if(b.id==='shPrint')return window.print()};
  window.scrollTo({top:0});
@@ -203,7 +222,9 @@ function rulesHtml(){
  if(topic.slides)return topic.slides().filter(s=>s.kind!=='try').map(s=>`<section class="rsec"><h3>${s.t}</h3>${s.h}</section>`).join('');
  return '';
 }
+let modalMode='rules';
 function openRules(){
+ modalMode='rules';
  modalBody.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">📘 ${L('Regeln','Rules')} – ${topic?topic.name():''}</h2><button class="btn-link" id="mClose">✕</button></div>${rulesHtml()}`;
  modal.classList.remove('hidden');modal.scrollTop=0;
 }
@@ -346,8 +367,8 @@ document.getElementById('rulesBtn').onclick=openRules;
 document.getElementById('feedbackBtn').onclick=()=>openAppFeedback();
 document.getElementById('langSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;LANG=b.dataset.l;try{localStorage.setItem('el-lang',LANG)}catch(err){}document.documentElement.lang=LANG;redraw()};
 function redraw(){setHeader();
- if(screen==='home')renderHome();else if(screen==='setup')renderSetup();else if(screen==='sheet')renderSheet();else if(screen==='results')renderResults();else if(screen==='slides')renderSlides();
- if(!modal.classList.contains('hidden'))openRules();if(T.pres)drawPres()}
+ if(screen==='home')renderHome();else if(screen==='setup')renderSetup();else if(screen==='prac')renderPractice();else if(screen==='theory')renderTheory();else if(screen==='sheet')renderSheet();else if(screen==='results')renderResults();else if(screen==='slides')renderSlides();
+ if(!modal.classList.contains('hidden')){if(modalMode==='search')openSearch(true);else openRules()}if(T.pres)drawPres()}
 document.getElementById('logoLink').onclick=e=>{e.preventDefault();if(T.pres)presOff();renderHome()};
 const FS=[.9,1,1.12,1.25];let fsi=1;
 try{const v=+localStorage.getItem('el-fs');if(v>=0&&v<FS.length)fsi=v}catch(e){}

@@ -1,5 +1,10 @@
 # Changelog
 
+## 0.4
+- Neu: Pro Thema Theorie und Üben als eigene Buttons (Folien für Lehrpersonen)
+- Neu: Suche und Wörterbuch (Glossar, dict.cc / Linguee)
+- Neu: KI-Suche für die Lehrperson (eigener API-Schlüssel, nur lokal)
+
 ## 0.3
 - Neu: Lehrerbereich mit Login und Folien (Präsentation, DE/EN)
 - Neu: 21 Themen, Folien für alle
