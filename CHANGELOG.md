@@ -1,5 +1,13 @@
 # Changelog
 
+## 0.5
+- Neu: Themenkarten mit Knöpfen Theorie / Üben / Folien (direkt anklickbar)
+- Neu: Theorie farbig gestaltet (nummerierte Karten pro Abschnitt)
+- Neu: Zeitformen mit eigenen Übungen (A/B/C), Üben startet direkt im gewählten Thema
+- Neu: Live-Übung (eine Frage, «Nächste Frage», endlos) in der Theorie und als letzte Folie
+- Neu: Folien im PowerPoint-Stil (16:9, Vorschauleiste, Wischen), Präsentieren im Vollbild
+- Neu: Logo im Seitenkopf
+
 ## 0.4
 - Neu: Pro Thema Theorie und Üben als eigene Buttons (Folien für Lehrpersonen)
 - Neu: Suche und Wörterbuch (Glossar, dict.cc / Linguee)

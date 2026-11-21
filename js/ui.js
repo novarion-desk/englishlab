@@ -29,14 +29,15 @@ function renderHome(q){
  screen='home';topic=null;setHeader();
  q=(q||'').trim().toLowerCase();
  const match=t=>!q||(t.name()+' '+t.desc()).toLowerCase().includes(q);
- const card=t=>{const g=grpOf(t);return `<button class="tile" data-topic="${t.id}" style="--c:${g.c}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags">${hasEx(t)?`<i>✏️ ${L('Üben','Practise')}</i>`:`<i>⏱️ Tense Trainer</i>`}<i>📘 ${L('Regeln','Rules')}</i>${teacher()&&t.slides?`<i class="tt">🎬 ${L('Folien','Slides')}</i>`:''}</span></button>`};
+ const card=t=>{const g=grpOf(t);return `<div class="tile" data-topic="${t.id}" style="--c:${g.c}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
  const sec=GROUPS.map(g=>{const ts=TOPICS.filter(t=>t.grp===g.id&&match(t));return ts.length?`<section class="grp" style="--c:${g.c}"><h2><span class="dot">${g.ic}</span>${g.n()}</h2><div class="tiles">${ts.map(card).join('')}</div></section>`:''}).join('');
  app.innerHTML=`<div class="hero"><h1>${L('Grammatik üben, nachlesen, verstehen','Practise, read and understand grammar')}</h1>
   <p>${L('Wähle ein Thema. Zu jedem Thema findest du die Regeln und Übungen auf deinem Niveau.','Pick a topic. Every topic has clear rules and exercises at your level.')}</p>
   <input class="search" id="q" type="search" placeholder="${L('Thema suchen …','Search a topic …')}" value="${esc(q)}" autocomplete="off"></div>
   ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}
   <section class="grp" style="--c:#475569"><div class="tiles"><a class="tile ext" href="${TENSE_URL}"><span class="ic">⏱️</span><b>Tense Trainer</b><small>${L('Zeitformen üben (eigene App)','Practise tenses (separate app)')}</small></a></div></section>`;
- app.onclick=e=>{const b=e.target.closest('[data-topic]');if(b)openTopic(b.dataset.topic)};
+ app.onclick=e=>{const t=e.target.closest('[data-topic]');if(!t)return;const g=e.target.closest('[data-go]');topic=TOPICS.find(x=>x.id===t.dataset.topic);
+  if(!g)return renderSetup();const k=g.dataset.go;if(k==='theory')return renderTheory();if(k==='prac')return renderPractice();if(k==='slides')return openSlides()};
  const qi=document.getElementById('q');qi.oninput=()=>{const v=qi.value;renderHome(v);const n=document.getElementById('q');n.focus();n.setSelectionRange(v.length,v.length)};
 }
 function openTopic(id){topic=TOPICS.find(t=>t.id===id);renderSetup()}
@@ -47,9 +48,8 @@ function hubHead(){
 }
 function renderSetup(){
  screen='setup';items=[];setHeader();
- const prac=hasEx(topic)
-  ?`<button class="hub" id="pracOpen" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben','Practise')}</b><small>${L('Aufgaben auf deinem Niveau A, B oder C','Exercises at your level A, B or C')}</small></button>`
-  :`<a class="hub" href="${TENSE_URL}" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben im Tense Trainer','Practise in the Tense Trainer')}</b><small>${L('Alle Zeitformen mit Aufgaben','All tenses with exercises')}</small></a>`;
+ const prac=`<button class="hub" id="pracOpen" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben','Practise')}</b><small>${L('Aufgaben auf deinem Niveau A, B oder C','Exercises at your level A, B or C')}</small></button>`
+  +(topic.grp==='zeiten'?`<a class="hub" href="${TENSE_URL}" target="_blank" rel="noopener" style="--c:#2f5bea"><span class="hic">⏱️</span><b>${L('Mehr im Tense Trainer','More in the Tense Trainer')}</b><small>${L('Alle Zeitformen mit vielen Aufgabenarten','All tenses with many exercise types')}</small></a>`:'');
  const sl=teacher()&&topic.slides?`<button class="hub tch" id="slidesOpen" style="--c:#d98a00"><span class="hic">🎬</span><b>${L('Folien','Slides')}</b><small>${L('Zum Präsentieren (nur Lehrperson)','For presenting (teacher only)')}</small></button>`:'';
  app.innerHTML=hubHead()+`<div class="hubs"><button class="hub" id="theoryOpen" style="--c:${grpOf(topic).c}"><span class="hic">📘</span><b>${L('Theorie','Theory')}</b><small>${L('Regeln, Beispiele, typische Fehler','Rules, examples, typical mistakes')}</small></button>${prac}${sl}</div>`;
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderHome();if(b.id==='theoryOpen')return renderTheory();if(b.id==='pracOpen')return renderPractice();if(b.id==='slidesOpen')return openSlides()};
@@ -60,7 +60,8 @@ function renderTheory(){
  const prac=hasEx(topic)?`<button class="primary" id="pracOpen" style="margin-top:14px">✏️ ${L('Jetzt üben →','Practise now →')}</button>`:`<a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:14px" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a>`;
  app.innerHTML=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
  <div class="thead" style="--c:${grpOf(topic).c}"><span class="ic">${topic.ic}</span><div><h1>${L('Theorie','Theory')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>
- <div class="card theory">${rulesHtml()}</div>${prac}`;
+ <div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div>${hasEx(topic)?`<div class="card mqcard"><h3>✏️ ${L('Kurz üben','Quick practice')}</h3><div class="mq" data-mq></div></div>`:''}${prac}`;
+ mqInit(app);
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderSetup();if(b.id==='pracOpen')return renderPractice()};
  window.scrollTo({top:0});
 }
@@ -219,7 +220,7 @@ function renderSheet(){
 /* ===== Regeln ===== */
 function rulesHtml(){
  if(topic.rules)return `<ul class="rl">${topic.rules().map(r=>`<li><b>${r[0]}</b>${r[1]?'<br>'+r[1]:''}${r[2]?'<br><em>'+r[2]+'</em>':''}</li>`).join('')}</ul>`;
- if(topic.slides)return topic.slides().filter(s=>s.kind!=='try').map(s=>`<section class="rsec"><h3>${s.t}</h3>${s.h}</section>`).join('');
+ if(topic.slides)return topic.slides().filter(s=>s.kind!=='try').map((s,i)=>`<section class="rsec"><h3><span class="rn">${i+1}</span>${s.t}</h3><div class="rb">${s.h}</div></section>`).join('');
  return '';
 }
 let modalMode='rules';
@@ -232,34 +233,61 @@ function closeModal(){modal.classList.add('hidden')}
 modal.addEventListener('click',e=>{if(e.target===modal||e.target.id==='mClose')closeModal()});
 /* ===== Folien (Lehrer) ===== */
 const SCALE=[1,1.25,1.5];let scl=0;
-function slidesList(){return topic.slides()}
+function slidesList(){
+ const v=topic.slides().slice();
+ if(hasEx(topic))v.push({t:L('Live-Übung','Live practice'),h:'<div class="mq" data-mq></div>',note:L('Frage beantworten lassen, dann «Nächste Frage». Das Niveau A/B/C lässt sich in der Übung wechseln.','Let students answer, then “Next question”. The level A/B/C can be switched in the exercise.'),kind:'live'});
+ return v;
+}
 function openSlides(){if(!teacher()||!topic||!topic.slides)return;T.cur=0;T.mode='slides';renderSlides()}
+/* 16:9-Folie (wie PowerPoint): feste Fläche 1280×720, wird skaliert */
+function cvHtml(s,i,n,thumb){
+ const body=thumb&&(s.kind==='live'||s.kind==='try')?`<p class="sl-big" style="text-align:center;margin-top:60px">✏️ ${L('Übung','Exercise')}</p>`:s.h;
+ return `<div class="cv" style="--c:${tcol(topic)}"><div class="cvh"><h2>${s.t}</h2></div><div class="cvb"><div class="cvin">${body}</div></div><div class="cvf"><span>EnglishLab · ${topic.name()}</span><span>${i+1} / ${n}</span></div></div>`;
+}
+function cvFit(cv){
+ const b=cv.querySelector('.cvb'),pin=cv.querySelector('.cvin');if(!b||!pin)return;
+ const fits=()=>b.scrollHeight<=b.clientHeight+1;
+ b.style.overflowY='hidden';let lo=.4,hi=1.5*SCALE[scl];
+ pin.style.zoom=hi;if(fits())return;
+ pin.style.zoom=lo;if(!fits()){b.style.overflowY='auto';return}
+ for(let i=0;i<12;i++){const m=(lo+hi)/2;pin.style.zoom=m;if(fits())lo=m;else hi=m}
+ pin.style.zoom=lo;
+}
+function cvScale(root){
+ (root||document).querySelectorAll('.cvw').forEach(w=>{
+  const cv=w.querySelector('.cv');if(!cv)return;
+  const k=w.clientWidth/1280;cv._k=k;cv.style.transform='scale('+k+')';
+  w.style.height=(720*k)+'px';
+  if(!w.classList.contains('thumb'))cvFit(cv);
+ });
+}
 function renderSlides(){
  screen='slides';setHeader();
  const V=slidesList();if(T.cur>=V.length)T.cur=V.length-1;
  const s=V[T.cur];
- const bar=`<div class="tbar"><button class="btn-link" id="slBack">‹ ${topic.name()}</button>
-  <div class="seg"><button data-tm="slides" class="${T.mode==='slides'?'on':''}">${L('Folien','Slides')}</button><button data-tm="overview" class="${T.mode==='overview'?'on':''}">${L('Übersicht','Overview')}</button></div>
-  ${T.mode==='slides'?`<button class="primary sm" id="slPres">▶ ${L('Präsentieren','Present')}</button>`:''}
+ app.innerHTML=`<div class="tbar"><button class="btn-link" id="slBack">‹ ${topic.name()}</button>
+  <button class="primary sm" id="slPres">▶ ${L('Präsentieren','Present')}</button>
   <button class="secondary sm" id="slNotes">${L('Hinweise','Notes')}: ${T.notes?L('an','on'):L('aus','off')}</button>
-  <span class="muted tinfo">${V.length} ${L('Folien','slides')}</span></div>`;
- if(T.mode==='overview'){
-  app.innerHTML=bar+`<div class="ovgrid">${V.map((x,i)=>`<button class="ov ${x.kind==='try'?'try':''}" data-go="${i}"><span>${i+1}</span><b>${x.t}</b>${x.kind==='try'?'<small>✏️ '+L('Übung','Exercise')+'</small>':''}</button>`).join('')}</div>`;
- }else{
-  app.innerHTML=bar+`<div class="slide card"><h2 class="sltitle">${s.t}</h2><div class="slbody">${s.h}</div></div>
+  <span class="muted tinfo">${T.cur+1} / ${V.length}</span></div>
+  <div class="ppt"><div class="film" id="film">${V.map((x,i)=>`<button class="th ${i===T.cur?'on':''} ${x.kind==='live'||x.kind==='try'?'ex':''}" data-go="${i}"><span class="thn">${i+1}</span><div class="cvw thumb">${cvHtml(x,i,V.length,true)}</div></button>`).join('')}</div>
+  <div class="pmain" id="pmain"><div class="cvw stage" id="stage">${cvHtml(s,T.cur,V.length)}</div>
   ${T.notes&&s.note?`<div class="slnote"><b>${L('Hinweis für dich','Note for you')}:</b> ${s.note}</div>`:''}
-  <div class="slnav"><button class="secondary" data-nav="-1" ${T.cur===0?'disabled':''}>‹</button><span>${T.cur+1} / ${V.length}</span><button class="secondary" data-nav="1" ${T.cur===V.length-1?'disabled':''}>›</button></div>`;
- }
+  <div class="slnav"><button class="secondary" data-nav="-1" ${T.cur===0?'disabled':''}>‹ ${L('Zurück','Back')}</button><span class="muted">${L('Wische oder nutze die Pfeiltasten','Swipe or use the arrow keys')}</span><button class="secondary" data-nav="1" ${T.cur===V.length-1?'disabled':''}>${L('Weiter','Next')} ›</button></div></div></div>`;
+ cvScale(app);mqInit(app);
+ const on=document.querySelector('.th.on');if(on&&on.scrollIntoView)on.scrollIntoView({block:'nearest',inline:'nearest'});
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='slBack')return renderSetup();
-  if(b.dataset.tm){T.mode=b.dataset.tm;return renderSlides()}
   if(b.id==='slPres')return presOn();
   if(b.id==='slNotes'){T.notes=!T.notes;return renderSlides()}
-  if(b.dataset.go!==undefined){T.cur=+b.dataset.go;T.mode='slides';return renderSlides()}
-  if(b.dataset.nav){T.cur+= +b.dataset.nav;window.scrollTo({top:0});return renderSlides()}
+  if(b.dataset.go!==undefined){T.cur=+b.dataset.go;return renderSlides()}
+  if(b.dataset.nav){slGo(+b.dataset.nav)}
  };
+ let sx=null,sy=null;const pm=document.getElementById('pmain');
+ pm.ontouchstart=e=>{if(e.touches.length===1&&!e.target.closest('.mq,input,textarea')){sx=e.touches[0].clientX;sy=e.touches[0].clientY}else sx=null};
+ pm.ontouchend=e=>{if(sx===null)return;const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;sx=null;if(Math.abs(dx)>60&&Math.abs(dx)>Math.abs(dy)*1.5)slGo(dx<0?1:-1)};
 }
+function slGo(d){const V=slidesList();const n=Math.max(0,Math.min(V.length-1,T.cur+d));if(n===T.cur)return;T.cur=n;renderSlides()}
 /* Präsentieren */
 const pres=document.getElementById('pres');
 function presOn(){
@@ -276,22 +304,18 @@ function drawPres(){
  if(!T.pres)return;
  const V=slidesList(),s=V[T.cur];
  pres.classList.remove('hidden');
- pres.innerHTML=`<div class="pslide" id="pslide"><div class="pin" id="pin" style="--c:${tcol(topic)}"><h2>${s.t}</h2>${s.h}</div></div>
+ pres.innerHTML=`<div class="pst" id="pst"><div class="cvw pstage" id="pstage">${cvHtml(s,T.cur,V.length)}</div></div>
   ${T.notes&&s.note?`<div class="pnote"><b>${L('Hinweis für dich','Note for you')}:</b> ${s.note}</div>`:''}
   <div class="pbar"><button data-pg="-1" ${T.cur===0?'disabled':''}>‹</button><span>${T.cur+1} / ${V.length}</span><button data-pg="1" ${T.cur===V.length-1?'disabled':''}>›</button><i></i>
    <button data-pl>${LANG.toUpperCase()}</button><button data-pn>${L('Hinweise','Notes')}: ${T.notes?L('an','on'):L('aus','off')}</button><button data-ps>${L('Schrift','Size')}</button><button data-px>✕</button></div>
   <div class="pprog"><i style="width:${(T.cur+1)/V.length*100}%"></i></div>`;
- fitPres();
+ fitPres();mqInit(pres);
 }
 function fitPres(){
- const sl=document.getElementById('pslide'),pin=document.getElementById('pin');if(!sl||!pin)return;
- const cs=getComputedStyle(sl),avail=sl.clientHeight-parseFloat(cs.paddingTop)-parseFloat(cs.paddingBottom)-4;
- const set=f=>{pin.style.zoom=f.toFixed(3)};
- let lo=.6,hi=1.7*SCALE[scl];sl.style.overflowY='hidden';
- set(hi);if(pin.getBoundingClientRect().height<=avail)return;
- set(lo);if(pin.getBoundingClientRect().height>avail){sl.style.overflowY='auto';return}
- for(let i=0;i<12;i++){const m=(lo+hi)/2;set(m);if(pin.getBoundingClientRect().height<=avail)lo=m;else hi=m}
- set(lo);
+ const w=document.getElementById('pstage');if(!w)return;
+ const W=window.innerWidth,H=window.innerHeight,k=Math.min(W/1280,H/720);
+ w.style.width=(1280*k)+'px';
+ cvScale(pres);
 }
 function pgo(d){const V=slidesList();T.cur=Math.max(0,Math.min(V.length-1,T.cur+d));drawPres()}
 pres.addEventListener('click',e=>{
@@ -305,14 +329,16 @@ pres.addEventListener('click',e=>{
   if(b.dataset.rev!==undefined||b.dataset.revall!==undefined)return;
   return;
  }
- if(e.target.closest('.sl-q,.sl-try'))return;
- const sl=e.target.closest('#pslide');if(!sl)return;
+ if(e.target.closest('.sl-q,.sl-try,.mq,input,textarea'))return;
+ const sl=e.target.closest('#pst');if(!sl)return;
  const r=sl.getBoundingClientRect();pgo((e.clientX-r.left)<r.width*.25?-1:1);
 });
 let pX=null;
-pres.addEventListener('touchstart',e=>{if(e.touches.length===1)pX=e.touches[0].clientX},{passive:true});
+pres.addEventListener('touchstart',e=>{if(e.touches.length===1&&!e.target.closest('.mq,input,textarea'))pX=e.touches[0].clientX;else pX=null},{passive:true});
 pres.addEventListener('touchend',e=>{if(pX===null)return;const dx=e.changedTouches[0].clientX-pX;pX=null;if(Math.abs(dx)>70)pgo(dx<0?1:-1)},{passive:true});
 document.addEventListener('keydown',e=>{
+ if(e.target&&/INPUT|TEXTAREA/.test(e.target.tagName))return;
+ if(!T.pres&&screen==='slides'&&!document.getElementById('login').open&&modal.classList.contains('hidden')){if(e.key==='ArrowRight'){slGo(1)}else if(e.key==='ArrowLeft'){slGo(-1)}return}
  if(T.pres){
   if(e.key==='Escape'){presOff();return}
   if(['ArrowRight','PageDown',' '].includes(e.key)){e.preventDefault();pgo(1)}
@@ -321,7 +347,7 @@ document.addEventListener('keydown',e=>{
  }
 });
 document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&T.pres)presOff()});
-window.addEventListener('resize',()=>{if(T.pres)fitPres()});
+window.addEventListener('resize',()=>{if(T.pres)fitPres();else if(screen==='slides')cvScale(app)});
 /* Lösungen aufdecken (Folien und Regeln) */
 document.addEventListener('click',e=>{
  const r=e.target.closest('[data-rev]');
