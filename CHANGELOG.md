@@ -1,5 +1,13 @@
 # Changelog
 
+## 1.2
+- Neu: Theorie drucken (A4, sauberes Layout, Notizzeilen) – Knopf «Theorie drucken» in der Theorie jedes Themas
+- Neu: Unit-Test (nur Grammatik): in der Units-Ansicht bei jeder Unit «Unit-Test». Themen, Niveau und Aufgaben pro Thema wählbar, Arbeitsblatt mit Name / Datum / Punkte und Lösungsblatt, neu mischbar
+- Neu: Vokabeln drucken: Wortliste (nach Unit und Lesson), Vokabeltest EN→DE oder DE→EN mit Lösungsblatt, Karteikarten zum Ausschneiden
+- Neu: Thema «Wünsche und Vorlieben» (want to, would like to, would rather, prefer) – NI2 Unit 7
+- Neu: Folie «Zeitangaben im Past simple» (yesterday, ago, in, on, at) – NI2 Unit 3
+- Geändert: Units-Zuordnung nach NI2-Inhaltsverzeichnis ergänzt (Unit 3: Verbindungswörter; Unit 5: Zukunft; Unit 6 und 8: Verbindungswörter; Unit 7: Relativpronomen, would like / would rather)
+
 ## 1.1
 - Geändert: «Stufe» heisst jetzt «Unit». In der Units-Ansicht zwei Knöpfe «Jahr 1/2» und «Jahr 3» (Auswahl wird gemerkt), Überschriften «Unit 1» usw.
 - Neu: Unterthemen bei allen Zeitformen (z. B. Zukunft: will, going to, present continuous, shall, if / when; Present perfect: ever / never, for / since, just / already / yet, been / gone, vs. Past simple; Past simple: regelmässig, unregelmässig, Verneinung, Fragen). Wählbar in Üben und in der Live-Übung der Folien. Antippen = nur dieses Unterthema, «Alle» = alles.

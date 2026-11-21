@@ -47,7 +47,7 @@ function renderHome(q,keep){
  let sec='',jump='';
  if(homeView==='units'){
   jump=[homeJahr].map(st=>`<div class="jrow">${UNITS.filter(x=>x.s===st).map(x=>`<button class="jb" data-jump="u-${st}-${x.u}">${x.u?x.u:'W'}</button>`).join('')}</div>`).join('');
-  sec=[homeJahr].map(st=>{const us=UNITS.filter(x=>x.s===st).map(x=>{const ts=x.t.map(id=>TOPICS.find(t=>t.id===id)).filter(t=>t&&match(t));return ts.length?`<section class="unit" id="u-${st}-${x.u}"><h2 class="uh">${unitName(x)}</h2><div class="tiles">${ts.map(t=>card(t,false)).join('')}</div></section>`:''}).join('');return us}).join('');
+  sec=[homeJahr].map(st=>{const us=UNITS.filter(x=>x.s===st).map(x=>{const ts=x.t.map(id=>TOPICS.find(t=>t.id===id)).filter(t=>t&&match(t));return ts.length?`<section class="unit" id="u-${st}-${x.u}"><h2 class="uh"><span>${unitName(x)}</span><button class="utbtn" data-utest="${st}-${x.u}">📝 ${L('Unit-Test','Unit test')}</button></h2><div class="tiles">${ts.map(t=>card(t,false)).join('')}</div></section>`:''}).join('');return us}).join('');
  }else{
   const gs=GROUPS.filter(g=>TOPICS.some(t=>t.grp===g.id&&match(t)));
   jump=`<div class="jrow">${gs.map(g=>`<button class="jb" data-jump="g-${g.id}" style="--c:${g.c}">${g.ic} ${g.n()}</button>`).join('')}</div>`;
@@ -61,6 +61,7 @@ function renderHome(q,keep){
   <div class="jump">${jump}</div></div>
   ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}`;
  app.onclick=e=>{
+  const ut=e.target.closest('[data-utest]');if(ut){const [us,uu]=ut.dataset.utest.split('-').map(Number);homeY=window.scrollY;return renderUnitTest(us,uu)}
   const jy=e.target.closest('[data-jahr]');if(jy){const j=+jy.dataset.jahr;if(j===homeJahr)return;homeJahr=j;try{localStorage.setItem('el-jahr',String(j))}catch(_){}homeY=0;return renderHome(q)}
   const vb=e.target.closest('[data-view]');if(vb){if(vb.dataset.view===homeView)return;homeView=vb.dataset.view;try{localStorage.setItem('el-view',homeView)}catch(_){}homeY=0;return renderHome(q)}
   const jb=e.target.closest('[data-jump]');if(jb){const el=document.getElementById(jb.dataset.jump);if(el){const hh=(document.querySelector('header')||{}).offsetHeight||60;window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-hh-(el.classList.contains('unit')?44:20),behavior:'smooth'})}return}
@@ -81,9 +82,9 @@ function renderTheory(){
  const prac=hasEx(topic)?`<button class="primary" id="pracOpen" style="margin-top:14px">✏️ ${L('Jetzt üben →','Practise now →')}</button>`:`<a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:14px" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a>`;
  app.innerHTML=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
  <div class="thead" style="--c:${grpOf(topic).c}"><span class="ic">${topic.ic}</span><div><h1>${L('Theorie','Theory')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>${tabsBar('theory')}
- <div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div>${hasEx(topic)?`<div class="card mqcard"><h3>✏️ ${L('Kurz üben','Quick practice')}</h3><div class="mq" data-mq></div></div>`:''}${prac}`;
+ <div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div><div class="rowbtn" style="margin-top:12px"><button class="secondary" id="thPrint">🖨 ${L('Theorie drucken (A4)','Print theory (A4)')}</button></div>${hasEx(topic)?`<div class="card mqcard"><h3>✏️ ${L('Kurz üben','Quick practice')}</h3><div class="mq" data-mq></div></div>`:''}${prac}`;
  mqInit(app);
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderSetup();if(b.id==='pracOpen')return renderPractice()};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderSetup();if(b.id==='thPrint')return openTheoryPrint();if(b.id==='pracOpen')return renderPractice()};
  window.scrollTo({top:0});
 }
 function renderPractice(){

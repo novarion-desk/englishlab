@@ -192,6 +192,7 @@ function drawHome(msg){
  <div class="card"><h2>5 · ${L('Anzahl','Number')}</h2><div class="seg">${[5,10,20,0].map(n=>`<button data-vn="${n}" class="${SET.count===n?'on':''}">${n||'∞'}</button>`).join('')}</div>
   <label class="cntown">${L('oder eigene Zahl:','or your own number:')} <input id="vcnt" type="number" inputmode="numeric" min="1" max="200" placeholder="z. B. 12" value="${custom}"></label></div>
  <button class="primary" id="vgo">${L("Los geht's →","Let's go →")}</button>
+ <button class="vsecond" id="vprintBtn">🖨 ${L('Drucken: Wortliste, Test, Karteikarten','Print: word list, test, flashcards')}</button>
  <p class="muted" style="text-align:center;margin-top:14px"><button class="vlink" id="vreset">${L('Fortschritt dieser Auswahl zurücksetzen','Reset progress for this selection')}</button></p>`;
 }
 
@@ -309,6 +310,60 @@ function ensureRoot(){
  d.addEventListener('input',e=>{if(e.target.id==='vcnt'){const v=parseInt(e.target.value,10);if(v>=1){SET.count=Math.min(200,v);saveS();d.querySelectorAll('[data-vn]').forEach(x=>x.classList.toggle('on',+x.dataset.vn===SET.count))}}});
  d.addEventListener('keydown',e=>{if(e.key==='Enter'){const n=document.getElementById('vnext'),c=document.getElementById('vchk');if(n){e.preventDefault();n.click()}else if(c&&!S.answered){e.preventDefault();answerType()}}});
 }
+
+/* ---------- Drucken ---------- */
+const PR={kind:'list',dir:'e',n:20,seed:0};
+const kindName=()=>({list:L('Wortliste','Word list'),test:L('Vokabeltest','Vocabulary test'),cards:L('Karteikarten','Flashcards')}[PR.kind]);
+function selTitle(){const {all,sel}=setSel(SET.y);const u=sel.length===all.length?L('alle Units','all units'):sel.map(unitName).join(', ');return yearName(SET.y)+' · '+u}
+function drawPrintSetup(){
+ const pool=poolWords();
+ body().innerHTML=`<button class="vlink" id="vprBack">${L('‹ Zurück','‹ Back')}</button>
+ <div class="card"><h2>${L('Auswahl','Selection')}</h2><p style="margin:0">${esc(selTitle())} · <b>${pool.length}</b> ${L('Wörter','words')}<br><small class="muted">${L('Die Auswahl (Jahr, Units, Lesson) stellst du auf der Übersicht ein.','Set year, units and lesson on the overview.')}</small></p></div>
+ <div class="card"><h2>${L('Was drucken?','What to print?')}</h2><div class="chips">${[['list',L('📄 Wortliste','📄 Word list')],['test',L('📝 Test mit Lösung','📝 Test with answers')],['cards',L('✂️ Karteikarten','✂️ Flashcards')]].map(([k,l])=>`<button class="chip ${PR.kind===k?'on':''}" data-pk="${k}">${l}</button>`).join('')}</div>
+ <p class="muted" style="margin:8px 0 0;font-size:.85em">${PR.kind==='list'?L('Englisch, Deutsch und Beispielsatz, nach Unit und Lesson.','English, German and example, by unit and lesson.'):PR.kind==='test'?L('Zufällige Wörter, Lösungsblatt auf eigener Seite.','Random words, answer sheet on its own page.'):L('Zum Ausschneiden und Falten: Englisch links, Deutsch rechts.','To cut out and fold: English left, German right.')}</p></div>
+ ${PR.kind==='test'?`<div class="card"><h2>${L('Richtung','Direction')}</h2><div class="seg">${[['e','EN → DE'],['d','DE → EN']].map(([k,l])=>`<button data-pd="${k}" class="${PR.dir===k?'on':''}">${l}</button>`).join('')}</div></div>
+ <div class="card"><h2>${L('Anzahl Wörter','Number of words')}</h2><div class="seg">${[10,20,30,40].map(n=>`<button data-pn="${n}" class="${PR.n===n?'on':''}">${n}</button>`).join('')}</div></div>`:''}
+ <button class="primary" id="vprGo">${L('Vorschau →','Preview →')}</button>`;
+}
+function prSheet(){
+ const pool=poolWords();let h='';const title=esc(selTitle());
+ const pos=w=>w.p?` <span class="pp">${esc(w.p)}</span>`:'';
+ if(PR.kind==='list'){
+  let cu=null,cl=null,rows='';
+  const flush=()=>{if(rows){h+=`<table class="vt"><thead><tr><th>English</th><th>Deutsch</th><th>${L('Beispiel','Example')}</th></tr></thead><tbody>${rows}</tbody></table>`;rows=''}};
+  pool.forEach(w=>{if(w.u!==cu){flush();cu=w.u;cl=null;h+=`<h2 class="tsec">${yearName(w.y)} · ${unitName(w.u)}</h2>`}
+   if(w.l!==cl){flush();cl=w.l;h+=`<h3 class="vls">${lessonName(w.l)}</h3>`}
+   rows+=`<tr><td><b>${esc(w.en)}</b>${pos(w)}</td><td>${esc(shownDe(w))}</td><td class="ex">${esc(w.ex)}</td></tr>`});
+  flush();
+  return `<div class="sheet vsheet"><h1>EnglishLab – ${L('Wortliste','Word list')}</h1><p class="sub">${title} · ${pool.length} ${L('Wörter','words')}</p>${h}</div>`;
+ }
+ if(PR.kind==='cards'){
+  h=pool.map(w=>`<div class="vcard"><div class="vcf"><b>${esc(w.en)}</b>${pos(w)}</div><div class="vcb">${esc(shownDe(w))}<small>${esc(w.ex)}</small></div></div>`).join('');
+  return `<div class="sheet vsheet"><h1>EnglishLab – ${L('Karteikarten','Flashcards')}</h1><p class="sub">${title} · ${L('ausschneiden, in der Mitte falten','cut out, fold in the middle')}</p><div class="vcards">${h}</div></div>`;
+ }
+ const n=Math.min(PR.n,pool.length),ws=shuf(pool).slice(0,n);
+ PR.ws=PR.ws&&PR.seed===PR.lastSeed?PR.ws:ws;PR.lastSeed=PR.seed;const T=PR.ws.slice(0,n);
+ const q=w=>PR.dir==='e'?`<b>${esc(w.en)}</b>${pos(w)}`:esc(shownDe(w));
+ const a=w=>PR.dir==='e'?esc(shownDe(w)):`<b>${esc(w.en)}</b>`;
+ return `<div class="sheet vsheet"><h1>EnglishLab – ${L('Vokabeltest','Vocabulary test')}</h1><p class="sub">${title} · ${PR.dir==='e'?'EN → DE':'DE → EN'}</p>
+ <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span><span class="pts">${L('Punkte:','Points:')} &nbsp;&nbsp;&nbsp;/ ${T.length}</span></div>
+ <table class="vt vtest"><tbody>${T.map((w,i)=>`<tr><td class="no">${i+1}.</td><td class="q">${q(w)}</td><td class="bl"></td></tr>`).join('')}</tbody></table></div>
+ <div class="sheet vsheet sol"><h1>${L('Lösungen','Answers')}</h1><p class="sub">${title}</p><table class="vt"><tbody>${T.map((w,i)=>`<tr><td class="no">${i+1}.</td><td>${q(w)}</td><td>${a(w)}</td></tr>`).join('')}</tbody></table></div>`;
+}
+function showPrint(){
+ closeVprint();
+ const d=document.createElement('div');d.id='vpr';d.className='vpr';
+ d.innerHTML=`<div class="vprbar sheetbar"><button class="btn-link" id="vpBack">${L('‹ Zurück','‹ Back')}</button>${PR.kind==='test'?`<button class="secondary" id="vpMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button>`:''}<button class="primary" id="vpPrint">${L('🖨 Drucken / PDF','🖨 Print / PDF')}</button></div>${prSheet()}`;
+ document.body.appendChild(d);document.body.classList.add('vpr-open');
+ d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
+  if(b.id==='vpBack')return closeVprint();
+  if(b.id==='vpMix'){PR.seed++;return showPrint()}
+  if(b.id==='vpPrint')return window.print()});
+ d.scrollTop=0;
+}
+function closeVprint(){const d=document.getElementById('vpr');if(d)d.remove();document.body.classList.remove('vpr-open')}
+window.closeVprint=closeVprint;
+
 let isOpen=false;
 function openVoc(){
  ensureRoot();root().classList.remove('hidden');document.body.classList.add('voc-open');
@@ -316,6 +371,7 @@ function openVoc(){
  ensureVoc(()=>drawHome());
 }
 function closeVoc(fromPop){
+ closeVprint();
  if(!isOpen)return;isOpen=false;root().classList.add('hidden');document.body.classList.remove('voc-open');
  try{speechSynthesis.cancel()}catch(e){}
  if(typeof screen!=='undefined'&&screen==='home'&&typeof renderHome==='function'){try{renderHome()}catch(e){}}
@@ -339,6 +395,12 @@ function onClick(e){
  if(dset.vm){SET.mode=dset.vm;saveS();return drawHome()}
  if(dset.vn!==undefined){SET.count=+dset.vn;saveS();return drawHome()}
  if(b.id==='vgo'){saveS();return startRun()}
+ if(b.id==='vprintBtn')return drawPrintSetup();
+ if(b.id==='vprBack')return drawHome();
+ if(dset.pk){PR.kind=dset.pk;return drawPrintSetup()}
+ if(dset.pd){PR.dir=dset.pd;PR.seed++;return drawPrintSetup()}
+ if(dset.pn){PR.n=+dset.pn;PR.seed++;return drawPrintSetup()}
+ if(b.id==='vprGo'){PR.seed++;return showPrint()}
  if(b.id==='vreset'){if(confirm(L('Den Lernfortschritt für die gewählten Units zurücksetzen?','Reset progress for the selected units?'))){const ids=new Set(poolWords().map(w=>w.id));Object.keys(P).forEach(k=>{if(ids.has(k.split('|')[0]))delete P[k]});saveP();drawHome()}return}
  if(dset.vo!==undefined)return answerChoice(+dset.vo);
  if(b.id==='vchk')return answerType();

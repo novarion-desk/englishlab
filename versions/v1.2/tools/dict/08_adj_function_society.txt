@@ -1,0 +1,621 @@
+# Adjektive
+good|adj|gut
+bad|adj|schlecht
+great|adj|toll, gross
+wonderful|adj|wunderbar
+fantastic|adj|fantastisch
+excellent|adj|ausgezeichnet
+terrible|adj|schrecklich
+awful|adj|furchtbar
+horrible|adj|schrecklich
+amazing|adj|erstaunlich
+brilliant|adj|brillant
+perfect|adj|perfekt
+lovely|adj|reizend
+nice|adj|nett
+fine|adj|gut, fein
+ok|adj|in Ordnung
+big|adj|gross
+large|adj|gross
+huge|adj|riesig
+enormous|adj|riesig
+giant|adj|riesig
+small|adj|klein
+little|adj|klein
+tiny|adj|winzig
+long|adj|lang
+short|adj|kurz
+tall|adj|hoch, gross
+high|adj|hoch
+low|adj|niedrig
+deep|adj|tief
+shallow|adj|flach
+wide|adj|breit
+narrow|adj|schmal
+thick|adj|dick
+thin|adj|dünn
+flat|adj|flach
+round|adj|rund
+square|adj|quadratisch
+straight|adj|gerade
+sharp|adj|scharf
+smooth|adj|glatt
+rough|adj|rau
+soft|adj|weich
+hard|adj|hart
+heavy|adj|schwer
+light|adj|leicht
+full|adj|voll
+empty|adj|leer
+new|adj|neu
+old|adj|alt
+modern|adj|modern
+ancient|adj|antik
+young|adj|jung
+fresh|adj|frisch
+clean|adj|sauber
+dirty|adj|schmutzig
+tidy|adj|ordentlich
+safe|adj|sicher
+dangerous|adj|gefährlich
+easy|adj|einfach
+difficult|adj|schwierig
+simple|adj|einfach
+complicated|adj|kompliziert
+possible|adj|möglich
+impossible|adj|unmöglich
+necessary|adj|nötig
+important|adj|wichtig
+different|adj|verschieden
+same|adj|gleich
+similar|adj|ähnlich
+special|adj|besonders
+normal|adj|normal
+strange|adj|seltsam
+unusual|adj|ungewöhnlich
+common|adj|häufig
+rare|adj|selten
+typical|adj|typisch
+real|adj|echt
+true|adj|wahr
+false|adj|falsch
+fake|adj|gefälscht
+natural|adj|natürlich
+free|adj|frei, gratis
+busy|adj|beschäftigt
+ready|adj|bereit
+sure|adj|sicher
+certain|adj|sicher, bestimmt
+probable|adj|wahrscheinlich
+likely|adj|wahrscheinlich
+unlikely|adj|unwahrscheinlich
+lucky|adj|glücklich (Glück)
+unlucky|adj|unglücklich (Pech)
+successful|adj|erfolgreich
+rich|adj|reich
+poor|adj|arm
+expensive|adj|teuer
+cheap|adj|billig
+valuable|adj|wertvoll
+public|adj|öffentlich
+private|adj|privat
+local|adj|örtlich
+national|adj|national
+international|adj|international
+foreign|adj|ausländisch
+whole|adj|ganz
+main|adj|Haupt-
+only|adj|einzig
+other|adj|andere
+another|det|ein anderer
+own|adj|eigen
+last|adj|letzte
+final|adj|endgültig
+next|adj|nächste
+recent|adj|neu, jüngste
+past|adj|vergangen
+present|adj|gegenwärtig
+future|adj|zukünftig
+daily|adj|täglich
+weekly|adj|wöchentlich
+monthly|adj|monatlich
+yearly|adj|jährlich
+huge|adj|riesig
+exciting|adj|spannend
+amazing|adj|toll
+disgusting|adj|ekelhaft
+frightening|adj|erschreckend
+shocking|adj|schockierend
+surprising|adj|überraschend
+worrying|adj|beunruhigend
+annoying|adj|ärgerlich
+tiring|adj|anstrengend
+relaxing|adj|entspannend
+confusing|adj|verwirrend
+interesting|adj|interessant
+embarrassing|adj|peinlich
+disappointing|adj|enttäuschend
+amusing|adj|lustig
+fascinating|adj|faszinierend
+thrilling|adj|aufregend
+lovely|adj|schön
+silly|adj|dumm, albern
+stupid|adj|dumm
+crazy|adj|verrückt
+mad|adj|verrückt
+wise|adj|weise
+foolish|adj|töricht
+gentle|adj|sanft
+wild|adj|wild
+fierce|adj|wild
+cruel|adj|grausam
+mean|adj|gemein
+fair|adj|fair, gerecht
+unfair|adj|ungerecht
+right|adj|richtig
+wrong|adj|falsch
+sorry|adj|leid
+glad|adj|froh
+alone|adj|allein
+lonely|adj|einsam
+awake|adj|wach
+asleep|adj|schlafend
+alive|adj|lebendig
+dead|adj|tot
+absent|adj|abwesend
+present|adj|anwesend
+missing|adj|vermisst
+lost|adj|verloren
+broken|adj|kaputt
+damaged|adj|beschädigt
+ripe|adj|reif
+plain|adj|einfach
+colourful|adj|farbig
+bright|adj|hell, leuchtend
+pale|adj|blass
+dull|adj|matt, langweilig
+transparent|adj|durchsichtig
+shiny|adj|glänzend
+sticky|adj|klebrig
+slippery|adj|rutschig
+dangerous|adj|gefährlich
+harmful|adj|schädlich
+harmless|adj|harmlos
+poisonous|adj|giftig
+# Adverbien
+quickly|adv|schnell
+slowly|adv|langsam
+carefully|adv|vorsichtig
+carelessly|adv|unvorsichtig
+quietly|adv|leise
+loudly|adv|laut
+well|adv|gut
+badly|adv|schlecht
+hard|adv|hart
+easily|adv|leicht
+happily|adv|glücklich
+sadly|adv|leider
+angrily|adv|wütend
+politely|adv|höflich
+bravely|adv|mutig
+suddenly|adv|plötzlich
+finally|adv|endlich
+immediately|adv|sofort
+quite|adv|ziemlich
+very|adv|sehr
+really|adv|wirklich
+extremely|adv|äusserst
+almost|adv|fast
+nearly|adv|beinahe
+hardly|adv|kaum
+absolutely|adv|absolut
+completely|adv|völlig
+totally|adv|völlig
+probably|adv|wahrscheinlich
+perhaps|adv|vielleicht
+maybe|adv|vielleicht
+certainly|adv|sicher
+definitely|adv|bestimmt
+luckily|adv|zum Glück
+unfortunately|adv|leider
+fortunately|adv|zum Glück
+actually|adv|eigentlich
+exactly|adv|genau
+especially|adv|besonders
+mainly|adv|hauptsächlich
+simply|adv|einfach
+only|adv|nur
+even|adv|sogar
+also|adv|auch
+too|adv|auch
+either|adv|auch nicht
+as well|phr|auch
+instead|adv|stattdessen
+anyway|adv|jedenfalls
+however|adv|jedoch
+therefore|adv|deshalb
+otherwise|adv|sonst
+besides|adv|ausserdem
+together|adv|zusammen
+alone|adv|allein
+apart|adv|getrennt
+away|adv|weg
+here|adv|hier
+there|adv|dort
+everywhere|adv|überall
+somewhere|adv|irgendwo
+nowhere|adv|nirgends
+anywhere|adv|irgendwo
+inside|adv|drinnen
+outside|adv|draussen
+upstairs|adv|oben (Stock)
+downstairs|adv|unten (Stock)
+abroad|adv|im Ausland
+home|adv|nach Hause
+back|adv|zurück
+forward|adv|vorwärts
+up|adv|hinauf
+down|adv|hinunter
+out|adv|hinaus
+off|adv|ab, weg
+on|adv|weiter, an
+over|adv|vorbei, über
+around|adv|herum
+along|adv|entlang
+how|adv|wie
+why|adv|warum
+when|adv|wann
+where|adv|wo
+how many|phr|wie viele
+how much|phr|wie viel
+how often|phr|wie oft
+how long|phr|wie lange
+how old|phr|wie alt
+what|pron|was
+who|pron|wer
+whose|pron|wessen
+which|pron|welche(r)
+# Funktionswörter
+I|pron|ich
+you|pron|du, Sie, ihr
+he|pron|er
+she|pron|sie
+it|pron|es
+we|pron|wir
+they|pron|sie
+me|pron|mich, mir
+him|pron|ihn, ihm
+her|pron|sie, ihr
+us|pron|uns
+them|pron|sie, ihnen
+my|det|mein
+your|det|dein, euer, Ihr
+his|det|sein
+its|det|sein (Sache)
+our|det|unser
+their|det|ihr
+mine|pron|meiner
+yours|pron|deiner, euer
+hers|pron|ihrer
+ours|pron|unserer
+theirs|pron|ihrer
+myself|pron|mich selbst
+yourself|pron|dich selbst
+himself|pron|sich selbst (er)
+herself|pron|sich selbst (sie)
+itself|pron|sich selbst (es)
+ourselves|pron|uns selbst
+yourselves|pron|euch selbst
+themselves|pron|sich selbst (sie)
+each other|pron|einander
+someone|pron|jemand
+somebody|pron|jemand
+something|pron|etwas
+anyone|pron|irgendjemand
+anybody|pron|irgendjemand
+anything|pron|irgendetwas
+no one|pron|niemand
+nobody|pron|niemand
+nothing|pron|nichts
+everyone|pron|jeder
+everybody|pron|jeder
+everything|pron|alles
+this|det|dies
+that|det|das
+these|det|diese
+those|det|jene
+the|det|der, die, das
+a|det|ein
+an|det|ein
+no|det|kein
+and|conj|und
+but|conj|aber
+or|conj|oder
+so|conj|also, deshalb
+because|conj|weil
+although|conj|obwohl
+though|conj|obwohl
+if|conj|wenn, falls
+unless|conj|ausser wenn
+whether|conj|ob
+that|conj|dass
+when|conj|wenn, als
+while|conj|während
+as|conj|als, wie
+as soon as|conj|sobald
+before|conj|bevor
+after|conj|nachdem
+until|conj|bis
+since|conj|seit, da
+once|conj|sobald
+than|conj|als (Vergleich)
+both ... and|phr|sowohl ... als auch
+either ... or|phr|entweder ... oder
+neither ... nor|phr|weder ... noch
+in|prep|in
+on|prep|auf, an
+at|prep|an, bei, um
+to|prep|zu, nach
+from|prep|von, aus
+of|prep|von
+for|prep|für
+with|prep|mit
+without|prep|ohne
+by|prep|von, bei, mit
+about|prep|über
+above|prep|über
+across|prep|über, quer durch
+after|prep|nach
+against|prep|gegen
+along|prep|entlang
+among|prep|unter
+around|prep|um
+before|prep|vor
+behind|prep|hinter
+below|prep|unter
+beside|prep|neben
+between|prep|zwischen
+beyond|prep|jenseits
+down|prep|hinunter
+during|prep|während
+except|prep|ausser
+inside|prep|innerhalb
+into|prep|in (hinein)
+like|prep|wie
+near|prep|nahe
+off|prep|von (weg)
+onto|prep|auf (hinauf)
+opposite|prep|gegenüber
+out of|prep|aus
+outside|prep|ausserhalb
+over|prep|über
+past|prep|an ... vorbei
+through|prep|durch
+throughout|prep|überall in
+till|prep|bis
+towards|prep|auf ... zu
+under|prep|unter
+underneath|prep|unterhalb
+until|prep|bis
+up|prep|hinauf
+upon|prep|auf
+via|prep|über
+within|prep|innerhalb
+yes|adv|ja
+no|adv|nein
+please|adv|bitte
+thanks|n|danke
+thank you|phr|danke
+sorry|phr|Entschuldigung
+excuse me|phr|Entschuldigung
+hello|phr|hallo
+hi|phr|hallo
+goodbye|phr|auf Wiedersehen
+bye|phr|tschüss
+good morning|phr|guten Morgen
+good afternoon|phr|guten Tag
+good evening|phr|guten Abend
+good night|phr|gute Nacht
+see you|phr|bis bald
+welcome|phr|willkommen
+cheers|phr|prost
+congratulations|phr|gratuliere
+good luck|phr|viel Glück
+bless you|phr|Gesundheit
+pardon|phr|bitte?
+of course|phr|natürlich
+no problem|phr|kein Problem
+never mind|phr|macht nichts
+I don't know|phr|ich weiss nicht
+I'm sorry|phr|es tut mir leid
+how are you|phr|wie geht es dir
+nice to meet you|phr|schön, dich kennenzulernen
+what's up|phr|was gibt's
+by the way|phr|übrigens
+in fact|phr|tatsächlich
+for example|phr|zum Beispiel
+for instance|phr|zum Beispiel
+in addition|phr|zusätzlich
+as a result|phr|als Folge
+in conclusion|phr|zum Schluss
+on the one hand|phr|einerseits
+on the other hand|phr|andererseits
+in my opinion|phr|meiner Meinung nach
+I think|phr|ich denke
+I agree|phr|ich stimme zu
+I disagree|phr|ich bin anderer Meinung
+it depends|phr|es kommt darauf an
+# Gesellschaft und Meinungen
+opinion|n|die Meinung
+idea|n|die Idee
+thought|n|der Gedanke
+belief|n|der Glaube
+view|n|die Ansicht
+point of view|n|der Standpunkt
+reason|n|der Grund
+cause|n|die Ursache
+effect|n|die Wirkung
+result|n|das Ergebnis
+consequence|n|die Folge
+chance|n|die Chance
+risk|n|das Risiko
+danger|n|die Gefahr
+problem|n|das Problem
+difficulty|n|die Schwierigkeit
+challenge|n|die Herausforderung
+success|n|der Erfolg
+failure|n|der Misserfolg
+luck|n|das Glück
+decision|n|die Entscheidung
+choice|n|die Wahl
+plan|n|der Plan
+goal|n|das Ziel
+aim|n|das Ziel
+dream|n|der Traum
+hope|n|die Hoffnung
+fear|n|die Angst
+courage|n|der Mut
+effort|n|die Anstrengung
+energy|n|die Energie
+power|n|die Macht
+strength|n|die Stärke
+weakness|n|die Schwäche
+truth|n|die Wahrheit
+lie|n|die Lüge
+secret|n|das Geheimnis
+mystery|n|das Rätsel
+surprise|n|die Überraschung
+shock|n|der Schock
+trouble|n|der Ärger
+fight|n|der Streit, der Kampf
+war|n|der Krieg
+peace|n|der Frieden
+freedom|n|die Freiheit
+rule|n|die Regel
+law|n|das Gesetz
+crime|n|das Verbrechen
+criminal|n|der Kriminelle
+thief|n|der Dieb
+robber|n|der Räuber
+police|n|die Polizei
+prison|n|das Gefängnis
+punishment|n|die Strafe
+fine|n|die Busse
+court|n|das Gericht
+rights|n|die Rechte
+duty|n|die Pflicht
+responsibility|n|die Verantwortung
+government|n|die Regierung
+president|n|der Präsident
+king|n|der König
+queen|n|die Königin
+prince|n|der Prinz
+princess|n|die Prinzessin
+citizen|n|der Bürger
+vote|n|die Stimme
+election|n|die Wahl
+politics|n|die Politik
+society|n|die Gesellschaft
+community|n|die Gemeinschaft
+public|n|die Öffentlichkeit
+charity|n|die Wohltätigkeit
+volunteer|n|der Freiwillige
+poverty|n|die Armut
+hunger|n|der Hunger
+refugee|n|der Flüchtling
+immigrant|n|der Einwanderer
+population|n|die Bevölkerung
+history|n|die Geschichte
+past|n|die Vergangenheit
+event|n|das Ereignis
+century|n|das Jahrhundert
+empire|n|das Reich
+army|n|die Armee
+soldier|n|der Soldat
+battle|n|die Schlacht
+discovery|n|die Entdeckung
+explorer|n|der Entdecker
+slave|n|der Sklave
+revolution|n|die Revolution
+legend|n|die Legende
+myth|n|der Mythos
+religion|n|die Religion
+god|n|der Gott
+church|n|die Kirche
+life|n|das Leben
+death|n|der Tod
+birth|n|die Geburt
+wedding|n|die Hochzeit
+funeral|n|die Beerdigung
+age|n|das Alter
+youth|n|die Jugend
+childhood|n|die Kindheit
+adulthood|n|das Erwachsenenalter
+generation|n|die Generation
+memory|n|die Erinnerung
+experience|n|das Erlebnis
+adventure|n|das Abenteuer
+habit|n|die Gewohnheit
+routine|n|die Routine
+way|n|der Weg, die Art
+kind|n|die Art
+type|n|der Typ, die Art
+sort|n|die Sorte
+piece|n|das Stück
+part|n|der Teil
+bit|n|das bisschen
+lot|n|die Menge
+thing|n|das Ding
+stuff|n|das Zeug
+object|n|der Gegenstand
+case|n|der Fall
+fact|n|die Tatsache
+news|n|die Neuigkeit
+information|n|die Information
+knowledge|n|das Wissen
+skill|n|die Fähigkeit
+talent|n|das Talent
+ability|n|die Fähigkeit
+lesson|n|die Lehre
+example|n|das Beispiel
+difference|n|der Unterschied
+similarity|n|die Ähnlichkeit
+comparison|n|der Vergleich
+change|n|die Veränderung
+growth|n|das Wachstum
+increase|n|die Zunahme
+decrease|n|die Abnahme
+rise|n|der Anstieg
+fall|n|der Rückgang
+level|n|das Niveau
+limit|n|die Grenze
+border|n|die Grenze
+edge|n|der Rand
+centre|n|die Mitte
+middle|n|die Mitte
+top|n|die Spitze
+bottom|n|der Boden, das Ende
+side|n|die Seite
+front|n|die Vorderseite
+back|n|die Rückseite
+inside|n|das Innere
+outside|n|das Äussere
+surface|n|die Oberfläche
+shape|n|die Form
+size|n|die Grösse
+weight|n|das Gewicht
+height|n|die Höhe
+length|n|die Länge
+width|n|die Breite
+depth|n|die Tiefe
+distance|n|die Entfernung
+speed|n|die Geschwindigkeit
+direction|n|die Richtung
+position|n|die Position
+place|n|der Ort
+space|n|der Raum
+area|n|das Gebiet
+region|n|die Region
+site|n|der Standort
+spot|n|die Stelle
+location|n|der Ort
