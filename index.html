@@ -64,6 +64,7 @@ textarea.full:focus{outline:none;border-color:var(--accent)}
 .opts button.right{border-color:var(--ok);background:var(--okbg)}
 .opts button.wrong{border-color:var(--bad);background:var(--badbg)}
 .opts button:disabled{cursor:default}
+.gap{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--accent);vertical-align:baseline}
 mark{background:#fff0a8;padding:0 3px;border-radius:4px}
 .fb{border-radius:12px;padding:14px 16px;margin-top:14px;font-size:16px}
 .fb.ok{background:var(--okbg)}.fb.bad{background:var(--badbg)}.fb.warn{background:var(--warnbg)}
@@ -197,7 +198,7 @@ mark.t{background:#fff1b8;padding:0 4px;border-radius:4px;font-weight:700}
 </div>
 <div class="modal hidden" id="modal"><div class="card" id="modalBody"></div></div>
 <script>
-const APP_VERSION='0.1';
+const APP_VERSION='0.2';
 let LANG='de';try{const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
 const L=(de,en)=>LANG==='de'?de:en;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
@@ -206,183 +207,646 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const nrm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/[.,!?;:]/g,' ').replace(/\s+/g,' ').trim();
 const app=document.getElementById('app'),modal=document.getElementById('modal'),modalBody=document.getElementById('modalBody');
+const S={lvl:'B',count:10};
+const ST={};
+const sub=id=>(ST[id]&&ST[id].subs)||[];
+const mkFill=(before,after,answers,hint,why)=>({type:'fill',before,after,answers,hint:hint||'',sol:(before+answers[0]+after).replace(/\s+/g,' ').trim(),why});
+const mkChoice=(stem,opts,okIdx,instr,why)=>({type:'choice',stem,opts,correct:okIdx,instr,sol:stem?stem.replace('___',opts[okIdx]):opts[okIdx],why});
+function pickOpts(ok,pool,n){const w=shuffle([...new Set(pool.filter(x=>x!==ok))]).slice(0,n);const opts=shuffle([ok,...w]);return {opts,idx:opts.indexOf(ok)}}
+function mkWords(ok,wrongs,instr,why){const p=pickOpts(ok,[ok,...wrongs],2);return mkChoice('',p.opts,p.idx,instr,why)}
+const mkText=(src,instr,answers,why)=>({type:'text',src:esc(src),instr,answers,sol:answers[0],why});
+const mkOrder=(sentence,why)=>({type:'order',words:shuffle(sentence.split(' ')),instr:L('Bringe die Wörter in die richtige Reihenfolge.','Put the words in the correct order.'),answers:[sentence],sol:sentence,why});
+const fillStem=(stem,w)=>stem.replace('___',w);
+/* Bank-basierte Generatoren: Eintrag {s:Satz mit ___, ok:[..], bad:[..], lv:1-3, sub, h:Hinweis, w:'de|en'} */
+function bankGens(pool,whyDefault,fillInstr){
+ const wy=b=>b.w?b.w.split('|')[LANG==='de'?0:1]:whyDefault(b);
+ return {
+  fill(){const b=rnd(pool());const o=b.s.indexOf('___');return mkFill(b.s.slice(0,o),b.s.slice(o+3),b.ok,b.h||'',wy(b))},
+  choice(){const b=rnd(pool());const p=pickOpts(b.ok[0],[b.ok[0],...b.bad],2);return mkChoice(b.s,p.opts,p.idx,L('Welches Wort passt?','Which word fits?'),wy(b))},
+  errors(){const b=rnd(pool());return mkWords(fillStem(b.s,b.ok[0]),b.bad.map(x=>fillStem(b.s,x)),L('Welcher Satz ist richtig?','Which sentence is correct?'),wy(b))},
+  order(){const b=rnd(pool());return mkOrder(fillStem(b.s,b.ok[0]),wy(b))}
+ };
+}
 
-/* ===== Daten: Frage und Verneinung ===== */
-const SUBJ=[
- {t:'I',th:0,ans:'I',nq:1},{t:'you',th:0,ans:'I'},{t:'he',th:1,ans:'he'},{t:'she',th:1,ans:'she'},{t:'we',th:0,ans:'we',ns:1},{t:'they',th:0,ans:'they'},
- {t:'Tom',th:1,ans:'he',who:1},{t:'Anna',th:1,ans:'she',who:1},{t:'my brother',th:1,ans:'he',who:1},{t:'my sister',th:1,ans:'she',who:1},
- {t:'the teacher',th:1,ans:'he',who:1},{t:'my parents',th:0,ans:'they',who:1},{t:'our neighbours',th:0,ans:'they',who:1}
-];
-const V=(i,s,p,objs)=>({i,s,p,objs:objs.map(o=>{const k=o[0];return {k,o:o.slice(2)}})});
-// Objekt: "w:" = was (What), "p:" = wo/wohin (Where), "n:" = keine Wh-Frage
-const VERBS=[
- V('play','plays','played',['w:football','w:the guitar','w:computer games','w:tennis']),
- V('watch','watches','watched',['w:TV','w:a film','w:YouTube videos']),
- V('like','likes','liked',['w:pizza','w:pasta','w:this song']),
- V('eat','eats','ate',['w:breakfast','w:an apple','w:pizza']),
- V('read','reads','read',['w:a book','w:the news','w:comics']),
- V('drink','drinks','drank',['w:tea','w:milk','w:water']),
- V('buy','buys','bought',['w:a new phone','w:bread','w:a ticket']),
- V('see','sees','saw',['w:a film','w:your friends']),
- V('write','writes','wrote',['w:emails','w:a letter','w:a story']),
- V('make','makes','made',['w:lunch','w:a cake','w:a video']),
- V('have','has','had',['w:a dog','w:a bike','w:two brothers']),
- V('listen','listens','listened',['n:to music','n:to the radio','n:to podcasts']),
- V('live','lives','lived',['p:in Zurich','p:in a small town','p:near the station']),
- V('work','works','worked',['p:in a shop','p:in a hospital','p:at a bank']),
- V('study','studies','studied',['w:English','w:French','n:for the test']),
- V('go','goes','went',['p:to school','p:to the cinema','p:to the gym']),
- V('walk','walks','walked',['p:to school','p:in the park']),
- V('swim','swims','swam',['p:in the lake','p:in the pool']),
- V('meet','meets','met',['w:friends','w:my cousins']),
- V('call','calls','called',['w:a friend','w:the doctor','w:the dentist']),
- V('help','helps','helped',['w:a classmate','w:our neighbour']),
- V('cook','cooks','cooked',['w:dinner','w:pasta','w:a big meal']),
- V('sing','sings','sang',['w:a song','p:in the choir']),
- V('take','takes','took',['w:the bus','w:photos']),
- V('visit','visits','visited',['w:our grandparents','w:a museum'])
-];
-const TM={PS:['every day','on Saturdays','every morning','at the weekend','after school'],PaS:['yesterday','last week','last night','two days ago','on Saturday']};
-const TNAME={PS:'Present Simple',PaS:'Past Simple'};
+/* ===== Thema 1: Fragen & Verneinung ===== */
+const Q=(()=>{
+ const SUBJ=[
+  {t:'I',th:0,ans:'I',nq:1},{t:'you',th:0,ans:'I'},{t:'he',th:1,ans:'he'},{t:'she',th:1,ans:'she'},{t:'we',th:0,ans:'we',ns:1},{t:'they',th:0,ans:'they'},
+  {t:'Tom',th:1,ans:'he',who:1},{t:'Anna',th:1,ans:'she',who:1},{t:'my brother',th:1,ans:'he',who:1},{t:'my sister',th:1,ans:'she',who:1},
+  {t:'the teacher',th:1,ans:'he',who:1},{t:'my parents',th:0,ans:'they',who:1},{t:'our neighbours',th:0,ans:'they',who:1}
+ ];
+ const V=(i,s,p,objs)=>({i,s,p,objs:objs.map(o=>({k:o[0],o:o.slice(2)}))});
+ const VERBS=[
+  V('play','plays','played',['w:football','w:the guitar','w:computer games','w:tennis']),
+  V('watch','watches','watched',['w:TV','w:a film','w:YouTube videos']),
+  V('like','likes','liked',['w:pizza','w:pasta','w:this song']),
+  V('eat','eats','ate',['w:breakfast','w:an apple','w:pizza']),
+  V('read','reads','read',['w:a book','w:the news','w:comics']),
+  V('drink','drinks','drank',['w:tea','w:milk','w:water']),
+  V('buy','buys','bought',['w:a new phone','w:bread','w:a ticket']),
+  V('see','sees','saw',['w:a film','w:your friends']),
+  V('write','writes','wrote',['w:emails','w:a letter','w:a story']),
+  V('make','makes','made',['w:lunch','w:a cake','w:a video']),
+  V('have','has','had',['w:a dog','w:a bike','w:two brothers']),
+  V('listen','listens','listened',['n:to music','n:to the radio','n:to podcasts']),
+  V('live','lives','lived',['p:in Zurich','p:in a small town','p:near the station']),
+  V('work','works','worked',['p:in a shop','p:in a hospital','p:at a bank']),
+  V('study','studies','studied',['w:English','w:French','n:for the test']),
+  V('go','goes','went',['p:to school','p:to the cinema','p:to the gym']),
+  V('walk','walks','walked',['p:to school','p:in the park']),
+  V('swim','swims','swam',['p:in the lake','p:in the pool']),
+  V('meet','meets','met',['w:friends','w:my cousins']),
+  V('call','calls','called',['w:a friend','w:the doctor','w:the dentist']),
+  V('help','helps','helped',['w:a classmate','w:our neighbour']),
+  V('cook','cooks','cooked',['w:dinner','w:pasta','w:a big meal']),
+  V('sing','sings','sang',['w:a song','p:in the choir']),
+  V('take','takes','took',['w:the bus','w:photos']),
+  V('visit','visits','visited',['w:our grandparents','w:a museum'])
+ ];
+ const TM={PS:['every day','on Saturdays','every morning','at the weekend','after school'],PaS:['yesterday','last week','last night','two days ago','on Saturday']};
+ const TNAME={PS:'Present Simple',PaS:'Past Simple'};
+ const tenses=()=>S.lvl==='C'?['PS']:(sub('q').length?sub('q'):['PS']);
+ function rec(noI,noWe){
+  const v=rnd(VERBS),o=rnd(v.objs),t=rnd(tenses());
+  const subj=rnd(SUBJ.filter(s=>!(noI&&s.nq)&&!(noWe&&s.ns)));
+  return {v,o,t,S:subj,tm:(t==='PaS'||Math.random()<.5)?rnd(TM[t]):''};
+ }
+ const vf=r=>r.t==='PaS'?r.v.p:(r.S.th?r.v.s:r.v.i);
+ const aux=r=>r.t==='PaS'?'did':(r.S.th?'does':'do');
+ const tmS=r=>r.tm?' '+r.tm:'';
+ const stmt=r=>cap(r.S.t)+' '+vf(r)+' '+r.o.o+tmS(r)+'.';
+ const negB=(r,full)=>{const a=aux(r);return cap(r.S.t)+' '+(full?a+' not':a+"n't")+' '+r.v.i+' '+r.o.o+tmS(r)+'.'};
+ const ques=r=>cap(aux(r))+' '+r.S.t+' '+r.v.i+' '+r.o.o+tmS(r)+'?';
+ const why={
+  q:()=>L('<b>Frage:</b> do / does / did + Subjekt + Verb in der Grundform. Am Verb steht kein -s und kein -ed.','<b>Question:</b> do / does / did + subject + base verb. No -s or -ed on the verb.'),
+  n:()=>L('<b>Verneinung:</b> don\'t / doesn\'t / didn\'t + Verb in der Grundform. Am Verb steht kein -s und kein -ed.','<b>Negative:</b> don\'t / doesn\'t / didn\'t + base verb. No -s or -ed on the verb.'),
+  s:()=>L('<b>Kurzantwort:</b> Yes / No + Pronomen + Hilfsverb (do, does, did). Das Verb wird nicht wiederholt.','<b>Short answer:</b> Yes / No + pronoun + auxiliary (do, does, did). The verb is not repeated.'),
+  w:()=>L('<b>Fragewort:</b> Fragewort + do / does / did + Subjekt + Grundform. Fragt man nach dem Subjekt (who), steht kein do: <i>Who plays football?</i>','<b>Question word:</b> question word + do / does / did + subject + base verb. Asking for the subject (who) takes no do: <i>Who plays football?</i>')
+ };
+ const gen={
+  fill(){
+   const r=rec(1);
+   if(Math.random()<.5){
+    const a=aux(r),con=a==='does'?"doesn't":a==='do'?"don't":"didn't";
+    return mkFill(cap(r.S.t)+' ',' '+r.v.i+' '+r.o.o+tmS(r)+'.',[con,a+' not'],L('verneint','negative'),why.n());
+   }
+   return mkFill('',' '+r.S.t+' '+r.v.i+' '+r.o.o+tmS(r)+'?',[cap(aux(r))],L('Frage','question'),why.q());
+  },
+  choice(){
+   const neg=Math.random()<.5,r=rec(1),a=aux(r);let ok,w=[];
+   if(!neg){
+    ok=ques(r);
+    w.push((a==='did'?'Does':(r.S.th?'Do':'Does'))+' '+r.S.t+' '+r.v.i+' '+r.o.o+tmS(r)+'?');
+    w.push(cap(a)+' '+r.S.t+' '+(r.t==='PaS'?r.v.p:r.v.s)+' '+r.o.o+tmS(r)+'?');
+    w.push(cap(r.S.t)+' '+vf(r)+' '+r.o.o+tmS(r)+'?');
+   }else{
+    ok=negB(r,false);
+    w.push(cap(r.S.t)+' '+(a==='did'?"doesn't":(r.S.th?"don't":"doesn't"))+' '+r.v.i+' '+r.o.o+tmS(r)+'.');
+    w.push(cap(r.S.t)+' '+a+"n't "+(r.t==='PaS'?r.v.p:r.v.s)+' '+r.o.o+tmS(r)+'.');
+    w.push(cap(r.S.t)+' not '+vf(r)+' '+r.o.o+tmS(r)+'.');
+   }
+   return mkWords(ok,w,neg?L('Welcher Satz ist eine richtige Verneinung?','Which sentence is a correct negative?'):L('Welche Frage ist richtig?','Which question is correct?'),neg?why.n():why.q());
+  },
+  question(){const r=rec(1);return mkText(stmt(r),L('Mach eine Frage aus dem Satz (Ja/Nein-Frage).','Make a yes/no question from the sentence.'),[ques(r)],why.q())},
+  neg(){const r=rec(0);return mkText(stmt(r),L('Verneine den Satz.','Make the sentence negative.'),[negB(r,false),negB(r,true)],why.n())},
+  order(){const r=rec(1);return mkOrder(ques(r),why.q())},
+  short(){
+   const r=rec(1,1),yes=Math.random()<.5,a=aux(r);
+   const ans=yes?'Yes, '+r.S.ans+' '+a+'.':'No, '+r.S.ans+' '+a+"n't.";
+   const it=mkText(ques(r),L('Antworte mit einer Kurzantwort: ','Give a short answer: ')+(yes?'Yes':'No'),[ans,...(yes?[]:['No, '+r.S.ans+' '+a+' not.'])],why.s());
+   it.instr=L('Antworte mit einer Kurzantwort: ','Give a short answer: ')+'<b>'+(yes?'Yes':'No')+'</b>';return it;
+  },
+  whq(){
+   const kind=rnd(['w','p','who']);let r;
+   for(let i=0;i<40;i++){r=rec(1);if(kind==='who'&&!r.S.who)continue;if(kind==='w'&&r.o.k!=='w')continue;if(kind==='p'&&r.o.k!=='p')continue;break}
+   if(kind==='who'&&!r.S.who)r.S=rnd(SUBJ.filter(s=>s.who));
+   if(kind==='w'&&r.o.k!=='w'){r.v=VERBS[0];r.o=r.v.objs[0]}
+   if(kind==='p'&&r.o.k!=='p'){r.v=VERBS.find(v=>v.i==='live');r.o=r.v.objs[0]}
+   let src,q,wh;
+   if(kind==='who'){
+    wh='Who';
+    src='<mark class="t">'+esc(cap(r.S.t))+'</mark> '+esc(vf(r))+' '+esc(r.o.o)+esc(tmS(r))+'.';
+    q='Who '+(r.t==='PaS'?r.v.p:r.v.s)+' '+r.o.o+tmS(r)+'?';
+   }else{
+    wh=kind==='w'?'What':'Where';
+    src=esc(cap(r.S.t))+' '+esc(vf(r))+' <mark class="t">'+esc(r.o.o)+'</mark>'+esc(tmS(r))+'.';
+    q=wh+' '+aux(r)+' '+r.S.t+' '+r.v.i+tmS(r)+'?';
+   }
+   return {type:'text',src,instr:L('Frage nach dem markierten Teil. Beginne mit <b>'+wh+'</b>.','Ask about the highlighted part. Start with <b>'+wh+'</b>.'),answers:[q],sol:q,why:why.w()};
+  }
+ };
+ return {id:'q',ic:'❓',ready:1,fillInstr:()=>L('Setze das passende Hilfsverb ein.','Fill in the correct auxiliary.'),
+  name:()=>L('Fragen & Verneinung','Questions & negatives'),desc:()=>L('do / does / did, Wortstellung, Kurzantworten','do / does / did, word order, short answers'),
+  lvDesc:()=>L('C: nur Present Simple. B: Present und Past Simple. A: zusätzlich Fragewörter (What, Where, Who).','C: Present Simple only. B: Present and Past Simple. A: plus question words (What, Where, Who).'),
+  subTitle:()=>L('Zeitformen','Tenses'),
+  subs:()=>[{k:'PS',n:'Present Simple'},{k:'PaS',n:'Past Simple',noC:1}],subDef:['PS','PaS'],
+  types:()=>[
+   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('do / does / did einsetzen','fill in do / does / did')},
+   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('den richtigen Satz wählen','pick the correct sentence')},
+   {k:'question',icon:'❓',label:L('Frage bilden','Make a question'),desc:L('Aussage → Frage','statement → question')},
+   {k:'neg',icon:'🚫',label:L('Verneinen','Make negative'),desc:L('Aussage → Verneinung','statement → negative')},
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')},
+   {k:'short',icon:'💬',label:L('Kurzantwort','Short answer'),desc:'Yes, he does. / No, he doesn\'t.'},
+   {k:'whq',icon:'🔎',label:L('Fragewort (A)','Question word (A)'),desc:L('What / Where / Who fragen','ask with What / Where / Who'),A:1}],
+  typeDef:['fill','choice','question','neg'],gen,
+  rules:()=>[
+   [L('Hilfsverb do / does / did','Auxiliary do / does / did'),L('Im Present Simple und Past Simple braucht jede Frage und Verneinung ein Hilfsverb. Danach steht das Verb in der Grundform.','In the Present Simple and Past Simple, every question and negative needs an auxiliary. The verb after it stays in the base form.'),'Does she like pizza? – She doesn\'t like pizza. – Did you see him? – I didn\'t see him.'],
+   [L('does nur bei he / she / it','does only with he / she / it'),L('Nach does steht kein -s am Verb.','There is no -s on the verb after does.'),'He plays – Does he play? (not: Does he plays?)'],
+   [L('Ausnahme: be, can, must, should, will','Exception: be, can, must, should, will'),L('Diese Verben brauchen kein do. Frage durch Umstellen, Verneinung mit not.','These verbs need no do. Questions by swapping, negatives with not.'),'Is she tired? – She isn\'t tired. – Can you swim?'],
+   [L('Fragewort + Hilfsverb + Subjekt + Verb','Question word + auxiliary + subject + verb'),'','Where does he live? – What did you do? – Why are they late?'],
+   [L('Fragen nach dem Subjekt (who / what)','Questions about the subject (who / what)'),L('Hier steht kein do.','There is no do here.'),'Who lives here? – What happened?'],
+   [L('Present Continuous','Present Continuous'),L('Frage durch Umstellen von be, Verneinung mit not.','Questions by swapping be, negatives with not.'),'Are you listening? – He isn\'t working.'],
+   [L('Kurzantworten','Short answers'),L('Sie wiederholen das Hilfsverb.','They repeat the auxiliary.'),'Yes, I do. – No, she doesn\'t. – Yes, he was.'],
+   [L('Typische Fehler','Typical mistakes'),'','<span class="err2">Do he like…? / He doesn\'t likes… / Did you saw…? / You like pizza?</span>']]
+ };
+})();
 
-/* ===== Texte ===== */
-const RULES=()=>[
- [L('Hilfsverb do / does / did','Auxiliary do / does / did'),L('Im Present Simple und Past Simple braucht jede Frage und Verneinung ein Hilfsverb. Danach steht das Verb in der Grundform.','In the Present Simple and Past Simple, every question and negative needs an auxiliary. The verb after it stays in the base form.'),'Does she like pizza? – She doesn\'t like pizza. – Did you see him? – I didn\'t see him.'],
- [L('does nur bei he / she / it','does only with he / she / it'),L('Nach does steht kein -s am Verb.','There is no -s on the verb after does.'),'He plays – Does he play? (not: Does he plays?)'],
- [L('Ausnahme: be, can, must, should, will','Exception: be, can, must, should, will'),L('Diese Verben brauchen kein do. Frage durch Umstellen, Verneinung mit not.','These verbs need no do. Questions by swapping, negatives with not.'),'Is she tired? – She isn\'t tired. – Can you swim?'],
- [L('Fragewort + Hilfsverb + Subjekt + Verb','Question word + auxiliary + subject + verb'),'','Where does he live? – What did you do? – Why are they late?'],
- [L('Fragen nach dem Subjekt (who / what)','Questions about the subject (who / what)'),L('Hier steht kein do.','There is no do here.'),'Who lives here? – What happened?'],
- [L('Present Continuous','Present Continuous'),L('Frage durch Umstellen von be, Verneinung mit not.','Questions by swapping be, negatives with not.'),'Are you listening? – He isn\'t working.'],
- [L('Kurzantworten','Short answers'),L('Sie wiederholen das Hilfsverb.','They repeat the auxiliary.'),'Yes, I do. – No, she doesn\'t. – Yes, he was.'],
- [L('Typische Fehler','Typical mistakes'),'','<span class="err2">Do he like…? / He doesn\'t likes… / Did you saw…? / You like pizza?</span>']
-];
-const TOPICS=[
- {id:'q',ic:'❓',name:()=>L('Fragen & Verneinung','Questions & negatives'),desc:()=>L('do / does / did, Wortstellung, Kurzantworten','do / does / did, word order, short answers'),ready:1},
- {id:'modals',ic:'🔒',name:()=>L('Modalverben','Modal verbs'),desc:()=>'can, must, should, have to'},
- {id:'comp',ic:'📏',name:()=>L('Vergleichsformen','Comparatives & superlatives'),desc:()=>'bigger, the biggest, more interesting'},
- {id:'quant',ic:'🥛',name:()=>L('Mengenwörter','Quantifiers'),desc:()=>'some / any, much / many, a few / a little'},
- {id:'prep',ic:'📍',name:()=>L('Präpositionen','Prepositions'),desc:()=>'in / on / at, to / into'}
-];
-const TYPES=()=>[
- {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('do / does / did einsetzen','fill in do / does / did')},
- {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('den richtigen Satz wählen','pick the correct sentence')},
- {k:'question',icon:'❓',label:L('Frage bilden','Make a question'),desc:L('Aussage → Frage','statement → question')},
- {k:'neg',icon:'🚫',label:L('Verneinen','Make negative'),desc:L('Aussage → Verneinung','statement → negative')},
- {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')},
- {k:'short',icon:'💬',label:L('Kurzantwort','Short answer'),desc:L('Yes, he does. / No, he doesn\'t.','Yes, he does. / No, he doesn\'t.')},
- {k:'whq',icon:'🔎',label:L('Fragewort (A)','Question word (A)'),desc:L('What / Where / Who fragen','ask with What / Where / Who'),A:1}
-];
-const ALL_TYPES=['fill','choice','question','neg','order','short','whq'];
+/* ===== Thema 2: Modalverben ===== */
+const M=(()=>{
+ const SUBJ=[{t:'I',th:0,ans:'I',nq:1},{t:'you',th:0,ans:'I'},{t:'he',th:1,ans:'he'},{t:'she',th:1,ans:'she'},{t:'we',th:0,ans:'we',ns:1},{t:'they',th:0,ans:'they'},{t:'Tom',th:1,ans:'he'},{t:'Anna',th:1,ans:'she'},{t:'my brother',th:1,ans:'he'},{t:'my parents',th:0,ans:'they'}];
+ const VP=['play the guitar','swim','help our teacher','wear a uniform','do the homework','be quiet','finish the work','go home early','speak English','open the window','clean the room','see a doctor','wait here','call my friend','read the text'];
+ // Szenarien: [Satz mit ___, Antwort, falsche Optionen, Niveau 1-3, Gruppe, Erklärung de|en]
+ const SC=[
+  ['Look! That dog ___ swim very well.','can',['must','should'],1,'can','can = Fähigkeit.|can = ability.'],
+  ['She is only three, so she ___ read yet.',"can't",['must','should'],1,'can','can\'t = nicht können.|can\'t = not able to.'],
+  ['He ___ speak three languages. He is amazing!','can',["mustn't",'should'],1,'can','can = Fähigkeit.|can = ability.'],
+  ['___ I open the window, please? It is very hot in here.','Can',['Do','Am'],1,'can','Bitte um Erlaubnis: Can I …?|Asking for permission: Can I …?'],
+  ['You ___ eat so much sugar. It is bad for your teeth.',"shouldn't",['can','must'],1,'should','shouldn\'t = Rat, etwas nicht zu tun.|shouldn\'t = advice not to do something.'],
+  ['You look tired. You ___ go to bed early tonight.','should',["mustn't","don't have to"],1,'should','should = Rat.|should = advice.'],
+  ['I have a bad cold. I ___ see a doctor.','should',["mustn't","don't have to"],1,'should','should = Rat.|should = advice.'],
+  ['Smoking is forbidden here. You ___ smoke.',"mustn't",["don't have to",'can'],1,'must','mustn\'t = Verbot.|mustn\'t = prohibition.'],
+  ['In the library you ___ talk loudly. It is not allowed.',"mustn't",["don't have to",'can'],1,'must','mustn\'t = Verbot.|mustn\'t = prohibition.'],
+  ['At our school we ___ wear a uniform. It is the rule.','have to',["don't have to",'should'],1,'must','have to = Pflicht von aussen (Regel).|have to = obligation from outside (rule).'],
+  ['Our teacher says we ___ do our homework every day.','have to',["mustn't",'can'],1,'must','have to = Pflicht von aussen.|have to = obligation from outside.'],
+  ['Tomorrow is Sunday. We ___ get up early.',"don't have to",["mustn't",'have to'],1,'must','don\'t have to = nicht nötig (aber erlaubt).|don\'t have to = not necessary (but allowed).'],
+  ['Do you ___ wear a helmet when you ride a bike?','have to',['must','can'],1,'must','Frage mit have to: Do you have to …? (Nicht: Do you must …?)|Question with have to: Do you have to …? (Not: Do you must …?)'],
+  ['You ___ pay for the museum on Sundays. It is free.',"don't have to",["mustn't","shouldn't"],2,'must','don\'t have to = nicht nötig.|don\'t have to = not necessary.'],
+  ['You ___ use your phone during the test. It is against the rules.',"mustn't",["don't have to",'can'],2,'must','mustn\'t = Verbot.|mustn\'t = prohibition.'],
+  ['Yesterday I ___ get up at 5 o\'clock because of the flight.','had to',['must','should'],2,'must','Vergangenheit von must / have to: had to.|Past of must / have to: had to.'],
+  ['Passengers ___ keep their seatbelts fastened. It is the law.','must',["don't have to",'can'],2,'must','must = starke Pflicht, Gesetz.|must = strong obligation, law.'],
+  ['___ you help me with my homework, please?','Could',['Must','Are'],2,'can','Could = höfliche Bitte.|Could = polite request.'],
+  ['When I was five, I ___ swim.','could',['can','should'],2,'can','could = Fähigkeit in der Vergangenheit.|could = ability in the past.'],
+  ['Do we ___ bring a pen to the exam?','have to',['must','should'],2,'must','Frage mit have to: Do we have to …?|Question with have to: Do we have to …?'],
+  ['She ___ come to the party if she does not want to. It is her choice.',"doesn't have to",["mustn't","can't"],2,'must','doesn\'t have to = nicht nötig.|doesn\'t have to = not necessary.'],
+  ['I am sorry, you ___ park here. It is a private car park.',"can't",["don't have to",'should'],3,'can','can\'t = nicht erlaubt.|can\'t = not allowed.'],
+  ['Last week we ___ stay at home because it was snowing.','had to',['must','should'],3,'must','Vergangenheit: had to.|Past: had to.'],
+  ['___ I call you later? I am busy now.','Should',['Do','Am'],3,'should','Should I …? = Soll ich …?|Should I …? = Do you want me to …?']
+ ];
+ const gnd=r=>r.m==='have to'?(r.S.th?'has to':'have to'):r.m;
+ const rec=(mods,noI,noWe)=>({m:rnd(mods),S:rnd(SUBJ.filter(s=>!(noI&&s.nq)&&!(noWe&&s.ns))),vp:rnd(VP)});
+ const stmt=r=>cap(r.S.t)+' '+gnd(r)+' '+r.vp+'.';
+ const ques=r=>r.m==='have to'?(r.S.th?'Does':'Do')+' '+r.S.t+' have to '+r.vp+'?':cap(r.m)+' '+r.S.t+' '+r.vp+'?';
+ const negForms=r=>r.m==='can'?["can't",'cannot','can not']:r.m==='should'?["shouldn't",'should not']:r.m==='must'?["mustn't",'must not']:(r.S.th?["doesn't have to",'does not have to']:["don't have to",'do not have to']);
+ const negSent=r=>negForms(r).map(f=>cap(r.S.t)+' '+f+' '+r.vp+'.');
+ const mods=()=>{const s=sub('m');const all=s.length?s:['can','must','should'];let l=[];if(all.includes('can'))l.push('can');if(all.includes('must'))l.push('have to','must');if(all.includes('should'))l.push('should');return l};
+ const qMods=()=>mods().filter(m=>m!=='must').length?mods().filter(m=>m!=='must'):['have to'];
+ const lvOK=sc=>sc[3]<=(S.lvl==='A'?3:S.lvl==='B'?2:1);
+ const scs=()=>{const s=sub('m');const l=SC.filter(x=>lvOK(x)&&(!s.length||s.includes(x[4])));return l.length?l:SC.filter(lvOK)};
+ const whyS=sc=>sc[5].split('|')[LANG==='de'?0:1];
+ const w={
+  q:()=>L('<b>Frage:</b> can / should: Modalverb nach vorn (Can she swim?). have to: do / does + Subjekt + have to (Does she have to swim?).','<b>Question:</b> can / should: modal to the front (Can she swim?). have to: do / does + subject + have to (Does she have to swim?).'),
+  n:()=>L('<b>Verneinung:</b> can\'t, shouldn\'t, mustn\'t = Verbot, don\'t / doesn\'t have to = nicht nötig. Nach dem Modalverb steht die Grundform.','<b>Negative:</b> can\'t, shouldn\'t, mustn\'t = prohibition, don\'t / doesn\'t have to = not necessary. The base form follows the modal.'),
+  s:()=>L('<b>Kurzantwort:</b> Yes / No + Pronomen + Modalverb (can, should) bzw. do / does bei have to.','<b>Short answer:</b> Yes / No + pronoun + modal (can, should) or do / does with have to.')
+ };
+ const gen={
+  fill(){const sc=rnd(scs());const all=[sc[1],...sc[2]];const o=sc[0].indexOf('___');
+   const ALT={"mustn't":["can't",'must not','cannot'],"can't":['cannot','can not',"mustn't"],"shouldn't":['should not'],"don't have to":['do not have to'],"doesn't have to":['does not have to'],'must':['have to'],'have to':['must']};
+   let ans=[sc[1],...(ALT[sc[1]]||[])];
+   if(sc[1]==='have to'&&/\bDo (you|we)\b|^Do /.test(sc[0]))ans=['have to'];
+   if(sc[1]==="can't")ans=[sc[1],'cannot','can not',...(/forbidden|park here/.test(sc[0])?["mustn't"]:[])];
+   return mkFill(sc[0].slice(0,o),sc[0].slice(o+3),ans,all.slice().sort().join(' / '),whyS(sc))},
+  choice(){const sc=rnd(scs());const pr=pickOpts(sc[1],[sc[1],...sc[2]],2);return mkChoice(sc[0],pr.opts,pr.idx,L('Welches Wort passt?','Which word fits?'),whyS(sc))},
+  question(){const r=rec(qMods(),1);return mkText(stmt(r),L('Mach eine Frage aus dem Satz.','Make a question from the sentence.'),[ques(r)],w.q())},
+  neg(){const r=rec(mods(),0);const ans=negSent(r);return mkText(stmt(r),L('Verneine den Satz.','Make the sentence negative.'),ans,w.n())},
+  order(){const r=rec(qMods(),1);return mkOrder(ques(r),w.q())},
+  short(){
+   const r=rec(qMods(),1,1),yes=Math.random()<.5,hv=r.m==='have to';
+   const pos=hv?(r.S.th?'does':'do'):r.m;
+   let ans,alts=[];
+   if(yes)ans='Yes, '+r.S.ans+' '+pos+'.';
+   else if(hv){ans='No, '+r.S.ans+' '+pos+"n't.";alts=['No, '+r.S.ans+' '+pos+' not.']}
+   else{const nf=negForms(r);ans='No, '+r.S.ans+' '+nf[0]+'.';alts=nf.slice(1).map(f=>'No, '+r.S.ans+' '+f+'.')}
+   const it=mkText(ques(r),'',[ans,...alts],w.s());
+   it.instr=L('Antworte mit einer Kurzantwort: ','Give a short answer: ')+'<b>'+(yes?'Yes':'No')+'</b>';return it;
+  },
+  errors(){
+   const r=rec(['can','should','have to'],1,0),S0=cap(r.S.t),hv=r.m==='have to';
+   const ok=stmt(r);
+   const wr=hv?[S0+' '+(r.S.th?'have to':'has to')+' '+r.vp+'.',S0+' must to '+r.vp+'.',S0+' '+(r.S.th?'has':'have')+' '+r.vp+'.']
+             :[S0+' '+r.m+'s '+r.vp+'.',S0+' '+r.m+' to '+r.vp+'.',S0+' does '+r.m+' '+r.vp+'.'];
+   return mkWords(ok,wr,L('Welcher Satz ist richtig?','Which sentence is correct?'),L('Nach can / should steht die Grundform ohne to und ohne -s. Bei have to steht to.','After can / should comes the base form without to and without -s. have to keeps its to.'));
+  }
+ };
+ return {id:'m',ic:'🔒',ready:1,fillInstr:()=>L('Setze das passende Modalverb ein.','Fill in the correct modal verb.'),
+  name:()=>L('Modalverben','Modal verbs'),desc:()=>'can, must, should, have to',
+  lvDesc:()=>L('C: can, should, must, have to im Present. B: mehr Situationen (nicht nötig / Verbot, Fragen). A: zusätzlich could und had to.','C: can, should, must, have to in the present. B: more situations (not necessary / prohibited, questions). A: plus could and had to.'),
+  subTitle:()=>L('Unterthemen','Sub-topics'),
+  subs:()=>[{k:'can',n:'can / could'},{k:'must',n:'must / have to'},{k:'should',n:'should'}],subDef:['can','must','should'],
+  types:()=>[
+   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('das passende Modalverb schreiben','write the right modal')},
+   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('das passende Wort wählen','pick the right word')},
+   {k:'question',icon:'❓',label:L('Frage bilden','Make a question'),desc:L('Aussage → Frage','statement → question')},
+   {k:'neg',icon:'🚫',label:L('Verneinen','Make negative'),desc:L('Aussage → Verneinung','statement → negative')},
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')},
+   {k:'short',icon:'💬',label:L('Kurzantwort','Short answer'),desc:'Yes, she can. / No, he doesn\'t.'},
+   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')}],
+  typeDef:['fill','choice','question','neg'],gen,
+  rules:()=>[
+   [L('Form','Form'),L('Nach can, could, must, should, will, would steht die Grundform ohne to und ohne -s.','After can, could, must, should, will, would comes the base form without to and without -s.'),'She can swim. – He must go. (not: She cans / must to go)'],
+   [L('Frage und Verneinung ohne do','Questions and negatives without do'),'','Can you help? – I can\'t swim. – Should we go? – You shouldn\'t worry.'],
+   [L('can','can'),L('Fähigkeit und Erlaubnis. Verneint: can\'t / cannot.','Ability and permission. Negative: can\'t / cannot.'),'I can play the piano. – Can I open the window?'],
+   [L('could','could'),L('Höfliche Bitte und Fähigkeit in der Vergangenheit.','Polite requests and ability in the past.'),'Could you help me? – I could swim when I was five.'],
+   [L('must','must'),L('Starke Pflicht oder Notwendigkeit, oft vom Sprecher selbst.','Strong obligation or necessity, often from the speaker.'),'I must call my mum.'],
+   [L('have to','have to'),L('Pflicht von aussen, Regel. Frage und Verneinung mit do. Vergangenheit: had to.','Obligation from outside, a rule. Questions and negatives with do. Past: had to.'),'We have to wear uniforms. – Do you have to…? – She doesn\'t have to…'],
+   [L('mustn\'t ≠ don\'t have to','mustn\'t ≠ don\'t have to'),L('mustn\'t = Verbot. don\'t have to = nicht nötig, aber erlaubt.','mustn\'t = prohibition. don\'t have to = not necessary, but allowed.'),'You mustn\'t smoke here. – You don\'t have to come.'],
+   [L('should / shouldn\'t','should / shouldn\'t'),L('Rat.','Advice.'),'You should see a doctor. – You shouldn\'t eat so much sugar.'],
+   [L('Keine Vergangenheit von must','No past of must'),L('In der Vergangenheit steht had to.','In the past, use had to.'),'Yesterday I had to…'],
+   [L('Typische Fehler','Typical mistakes'),'','<span class="err2">He cans / She must to go / Does he can…? / You don\'t must… / I have to not…</span>']]
+ };
+})();
 
-/* ===== Aufgaben erzeugen ===== */
-let S={tenses:['PS','PaS'],types:['fill','choice','question','neg'],count:10,lvl:'B'};
-const effTenses=()=>S.lvl==='C'?['PS']:(S.tenses.length?S.tenses:['PS']);
-const effTypes=()=>{let t=S.types.filter(x=>x!=='whq'||S.lvl==='A');return t.length?t:['fill']};
-function rec(noI,noWe){
- const p=rnd(VERBS),o=rnd(p.objs),t=rnd(effTenses());
- const pool=SUBJ.filter(s=>!(noI&&s.nq)&&!(noWe&&s.ns));
- const subj=rnd(pool);
- const tm=(t==='PaS'||Math.random()<.5)?rnd(TM[t]):'';
- return {v:p,o,t,S:subj,tm};
-}
-const vf=r=>r.t==='PaS'?r.v.p:(r.S.th?r.v.s:r.v.i);
-const aux=r=>r.t==='PaS'?'did':(r.S.th?'does':'do');
-const tmS=r=>r.tm?' '+r.tm:'';
-const stmt=r=>cap(r.S.t)+' '+vf(r)+' '+r.o.o+tmS(r)+'.';
-const negB=(r,full)=>{const a=aux(r);return cap(r.S.t)+' '+(full?a+' not':a+"n't")+' '+r.v.i+' '+r.o.o+tmS(r)+'.'};
-const ques=r=>cap(aux(r))+' '+r.S.t+' '+r.v.i+' '+r.o.o+tmS(r)+'?';
-const why={
- q:()=>L('<b>Frage:</b> do / does / did + Subjekt + Verb in der Grundform. Am Verb steht kein -s und kein -ed.','<b>Question:</b> do / does / did + subject + base verb. No -s or -ed on the verb.'),
- n:()=>L('<b>Verneinung:</b> don\'t / doesn\'t / didn\'t + Verb in der Grundform. Am Verb steht kein -s und kein -ed.','<b>Negative:</b> don\'t / doesn\'t / didn\'t + base verb. No -s or -ed on the verb.'),
- s:()=>L('<b>Kurzantwort:</b> Yes / No + Pronomen + Hilfsverb (do, does, did). Das Verb wird nicht wiederholt.','<b>Short answer:</b> Yes / No + pronoun + auxiliary (do, does, did). The verb is not repeated.'),
- w:()=>L('<b>Fragewort:</b> Fragewort + do / does / did + Subjekt + Grundform. Fragt man nach dem Subjekt (who), steht kein do: <i>Who plays football?</i>','<b>Question word:</b> question word + do / does / did + subject + base verb. Asking for the subject (who) takes no do: <i>Who plays football?</i>')
-};
-function genFill(){
- const r=rec(1),neg=Math.random()<.5;
- if(neg){
-  const a=aux(r),full=a+' not',con=a==='does'?"doesn't":a==='do'?"don't":"didn't";
-  return {type:'fill',before:cap(r.S.t)+' ',after:' '+r.v.i+' '+r.o.o+tmS(r)+'.',answers:[con,full],hint:L('verneint','negative'),sol:con,why:why.n()};
+/* ===== Thema 3: Vergleichsformen ===== */
+const C=(()=>{
+ const A=(a,c,s,g,lv)=>({a,c,s,g,lv}); // g: 1 kurz (-er), 2 lang (more), 3 unregelmässig
+ const ADJ=[
+  A('tall','taller','tallest',1,1),A('small','smaller','smallest',1,1),A('fast','faster','fastest',1,1),A('slow','slower','slowest',1,1),A('old','older','oldest',1,1),
+  A('young','younger','youngest',1,1),A('cheap','cheaper','cheapest',1,1),A('long','longer','longest',1,1),A('high','higher','highest',1,1),A('cold','colder','coldest',1,1),
+  A('warm','warmer','warmest',1,1),A('strong','stronger','strongest',1,1),A('big','bigger','biggest',1,1),A('hot','hotter','hottest',1,1),A('nice','nicer','nicest',1,2),
+  A('easy','easier','easiest',1,2),A('happy','happier','happiest',1,2),A('heavy','heavier','heaviest',1,2),A('funny','funnier','funniest',1,2),
+  A('good','better','best',3,1),A('bad','worse','worst',3,1),A('far','further','furthest',3,3),
+  A('expensive','more expensive','most expensive',2,2),A('interesting','more interesting','most interesting',2,2),A('beautiful','more beautiful','most beautiful',2,2),
+  A('dangerous','more dangerous','most dangerous',2,2),A('difficult','more difficult','most difficult',2,2),A('popular','more popular','most popular',2,2),A('boring','more boring','most boring',2,2)
+ ];
+ const AD=Object.fromEntries(ADJ.map(x=>[x.a,x]));
+ const lvAdj=()=>ADJ.filter(x=>x.lv<=(S.lvl==='A'?3:S.lvl==='B'?2:1));
+ const FACT=[['A giraffe','a horse','tall'],['A cheetah','a lion','fast'],['A car','a bike','expensive'],['The Rhine','the Aare','long'],['Mount Everest','the Matterhorn','high'],['Summer','winter','warm'],
+  ['An elephant','a mouse','heavy'],['Zurich','Basel','big'],['A plane','a train','fast'],['Gold','silver','expensive'],['A mouse','a cat','small'],['A snail','a rabbit','slow'],['The Pacific','the Atlantic','big'],
+  ['Antarctica','Switzerland','cold'],['A lion','a cat','strong'],['Bern','Zurich','small'],['A castle','a skyscraper','old'],['A shark','a goldfish','dangerous']];
+ const SUP=[['Mount Everest','mountain in the world','high'],['The blue whale','animal in the world','big'],['The cheetah','land animal','fast'],['Russia','country in the world','big'],
+  ['The Vatican','country in the world','small'],['Antarctica','continent','cold'],['Jupiter','planet in our solar system','big'],['Mercury','planet in our solar system','small'],
+  ['The Dufourspitze','mountain in Switzerland','high'],['The giraffe','land animal','tall']];
+ const N=['Tom','Anna','Max','Mia','Leo','Sara'];
+ const two=()=>{const a=rnd(N);let b;do{b=rnd(N)}while(b===a);return [a,b]};
+ // numerische Kontexte: gibt {ctx, x, y, adj} (x ist "mehr" bei adj)
+ const NUM={
+  tall:()=>{const [a,b]=two(),h=150+Math.floor(Math.random()*40);return {ctx:`${a} is 1.${h-100} m tall. ${b} is 1.${h-100-3-Math.floor(Math.random()*8)} m tall.`,x:a,y:b}},
+  old:()=>{const [a,b]=two(),n=13+Math.floor(Math.random()*3);return {ctx:`${a} is ${n} years old. ${b} is ${n-1-Math.floor(Math.random()*2)} years old.`,x:a,y:b}},
+  young:()=>{const [a,b]=two(),n=12+Math.floor(Math.random()*3);return {ctx:`${a} is ${n-1-Math.floor(Math.random()*2)} years old. ${b} is ${n} years old.`,x:a,y:b}},
+  heavy:()=>{const k=5+Math.floor(Math.random()*5);return {ctx:`The red box weighs ${k+3} kg. The blue box weighs ${k} kg.`,x:'The red box',y:'the blue box'}},
+  expensive:()=>{const k=20+Math.floor(Math.random()*5)*10;return {ctx:`The jacket costs CHF ${k+60}. The cap costs CHF ${k}.`,x:'The jacket',y:'the cap'}},
+  cheap:()=>{const k=20+Math.floor(Math.random()*5)*10;return {ctx:`The cap costs CHF ${k}. The jacket costs CHF ${k+60}.`,x:'The cap',y:'the jacket'}},
+  warm:()=>{const t=14+Math.floor(Math.random()*6);return {ctx:`On Monday it was ${t} °C. On Tuesday it was ${t+6} °C.`,x:'Tuesday',y:'Monday'}},
+  cold:()=>{const t=14+Math.floor(Math.random()*6);return {ctx:`On Monday it was ${t} °C. On Tuesday it was ${t-8} °C.`,x:'Tuesday',y:'Monday'}},
+  long:()=>{const k=2+Math.floor(Math.random()*4);return {ctx:`The red rope is ${k+3} m long. The blue rope is ${k} m long.`,x:'The red rope',y:'the blue rope'}},
+  fast:()=>{const k=10+Math.floor(Math.random()*10);return {ctx:`A bike goes ${k} km/h. A car goes ${k+60} km/h.`,x:'A car',y:'a bike'}},
+  good:()=>{const [a,b]=two();return {ctx:`${a} got a 5.5 in the test. ${b} got a 4.5.`,x:a+"'s mark",y:b+"'s"}},
+  bad:()=>{const [a,b]=two();return {ctx:`${a} got a 3 in the test. ${b} got a 5.`,x:a+"'s mark",y:b+"'s"}},
+  far:()=>({ctx:'Lucerne is 50 km from Zurich. Geneva is 280 km from Zurich.',x:'Geneva',y:'Lucerne',far:1})
+ };
+ const comp=(a)=>AD[a].c;
+ const why={
+  c:()=>L('<b>Comparative:</b> kurze Adjektive + -er (taller), lange Adjektive more + Adjektiv (more expensive). Danach steht <i>than</i>. Unregelmässig: good – better, bad – worse, far – further.','<b>Comparative:</b> short adjectives + -er (taller), long adjectives more + adjective (more expensive). <i>than</i> follows. Irregular: good – better, bad – worse, far – further.'),
+  s:()=>L('<b>Superlative:</b> the + -est (the tallest) bzw. the most + Adjektiv. Danach in / of. Unregelmässig: the best, the worst, the furthest.','<b>Superlative:</b> the + -est (the tallest) or the most + adjective. in / of follows. Irregular: the best, the worst, the furthest.'),
+  a:()=>L('<b>as … as:</b> gleich = as + Adjektiv + as (as tall as). Verneint: not as … as.','<b>as … as:</b> equal = as + adjective + as (as tall as). Negative: not as … as.')
+ };
+ function numItem(a,type){ // type 'c' | 's' | 'a'
+  const g=NUM[a]();
+  if(a==='far')return mkFill(g.ctx+' Geneva is ',' from Zurich than Lucerne.',['further','farther'],'(far)',why.c());
+  if(type==='a'&&!['bad','good','far','cheap'].includes(a)){
+   // gleich alt / gleich gross
+   if(a==='tall'||a==='old'){const [x,y]=two();const v=a==='tall'?'1.65 m tall':'14 years old';return mkFill(`${x} is ${v}. ${y} is ${v}. ${x} is as `,` as ${y}.`,[a],'('+a+')',why.a())}
+  }
+  return mkFill(g.ctx+' '+cap(g.x)+(a==='good'||a==='bad'?' is ':' is '),' than '+g.y+(a==='good'||a==='bad'?'.':'.'),[comp(a)],'('+a+')',why.c());
  }
- const a=cap(aux(r));
- return {type:'fill',before:'',after:' '+r.S.t+' '+r.v.i+' '+r.o.o+tmS(r)+'?',answers:[a],hint:L('Frage','question'),sol:a,why:why.q()};
-}
-function genChoice(){
- const neg=Math.random()<.5,r=rec(1),a=aux(r);
- let ok,w=[];
- if(!neg){
-  ok=ques(r);
-  const wa=a==='did'?'Does':(r.S.th?'Do':'Does');
-  w.push(wa+' '+r.S.t+' '+r.v.i+' '+r.o.o+tmS(r)+'?');
-  w.push(cap(a)+' '+r.S.t+' '+(r.t==='PaS'?r.v.p:r.v.s)+' '+r.o.o+tmS(r)+'?');
-  w.push(cap(r.S.t)+' '+vf(r)+' '+r.o.o+tmS(r)+'?');
- }else{
-  ok=negB(r,false);
-  const wa=a==='did'?"doesn't":(r.S.th?"don't":"doesn't");
-  w.push(cap(r.S.t)+' '+wa+' '+r.v.i+' '+r.o.o+tmS(r)+'.');
-  w.push(cap(r.S.t)+' '+a+"n't "+(r.t==='PaS'?r.v.p:r.v.s)+' '+r.o.o+tmS(r)+'.');
-  w.push(cap(r.S.t)+' not '+vf(r)+' '+r.o.o+tmS(r)+'.');
+ const gen={
+  fill(){
+   const lv=S.lvl,mx=lv==='A'?3:lv==='B'?2:1,al=lvAdj();
+   const modes=['c','c','f'];if(lv!=='C')modes.push('s');if(lv==='A')modes.push('a');
+   const m=rnd(modes);
+   if(m==='s'){const f=rnd(SUP.filter(x=>AD[x[2]].lv<=mx));return supFill(f)}
+   if(m==='a')return numItem(rnd(['tall','old']),'a');
+   if(m==='f'){const f=rnd(FACT.filter(x=>AD[x[2]].lv<=mx)),ad=AD[f[2]];return mkFill(f[0]+' is ',' than '+f[1]+'.',[ad.c],'('+ad.a+')',why.c())}
+   return numItem(rnd(al.filter(x=>NUM[x.a])).a,'c');
+  },
+  choice(){
+   const lv=S.lvl,mx=lv==='A'?3:lv==='B'?2:1;
+   if(lv!=='C'&&Math.random()<.4){
+    const s=rnd(SUP.filter(x=>AD[x[2]].lv<=mx)),a=AD[s[2]];
+    const p=pickOpts(a.s,[a.s,...badSup(a)],2);
+    return mkChoice(s[0]+' is the ___ '+s[1]+'.',p.opts,p.idx,L('Welche Form passt?','Which form fits?'),why.s());
+   }
+   const f=rnd(FACT.filter(x=>AD[x[2]].lv<=mx)),a=AD[f[2]];
+   const p=pickOpts(a.c,[a.c,...badForms(a)],2);
+   return mkChoice(f[0]+' is ___ than '+f[1]+'.',p.opts,p.idx,L('Welche Form passt?','Which form fits?'),why.c());
+  },
+  forms(){
+   const a=rnd(lvAdj()),full=a.c+', the '+a.s;
+   return {type:'text',src:esc(a.a),instr:L('Schreibe Comparative und Superlative, so: <i>tall → taller, the tallest</i>','Write the comparative and superlative, like this: <i>tall → taller, the tallest</i>'),answers:[full,a.c+' the '+a.s,a.c+', '+a.s,a.c+' '+a.s,...(a.a==='far'?['farther, the farthest']:[])],sol:full,why:why.c()};
+  },
+  errors(){
+   const f=rnd(FACT.filter(x=>AD[x[2]].lv<=(S.lvl==='A'?3:S.lvl==='B'?2:1))),a=AD[f[2]];
+   const ok=f[0]+' is '+a.c+' than '+f[1]+'.';
+   const wr=badForms(a).map(x=>f[0]+' is '+x+' than '+f[1]+'.');
+   wr.push(f[0]+' is '+a.c+' then '+f[1]+'.');wr.push(f[0]+' is '+a.c+' as '+f[1]+'.');
+   return mkWords(ok,wr,L('Welcher Satz ist richtig?','Which sentence is correct?'),why.c());
+  },
+  order(){
+   const f=rnd(FACT.filter(x=>AD[x[2]].lv<=(S.lvl==='A'?3:S.lvl==='B'?2:1))),a=AD[f[2]];
+   const sentence=f[0]+' is '+a.c+' than '+f[1]+'.';
+   return mkOrder(sentence,why.c());
+  }
+ };
+ function badForms(a){
+  if(a.g===1)return ['more '+a.a,'more '+a.c,a.a+'er'===a.c?'most '+a.a:a.a+'er'];
+  if(a.g===2)return [a.a+'er','more '+a.a+'er','most '+a.a];
+  return [a.a+'er','more '+a.a,'more '+a.c];
  }
- w=[...new Set(w)].filter(x=>x!==ok);
- const opts=shuffle([ok,...shuffle(w).slice(0,2)]);
- return {type:'choice',opts,correct:opts.indexOf(ok),instr:neg?L('Welcher Satz ist eine richtige Verneinung?','Which sentence is a correct negative?'):L('Welche Frage ist richtig?','Which question is correct?'),sol:ok,why:neg?why.n():why.q()};
-}
-function genQuestion(){
- const r=rec(1);
- return {type:'text',src:esc(stmt(r)),instr:L('Mach eine Frage aus dem Satz (Ja/Nein-Frage).','Make a yes/no question from the sentence.'),answers:[ques(r)],sol:ques(r),why:why.q()};
-}
-function genNeg(){
- const r=rec(0);
- return {type:'text',src:esc(stmt(r)),instr:L('Verneine den Satz.','Make the sentence negative.'),answers:[negB(r,false),negB(r,true)],sol:negB(r,false),why:why.n()};
-}
-function genOrder(){
- const r=rec(1),q=ques(r);
- const words=q.split(' ');
- return {type:'order',words:shuffle(words),instr:L('Ordne die Wörter zu einer Frage.','Put the words in order to make a question.'),answers:[q],sol:q,why:why.q()};
-}
-function genShort(){
- const r=rec(1,1),yes=Math.random()<.5,a=aux(r),aw=cap(a);
- const q=ques(r),ans=(yes?'Yes, '+r.S.ans+' '+a+'.':'No, '+r.S.ans+' '+a+"n't.");
- const full=(yes?null:'No, '+r.S.ans+' '+a+' not.');
- return {type:'text',src:esc(q),instr:L('Antworte mit einer Kurzantwort: ','Give a short answer: ')+(yes?'<b>Yes</b>':'<b>No</b>'),answers:[ans,...(full?[full]:[])],sol:ans,why:why.s()};
-}
-function genWhq(){
- const kind=rnd(['w','p','who']);
- let r,src,ans,w,sol;
- for(let i=0;i<30;i++){
-  r=rec(1);
-  if(kind==='who'&&!r.S.who)continue;
-  if(kind==='w'&&r.o.k!=='w')continue;
-  if(kind==='p'&&r.o.k!=='p')continue;
-  break;
+ function supFill(f){
+  const a=AD[f[2]],base=a.s.replace(/^most /,'');
+  return mkFill(f[0]+' is the ',' '+f[1]+'.',[base],'('+a.a+')',why.s());
  }
- if(kind==='who'&&!r.S.who)r.S=rnd(SUBJ.filter(s=>s.who));
- if(kind==='w'&&r.o.k!=='w'){r.v=VERBS[0];r.o=r.v.objs[0]}
- if(kind==='p'&&r.o.k!=='p'){r.v=VERBS.find(v=>v.i==='live');r.o=r.v.objs[0]}
- if(kind==='who'){
-  const pl=!r.S.th;const f=r.t==='PaS'?r.v.p:(pl?r.v.i:r.v.i);
-  src='<mark class="t">'+esc(cap(r.S.t))+'</mark> '+esc(r.t==='PaS'?r.v.p:(r.S.th?r.v.s:r.v.i))+' '+esc(r.o.o)+esc(tmS(r))+'.';
-  const q='Who '+(r.t==='PaS'?r.v.p:r.v.s)+' '+r.o.o+tmS(r)+'?';
-  return {type:'text',src,instr:L('Frage nach dem markierten Teil. Beginne mit <b>Who</b>.','Ask about the highlighted part. Start with <b>Who</b>.'),answers:[q],sol:q,why:why.w()};
+ function badSup(a){
+  if(a.g===2)return [a.a+'est','the most '+a.a+'est','more '+a.a];
+  return ['most '+a.a,a.c,a.a+'est'===a.s?'more '+a.a:a.a+'est'];
  }
- const wh=kind==='w'?'What':'Where';
- src=esc(cap(r.S.t))+' '+esc(vf(r))+' <mark class="t">'+esc(r.o.o)+'</mark>'+esc(tmS(r))+'.';
- const q=wh+' '+aux(r)+' '+r.S.t+' '+r.v.i+tmS(r)+'?';
- return {type:'text',src,instr:L('Frage nach dem markierten Teil. Beginne mit <b>'+wh+'</b>.','Ask about the highlighted part. Start with <b>'+wh+'</b>.'),answers:[q],sol:q,why:why.w()};
-}
-const GEN={fill:genFill,choice:genChoice,question:genQuestion,neg:genNeg,order:genOrder,short:genShort,whq:genWhq};
+ return {id:'c',ic:'📏',ready:1,fillInstr:()=>L('Setze die richtige Form ein.','Fill in the correct form.'),
+  name:()=>L('Vergleichsformen','Comparatives & superlatives'),desc:()=>'bigger, the biggest, more interesting',
+  lvDesc:()=>L('C: kurze Adjektive und good / bad. B: zusätzlich lange Adjektive (more …) und Superlative. A: zusätzlich as … as und far.','C: short adjectives and good / bad. B: plus long adjectives (more …) and superlatives. A: plus as … as and far.'),
+  subTitle:()=>L('Unterthemen','Sub-topics'),subs:()=>[],subDef:[],
+  types:()=>[
+   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('die richtige Form schreiben','write the correct form')},
+   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('die richtige Form wählen','pick the correct form')},
+   {k:'forms',icon:'📊',label:L('Formen bilden','Make the forms'),desc:'tall → taller, the tallest'},
+   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}],
+  typeDef:['fill','choice','forms','errors'],gen,
+  rules:()=>[
+   [L('Kurze Adjektive (1 Silbe)','Short adjectives (1 syllable)'),L('Comparative mit -er, Superlative mit the -est.','Comparative with -er, superlative with the -est.'),'small – smaller – the smallest. Tom is taller than Max.'],
+   [L('Rechtschreibung','Spelling'),L('Bei Adjektiven auf -e wird nur -r / -st angehängt; nach kurzem Vokal wird der Konsonant verdoppelt; -y wird -i.','Adjectives ending in -e only add -r / -st; after a short vowel the consonant is doubled; -y becomes -i.'),'nice – nicer – the nicest · big – bigger – the biggest · happy – happier – the happiest'],
+   [L('Lange Adjektive (3+ Silben, viele mit 2)','Long adjectives (3+ syllables, many with 2)'),L('more / the most + Adjektiv.','more / the most + adjective.'),'interesting – more interesting – the most interesting'],
+   [L('Zwei Silben auf -y, -er, -le, -ow','Two syllables ending in -y, -er, -le, -ow'),L('Meist -er / -est.','Mostly -er / -est.'),'easy – easier, clever – cleverer'],
+   [L('Unregelmässig','Irregular'),'','good – better – the best · bad – worse – the worst · far – further (farther) – the furthest (farthest) · little – less – the least · much / many – more – the most'],
+   [L('than und the','than and the'),L('than steht beim Comparative, the beim Superlative.','than goes with the comparative, the with the superlative.'),'She is older than me. – He is the oldest in the class.'],
+   [L('Gleichheit','Equality'),L('as … as; verneint: not as … as.','as … as; negative: not as … as.'),'He is as tall as me. – It isn\'t as expensive as that one.'],
+   [L('Superlative mit in / of','Superlative with in / of'),'','the best in the world, the best of all'],
+   [L('Typische Fehler','Typical mistakes'),'','<span class="err2">more bigger / the most biggest / more good / than → then / Tom is taller as Max</span>']]
+ };
+})();
+
+/* ===== Thema 4: Mengenwörter ===== */
+const N=(()=>{
+ // [stem,ok[],bad[],lv,sub,hint,why de|en]
+ const B=(s,ok,bad,lv,sb,h,w)=>({s,ok,bad,lv,sub:sb,h,w});
+ const W={
+  sa:'some: bejahte Sätze und Angebote / Bitten. any: Verneinung und Fragen. Bei Angeboten und Bitten steht some.|some: positive sentences, offers and requests. any: negatives and questions.',
+  mm:'much: nur mit unzählbaren Nomen (in Frage und Verneinung). many: nur mit zählbaren Nomen im Plural. a lot of / lots of: mit beiden, vor allem in bejahten Sätzen.|much: uncountable nouns only (questions, negatives). many: plural countable nouns only. a lot of / lots of: both, mainly in positive sentences.',
+  fl:'a few + zählbar, a little + unzählbar = ein paar / etwas (positiv). few / little ohne a = kaum, zu wenig (negativ).|a few + countable, a little + uncountable = some (positive). few / little without a = hardly any, not enough (negative).'
+ };
+ const CUR=[
+  B('How ___ eggs do we need?',['many'],['much','a little'],1,'mm','(much / many)',W.mm),
+  B('How ___ milk do we need?',['much'],['many','a few'],1,'mm','(much / many)',W.mm),
+  B('How ___ students are in your class?',['many'],['much','a little'],1,'mm','(much / many)',W.mm),
+  B('How ___ money do you have?',['much'],['many','a few'],1,'mm','(much / many)',W.mm),
+  B("We don't have ___ time. Hurry up!",['much','a lot of'],['many','a few'],1,'mm','(much / many)',W.mm),
+  B("There aren't ___ chairs in the room.",['many','a lot of'],['much','a little'],1,'mm','(much / many)',W.mm),
+  B('She has ___ friends. She is very popular.',['a lot of','lots of','many'],['much','a little'],1,'mm','(much / many / a lot of)',W.mm),
+  B('He drinks ___ water every day.',['a lot of','lots of'],['many','a few'],1,'mm','(much / many / a lot of)',W.mm),
+  B('There is too ___ traffic in the city centre.',['much'],['many','few'],3,'mm','(much / many)',W.mm),
+  B('There are too ___ people on the bus.',['many'],['much','little'],3,'mm','(much / many)',W.mm),
+  B('It costs too ___ money. I cannot buy it.',['much'],['many','a few'],3,'mm','(much / many)',W.mm),
+  B("Don't eat too ___ sweets.",['many'],['much','a little'],2,'mm','(much / many)',W.mm),
+  B('I have ___ friends here, so I am never alone.',['a few'],['a little','much'],1,'fl','(a few / a little)',W.fl),
+  B('Wait a moment. I need ___ more time.',['a little'],['a few','many'],1,'fl','(a few / a little)',W.fl),
+  B("There is ___ milk left. Let's make one coffee.",['a little'],['a few','many'],1,'fl','(a few / a little)',W.fl),
+  B('Can I have ___ more water, please?',['a little'],['a few','many'],1,'fl','(a few / a little)',W.fl),
+  B('I know ___ words in French, so I can order food.',['a few'],['a little','much'],1,'fl','(a few / a little)',W.fl),
+  B('Would you like ___ more sugar in your tea?',['a little'],['a few','many'],1,'fl','(a few / a little)',W.fl),
+  B('He has ___ friends. He feels lonely.',['few'],['a few','a little'],2,'fl','(few / a few)',W.fl),
+  B('We have ___ time. We will miss the bus.',['little'],['a little','a few'],2,'fl','(little / a little)',W.fl),
+  B('Only ___ students came to the party, so it was quiet.',['a few','few'],['a little','much'],2,'fl','(a few / a little)',W.fl),
+  B('There were ___ people at the concert. It was almost empty.',['few'],['a little','much'],3,'fl','(few / a few)',W.fl),
+  B('I am hungry. I want ___ to eat.',['something'],['anything','any'],3,'sa','(something / anything)','something: bejahte Sätze, anything: Verneinung und Fragen.|something: positive sentences, anything: negatives and questions.'),
+  B("I didn't see ___ in the dark.",['anything'],['something','some'],3,'sa','(something / anything)','something: bejahte Sätze, anything: Verneinung und Fragen.|something: positive sentences, anything: negatives and questions.'),
+  B('Is there ___ in the box?',['anything'],['nothing','nobody'],3,'sa','(something / anything)','something: bejahte Sätze, anything: Verneinung und Fragen.|something: positive sentences, anything: negatives and questions.'),
+  B('I need ___ advice about my homework.',['some'],['an','many'],2,'sa','(some / any)',W.sa)
+ ];
+ const CN=[['apples','in the bag'],['eggs','in the kitchen'],['tomatoes','in the kitchen'],['biscuits','in the kitchen'],['sandwiches','in the bag'],['bananas','in the bag'],['pencils','in my case'],['books','in my bag']];
+ const UN=[['milk','in the fridge'],['bread','in the kitchen'],['cheese','in the fridge'],['rice','in the kitchen'],['sugar','in the kitchen'],['water','in the bottle'],['juice','in the fridge'],['paper','in my bag']];
+ function genSA(){
+  const c=Math.random()<.55,[n,pl]=rnd(c?CN:UN),be=c?'are':'is',bn=c?"aren't":"isn't";
+  const k=rnd(['aff','neg','q','offer','req']),h='(some / any)';
+  const noPl=c?['much','a little']:['many','a few'];
+  if(k==='aff')return B(`There ${be} ___ ${n} ${pl}.`,['some'],['any',noPl[0]],1,'sa',h,W.sa);
+  if(k==='neg')return B(`There ${bn} ___ ${n} ${pl}.`,['any'],['some',noPl[0]],1,'sa',h,W.sa);
+  if(k==='q')return B(`${cap(be)} there ___ ${n} ${pl}?`,['any'],[noPl[0],noPl[1]],1,'sa',h,W.sa);
+  if(k==='offer')return B(`Would you like ___ ${n}?`,['some'],[noPl[0],noPl[1]],1,'sa',h,W.sa);
+  return B(`Can I have ___ ${n}, please?`,['some'],[noPl[0],noPl[1]],1,'sa',h,W.sa);
+ }
+ const lvl=()=>S.lvl==='A'?3:S.lvl==='B'?2:1;
+ const pool=()=>{
+  const s=sub('n'),on=k=>!s.length||s.includes(k);
+  let p=CUR.filter(b=>b.lv<=lvl()&&on(b.sub));
+  if(on('sa')){for(let i=0;i<8;i++)p.push(genSA())}
+  return p.length?p:CUR.filter(b=>b.lv<=lvl());
+ };
+ const base=bankGens(pool,b=>W[b.sub].split('|')[LANG==='de'?0:1]);
+ // Zählbar / unzählbar: Fehler finden
+ const E=(ok,bad,lv,why)=>({ok,bad,lv,why});
+ const CW=L('Zählbar (apple – apples) oder unzählbar (water)? Unzählbare Nomen haben keinen Plural und kein a/an: information, advice, homework, news, money, traffic, bread.','Countable (apple – apples) or uncountable (water)? Uncountable nouns have no plural and no a/an: information, advice, homework, news, money, traffic, bread.');
+ const ERR=[
+  E('I need some information about the trip.',['I need some informations about the trip.','I need an information about the trip.'],1),
+  E('She gave me good advice.',['She gave me a good advice.','She gave me good advices.'],1),
+  E('We have a lot of homework today.',['We have a lot of homeworks today.','We have many homeworks today.'],1),
+  E('The news is good.',['The news are good.','The newses are good.'],2),
+  E("I'd like some bread, please.",["I'd like some breads, please.","I'd like many bread, please."],1),
+  E('There is a lot of traffic in town.',['There are a lot of traffics in town.','There is a lot of traffics in town.'],2),
+  E('How much money do you have?',['How many money do you have?','How much moneys do you have?'],1),
+  E('How many apples are there?',['How much apples are there?','How many apple are there?'],1),
+  E('I have a few friends in Zurich.',['I have a few friend in Zurich.','I have a little friends in Zurich.'],1),
+  E('Can I have a little sugar?',['Can I have a few sugar?','Can I have a little sugars?'],1),
+  E("We don't have any eggs.",["We don't have some eggs.","We haven't no eggs."],1),
+  E("There isn't much time.",["There isn't many time.","There aren't much time."],1),
+  E('He gave me a lot of help.',['He gave me a lot of helps.','He gave me many help.'],2),
+  E('We need some new furniture.',['We need some new furnitures.','We need a new furniture.'],3),
+  E('She has a lot of luggage.',['She has a lot of luggages.','She has many luggage.'],3),
+  E("I don't have much work today.",["I don't have many works today.","I don't have much works today."],2)
+ ];
+ const errPool=()=>{const l=ERR.filter(e=>e.lv<=lvl());return l.length?l:ERR};
+ const gen={fill:base.fill,choice:base.choice,order:base.order,
+  errors(){
+   if(Math.random()<.55){const e=rnd(errPool());return mkWords(e.ok,e.bad,L('Welcher Satz ist richtig?','Which sentence is correct?'),CW)}
+   return base.errors();
+  }
+ };
+ return {id:'n',ic:'🥛',ready:1,
+  name:()=>L('Mengenwörter','Quantifiers'),desc:()=>'some / any, much / many, a few / a little',
+  fillInstr:()=>L('Setze das passende Mengenwort ein.','Fill in the correct quantifier.'),
+  lvDesc:()=>L('C: einfache Sätze mit some / any, much / many, a few / a little. B: dazu few / little und too many / too much. A: dazu something / anything.','C: simple sentences with some / any, much / many, a few / a little. B: plus few / little and too many / too much. A: plus something / anything.'),
+  subTitle:()=>L('Unterthemen','Sub-topics'),
+  subs:()=>[{k:'sa',n:'some / any'},{k:'mm',n:'much / many'},{k:'fl',n:'(a) few / (a) little'}],subDef:['sa','mm','fl'],
+  types:()=>[
+   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('das passende Mengenwort schreiben','write the right quantifier')},
+   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('das passende Wort wählen','pick the right word')},
+   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}],
+  typeDef:['fill','choice','errors'],gen,
+  rules:()=>[
+   [L('Zählbar und unzählbar','Countable and uncountable'),L('Zählbare Nomen haben einen Plural (apple – apples). Unzählbare haben keinen Plural und kein a / an: water, milk, bread, money, time, information, advice, homework, news, traffic.','Countable nouns have a plural (apple – apples). Uncountable nouns have no plural and no a / an: water, milk, bread, money, time, information, advice, homework, news, traffic.'),'an apple – some apples · some water (not: a water / waters)'],
+   [L('some','some'),L('In bejahten Sätzen, bei Angeboten und Bitten.','In positive sentences, offers and requests.'),'I have some apples. – Would you like some tea? – Can I have some water?'],
+   [L('any','any'),L('In Verneinungen und Fragen.','In negatives and questions.'),'I don\'t have any money. – Is there any milk?'],
+   [L('something / anything','something / anything'),L('Gleiche Regel wie some / any.','Same rule as some / any.'),'I want something to eat. – I didn\'t see anything.'],
+   [L('much','much'),L('Nur mit unzählbaren Nomen, meist in Frage und Verneinung.','Only with uncountable nouns, mostly in questions and negatives.'),'How much milk? – There isn\'t much time.'],
+   [L('many','many'),L('Nur mit zählbaren Nomen im Plural.','Only with plural countable nouns.'),'How many apples? – There aren\'t many chairs.'],
+   [L('a lot of / lots of','a lot of / lots of'),L('Mit zählbaren und unzählbaren Nomen, vor allem in bejahten Sätzen.','With countable and uncountable nouns, mainly in positive sentences.'),'We have a lot of homework. – She has lots of friends.'],
+   [L('too much / too many','too much / too many'),L('Zu viel. too much + unzählbar, too many + zählbar.','Too much. too much + uncountable, too many + countable.'),'too much traffic · too many people'],
+   [L('a few / a little','a few / a little'),L('Ein paar / etwas (positiv). a few + zählbar, a little + unzählbar.','Some (positive). a few + countable, a little + uncountable.'),'a few friends · a little time'],
+   [L('few / little (ohne a)','few / little (without a)'),L('Kaum / zu wenig (negativ).','Hardly any / not enough (negative).'),'He has few friends. – We have little time.'],
+   [L('Typische Fehler','Typical mistakes'),'','<span class="err2">informations / advices / a homework / many money / much friends / The news are…</span>']]
+ };
+})();
+
+/* ===== Thema 5: Präpositionen ===== */
+const P=(()=>{
+ const B=(s,ok,bad,lv,sb,w)=>({s,ok,bad,lv,sub:sb,h:'',w:w||''});
+ const W={
+  t:'Zeit: at + Uhrzeit / Zeitpunkt (at 8 o\'clock, at noon, at night), on + Tag und Datum (on Monday, on 5 May), in + Monat, Jahr, Jahreszeit, Tageszeit (in May, in 2024, in summer, in the morning).|Time: at + clock time (at 8 o\'clock, at noon, at night), on + days and dates (on Monday, on 5 May), in + months, years, seasons, parts of the day (in May, in 2024, in summer, in the morning).',
+  t2:'for + Zeitdauer (for five years), since + Zeitpunkt (since 2018), ago = vor (two years ago), during + Ereignis / Zeitraum, until = bis.|for + length of time (for five years), since + starting point (since 2018), ago (two years ago), during + event / period, until.',
+  p:'Ort: in + Raum, Stadt, Land (in the kitchen, in Zurich); on + Oberfläche, Stockwerk (on the table, on the wall); at + Punkt, Ort (at the bus stop, at home).|Place: in + space, town, country (in the kitchen, in Zurich); on + surface, floor (on the table, on the wall); at + point, location (at the bus stop, at home).',
+  p2:'Lage: next to, between, behind, opposite, above / under, in front of.|Position: next to, between, behind, opposite, above / under, in front of.',
+  m:'Bewegung: to = hin zu einem Ziel (go to school), into = hinein, out of = heraus, across = quer über, through = durch, along = entlang, over = über.|Movement: to = towards a place (go to school), into, out of, across, through, along, over.',
+  f:'Feste Verbindungen mit Präposition muss man lernen. Oft anders als im Deutschen: good at, interested in, afraid of, wait for, listen to.|Fixed phrases with prepositions have to be learned. Often different from German: good at, interested in, afraid of, wait for, listen to.'
+ };
+ const CUR=[
+  // Zeit
+  B('My lesson starts ___ 8 o\'clock.',['at'],['on','in'],1,'t',W.t),
+  B('We have no school ___ Saturday.',['on'],['at','in'],1,'t',W.t),
+  B('I was born ___ May.',['in'],['on','at'],1,'t',W.t),
+  B('My birthday is ___ 12 June.',['on'],['in','at'],1,'t',W.t),
+  B('We go skiing ___ winter.',['in'],['on','at'],1,'t',W.t),
+  B('I get up ___ half past six.',['at'],['on','in'],1,'t',W.t),
+  B('I do my homework ___ the afternoon.',['in'],['on','at'],1,'t',W.t),
+  B('She was born ___ 2011.',['in'],['on','at'],1,'t',W.t),
+  B('See you ___ Monday!',['on'],['in','at'],1,'t',W.t),
+  B("Let's meet ___ the weekend.",['at','on'],['in','to'],2,'t',W.t),
+  B('We often go to bed late ___ night.',['at'],['in','on'],2,'t',W.t),
+  B('The film starts ___ Friday evening.',['on'],['in','at'],2,'t',W.t),
+  B('We eat a big meal ___ Christmas Day.',['on'],['at','in'],2,'t',W.t),
+  B('We have a test ___ the end of the week.',['at'],['on','by'],2,'t',W.t),
+  B('I have lived here ___ five years.',['for'],['since','ago'],3,'t',W.t2),
+  B('I have lived here ___ 2018.',['since'],['for','ago'],3,'t',W.t2),
+  B('He moved to Bern two years ___.',['ago'],['before','since'],3,'t',W.t2),
+  B("Don't use your phone ___ the lesson.",['during'],['for','at'],3,'t',W.t2),
+  B("I'll wait ___ five o'clock.",['until'],['since','at'],3,'t',W.t2),
+  // Ort
+  B('The book is ___ the table.',['on'],['in','at'],1,'p',W.p),
+  B('The milk is ___ the fridge.',['in'],['on','at'],1,'p',W.p),
+  B('Tom is ___ home today.',['at'],['in','on'],1,'p',W.p),
+  B('She lives ___ Zurich.',['in'],['at','on'],1,'p',W.p),
+  B('He is waiting ___ the bus stop.',['at'],['in','on'],1,'p',W.p),
+  B('The picture is ___ the wall.',['on'],['in','at'],1,'p',W.p),
+  B('There is a bird ___ the tree.',['in'],['on','at'],1,'p',W.p),
+  B('My room is ___ the first floor.',['on'],['in','at'],1,'p',W.p),
+  B('The bank is ___ the post office and the shop.',['between'],['behind','among'],2,'p',W.p2),
+  B('The cat is hiding ___ the sofa.',['behind','under'],['between','across'],2,'p',W.p2),
+  B('The cinema is ___ the bank. I can see it from the bank window.',['opposite'],['between','into'],2,'p',W.p2),
+  B('There is a lamp ___ the table.',['above','over'],['between','into'],2,'p',W.p2),
+  B('Anna sits ___ me in class.',['next to'],['between','into'],2,'p',W.p2),
+  // Bewegung
+  B('I go ___ school by bike.',['to'],['at','in'],1,'m',W.m),
+  B("Let's go ___ the cinema.",['to'],['in','at'],1,'m',W.m),
+  B('We drive ___ Italy every summer.',['to'],['in','at'],1,'m',W.m),
+  B('Welcome ___ Switzerland!',['to'],['in','at'],1,'m',W.m),
+  B('She goes ___ work by train.',['to'],['at','in'],1,'m',W.m),
+  B('She walked ___ the room and sat down.',['into'],['out of','at'],2,'m',W.m),
+  B('The children ran ___ the street.',['across','along'],['at','out of'],2,'m',W.m),
+  B('We walked ___ the forest.',['through'],['at','over'],2,'m',W.m),
+  B('She took a book ___ her bag.',['out of','from'],['into','at'],2,'m',W.m),
+  B('He put the keys ___ his pocket.',['into','in'],['out of','across'],2,'m',W.m),
+  B('Walk ___ the river for ten minutes.',['along'],['at','into'],3,'m',W.m),
+  B('I arrived ___ Zurich at noon.',['in'],['to','into'],3,'m','arrive in + Stadt / Land, arrive at + kleiner Ort|arrive in + city / country, arrive at + small place'),
+  B('He arrived ___ the station late.',['at'],['to','into'],3,'m','arrive in + Stadt / Land, arrive at + kleiner Ort|arrive in + city / country, arrive at + small place'),
+  B('Walk ___ the bridge to get to the other side.',['over','across'],['at','into'],3,'m',W.m),
+  // feste Verbindungen
+  B("I'm interested ___ music.",['in'],['on','at'],2,'f',W.f),
+  B('She is good ___ maths.',['at'],['in','on'],2,'f',W.f),
+  B('He is afraid ___ spiders.',['of'],['from','at'],2,'f',W.f),
+  B('Please listen ___ me.',['to'],['at','for'],1,'f',W.f),
+  B('We are waiting ___ the bus.',['for'],['to','at'],1,'f',W.f),
+  B("I'm looking ___ my keys. Have you seen them?",['for'],['at','to'],2,'f',W.f),
+  B('Look ___ the board, please.',['at'],['to','for'],1,'f',W.f),
+  B('Thank you ___ your help.',['for'],['to','of'],1,'f',W.f),
+  B('We talked ___ the problem.',['about'],['for','at'],1,'f',W.f),
+  B("I'm worried ___ the test.",['about'],['of','for'],2,'f',W.f),
+  B('He is proud ___ his sister.',['of'],['for','at'],2,'f',W.f),
+  B('I agree ___ you.',['with'],['to','for'],2,'f',W.f),
+  B('She is excited ___ the trip.',['about'],['for','of'],2,'f',W.f),
+  B('Switzerland is famous ___ its chocolate.',['for'],['of','from'],2,'f',W.f),
+  B('She is married ___ a doctor.',['to'],['with','from'],3,'f',W.f),
+  B('This book is different ___ the film.',['from','to'],['with','of'],3,'f',W.f),
+  B('She is angry ___ me.',['with','at'],['of','from'],3,'f',W.f),
+  B('The film is similar ___ the book.',['to'],['with','of'],3,'f',W.f),
+  B('Do you believe ___ ghosts?',['in'],['on','at'],3,'f',W.f),
+  B('This depends ___ the weather.',['on'],['of','from'],3,'f',W.f),
+  B("I'm looking forward ___ the holidays.",['to'],['for','at'],3,'f',W.f),
+  B('He apologised ___ being late.',['for'],['about','at'],3,'f',W.f)
+ ];
+ const TA=['8 o\'clock','half past nine','noon','midnight','night'],TO=['Monday','Friday evening','my birthday','25 December','Sunday morning','Saturday'],TI=['the morning','May','2024','summer','the evening','March','the afternoon'];
+ const FR=['We have a test ___ X.',"I'll call you ___ X.",'The party is ___ X.'];
+ function genT(){
+  const k=rnd(['at','on','in']),x=rnd(k==='at'?TA:k==='on'?TO:TI);
+  const bad=['at','on','in'].filter(y=>y!==k);
+  return B(rnd(FR).replace('X',x),[k],bad,1,'t',W.t);
+ }
+ const lvl=()=>S.lvl==='A'?3:S.lvl==='B'?2:1;
+ const pool=()=>{
+  const s=sub('p'),on=k=>!s.length||s.includes(k);
+  const p=CUR.filter(b=>b.lv<=lvl()&&on(b.sub));
+  if(on('t'))for(let i=0;i<6;i++)p.push(genT());
+  return p.length?p:CUR.filter(b=>b.lv<=lvl());
+ };
+ const gen=bankGens(pool,b=>'');
+ // Standardwarum je Unterthema
+ const base=gen;
+ return {id:'p',ic:'📍',ready:1,
+  name:()=>L('Präpositionen','Prepositions'),desc:()=>'in / on / at, to / into, interested in',
+  fillInstr:()=>L('Setze die passende Präposition ein.','Fill in the correct preposition.'),
+  lvDesc:()=>L('C: at / on / in bei Zeit und Ort, to bei Bewegung, einfache feste Verbindungen. B: dazu Lage (next to, between …), into / out of / across und mehr feste Verbindungen. A: dazu for / since / ago / during und schwierigere Verbindungen.','C: at / on / in for time and place, to for movement, simple fixed phrases. B: plus position (next to, between …), into / out of / across and more fixed phrases. A: plus for / since / ago / during and harder phrases.'),
+  subTitle:()=>L('Unterthemen','Sub-topics'),
+  subs:()=>[{k:'t',n:L('Zeit','Time')},{k:'p',n:L('Ort','Place')},{k:'m',n:L('Bewegung','Movement')},{k:'f',n:L('Feste Verbindungen','Fixed phrases')}],subDef:['t','p','m','f'],
+  types:()=>[
+   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('die Präposition schreiben','write the preposition')},
+   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('die richtige Präposition wählen','pick the right preposition')},
+   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}],
+  typeDef:['fill','choice','errors'],gen:base,
+  rules:()=>[
+   [L('Zeit: at / on / in','Time: at / on / in'),'',L('at + Uhrzeit, Zeitpunkt: at 8 o\'clock, at noon, at night, at the weekend (BrE)<br>on + Tag, Datum: on Monday, on 5 May, on Friday evening<br>in + Monat, Jahr, Jahreszeit, Tageszeit: in May, in 2024, in summer, in the morning','at + clock time: at 8 o\'clock, at noon, at night, at the weekend (BrE)<br>on + days, dates: on Monday, on 5 May, on Friday evening<br>in + months, years, seasons, parts of the day: in May, in 2024, in summer, in the morning')],
+   [L('for / since / ago / during / until','for / since / ago / during / until'),L('for = Dauer, since = seit einem Zeitpunkt, ago = vor, during = während eines Zeitraums, until = bis.','for = length, since = starting point, ago = back in time, during = within a period, until = up to.'),'for five years · since 2018 · two years ago · during the lesson · until Friday'],
+   [L('Ort: in / on / at','Place: in / on / at'),'',L('in + Raum, Stadt, Land: in the kitchen, in Zurich, in Switzerland<br>on + Oberfläche, Stockwerk: on the table, on the wall, on the first floor<br>at + Punkt, Ort: at the bus stop, at the door, at home, at school','in + space, town, country: in the kitchen, in Zurich, in Switzerland<br>on + surface, floor: on the table, on the wall, on the first floor<br>at + point, location: at the bus stop, at the door, at home, at school')],
+   [L('Lage','Position'),'','next to · between · behind · in front of · opposite · above / under'],
+   [L('Bewegung','Movement'),L('to = zu einem Ziel hin, into = hinein, out of = heraus, across = quer über, through = durch, along = entlang, over = über.','to = towards a goal, into, out of, across, through, along, over.'),'go to school · walk into the room · take a book out of the bag · walk along the river'],
+   [L('Ankommen','Arriving'),'','arrive in + city / country · arrive at + station, airport, small place'],
+   [L('Feste Verbindungen','Fixed phrases'),L('Muss man lernen, oft anders als im Deutschen.','To be learned, often different from German.'),'good at · interested in · afraid of · proud of · worried about · wait for · look for · listen to · look at · talk about · thank … for · agree with · depend on'],
+   [L('Typische Fehler','Typical mistakes'),'','<span class="err2">I\'m interested on… / good in maths / I wait for to… / in Monday / at July / I go in school</span>']]
+ };
+})();
+
+/* ===== Themen & Aufgaben ===== */
+const TOPICS=[Q,M,C,N,P];
+TOPICS.forEach(t=>{ST[t.id]={types:t.typeDef.slice(),subs:t.subDef.slice()}});
+let topic=null;
+const effTypes=()=>{const t=topic.types().filter(x=>ST[topic.id].types.includes(x.k)&&(!x.A||S.lvl==='A')).map(x=>x.k);return t};
 function typeSeq(n){const m=effTypes();let bag=[],seq=[];for(let i=0;i<n;i++){if(!bag.length)bag=shuffle(m);let j=0;if(m.length>1&&seq.length&&bag[0]===seq[seq.length-1])j=bag.findIndex(x=>x!==seq[seq.length-1])||0;if(j<0)j=0;seq.push(bag.splice(j,1)[0])}return seq}
 const seenG=new Set();
 function build(n){
  const out=[],seq=typeSeq(n),seen=new Set();
- for(const t of seq){let it,k=0;do{it=GEN[t]();k++}while((seen.has(it.sol)||seenG.has(it.sol))&&k<40);seen.add(it.sol);seenG.add(it.sol);it.kind=t;out.push(it)}
+ for(const t of seq){let it,k=0;do{it=topic.gen[t]();k++}while((seen.has(it.sol)||seenG.has(it.sol))&&k<40);seen.add(it.sol);seenG.add(it.sol);it.kind=t;if(it.type==='fill'&&!it.instr)it.instr=topic.fillInstr?topic.fillInstr():L('Setze das passende Wort ein.','Fill in the correct word.');out.push(it)}
  return out;
 }
-
-/* ===== Zustand / Bildschirme ===== */
-let screen='home',topic=null,items=[],idx=0,score=0,results=[],answered=false,infinite=false,built=[],sheetItems=[];
-const typeLabel=k=>{const t=TYPES().find(x=>x.k===k);return t?t.icon+' '+t.label:k};
+let screen='home',items=[],idx=0,score=0,results=[],answered=false,infinite=false,built=[],sheetItems=[];
+const typeLabel=k=>{const t=topic.types().find(x=>x.k===k);return t?t.icon+' '+t.label:k};
 function setHeader(){
- document.getElementById('rulesBtn').style.display=topic?'':'none';document.getElementById('rulesBtn').textContent='📘 '+L('Regeln','Rules');
+ const rb=document.getElementById('rulesBtn');rb.style.display=topic?'':'none';rb.textContent='📘 '+L('Regeln','Rules');
  document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
 }
 function renderHome(){
@@ -390,25 +854,25 @@ function renderHome(){
  app.innerHTML=`<div class="card"><h2>${L('Thema wählen','Choose a topic')}</h2>
   <div class="tiles">
    <a class="tile" href="https://novarion-desk.github.io/tensetrainer/"><span class="ic">⏱️</span><b>Tense Trainer</b><small>${L('Zeitformen üben (eigene App)','Practise tenses (separate app)')}</small></a>
-   ${TOPICS.map(t=>t.ready?`<button class="tile" data-topic="${t.id}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small></button>`:`<div class="tile soon"><span class="badge">${L('bald','soon')}</span><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small></div>`).join('')}
+   ${TOPICS.map(t=>`<button class="tile" data-topic="${t.id}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small></button>`).join('')}
   </div></div>`;
  app.onclick=e=>{const b=e.target.closest('[data-topic]');if(b)openTopic(b.dataset.topic)};
 }
 function openTopic(id){topic=TOPICS.find(t=>t.id===id);renderSetup()}
 function renderSetup(){
  screen='setup';items=[];setHeader();
- const A=S.lvl==='A';
+ const st=ST[topic.id],subs=topic.subs(),C0=S.lvl==='C';
+ const subOn=k=>st.subs.includes(k)&&!(topic.id==='q'&&C0&&k==='PaS');
  app.innerHTML=`
  <button class="btn-link" id="homeBtn">‹ ${L('Themen','Topics')}</button>
  <h1 style="margin:6px 0 14px;font-size:24px">${topic.ic} ${topic.name()}</h1>
  <div class="card"><h2>${L('1 · Niveau','1 · Level')}</h2>
   <div class="opt-row"><div class="seg" id="lvlSeg">${[['C',L('C (einfach)','C (easy)')],['B','B'],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-lv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
-  <p class="muted" style="margin:6px 0 0;font-size:.9em">${L('C: nur Present Simple. B: Present und Past Simple. A: zusätzlich Fragewörter (What, Where, Who).','C: Present Simple only. B: Present and Past Simple. A: plus question words (What, Where, Who).')}</p></div>
- <div class="card"><h2>${L('2 · Zeitformen','2 · Tenses')}</h2>
-  <div class="chips">${['PS','PaS'].map(k=>`<button class="chip ${effTenses().includes(k)?'on':''}" data-t="${k}" ${S.lvl==='C'&&k==='PaS'?'disabled style="opacity:.4"':''}>${TNAME[k]}</button>`).join('')}</div></div>
- <div class="card"><h2>${L('3 · Übungsart','3 · Exercise type')}</h2>
-  <div class="modes">${TYPES().filter(t=>!t.A||A).map(m=>`<button class="mode ${S.types.includes(m.k)?'on':''}" data-m="${m.k}"><b>${m.icon} ${m.label}</b><small>${m.desc}</small></button>`).join('')}</div></div>
- <div class="card"><h2>${L('4 · Anzahl Aufgaben','4 · Number of exercises')}</h2>
+  <p class="muted" style="margin:6px 0 0;font-size:.9em">${topic.lvDesc()}</p></div>
+ ${subs.length?`<div class="card"><h2>2 · ${topic.subTitle()}</h2><div class="chips">${subs.map(s=>`<button class="chip ${subOn(s.k)?'on':''}" data-t="${s.k}" ${topic.id==='q'&&C0&&s.noC?'disabled style="opacity:.4"':''}>${s.n}</button>`).join('')}</div></div>`:''}
+ <div class="card"><h2>${subs.length?3:2} · ${L('Übungsart','Exercise type')}</h2>
+  <div class="modes">${topic.types().filter(t=>!t.A||S.lvl==='A').map(m=>`<button class="mode ${st.types.includes(m.k)?'on':''}" data-m="${m.k}"><b>${m.icon} ${m.label}</b><small>${m.desc}</small></button>`).join('')}</div></div>
+ <div class="card"><h2>${subs.length?4:3} · ${L('Anzahl Aufgaben','Number of exercises')}</h2>
   <div class="seg">${[10,15,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}">${n||'∞'}</button>`).join('')}</div></div>
  <button class="primary" id="start">${L("Los geht's →","Let's go →")}</button>
  <button class="secondary" id="sheetBtn" style="margin-top:10px">${L('🖨 Arbeitsblatt (Vorschau, PDF / Druck)','🖨 Worksheet (preview, PDF / print)')}</button>
@@ -417,8 +881,12 @@ function renderSetup(){
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='homeBtn')return renderHome();
   if(b.dataset.lv){S.lvl=b.dataset.lv}
-  else if(b.dataset.t){const k=b.dataset.t;if(S.lvl==='C')return;S.tenses=S.tenses.includes(k)?S.tenses.filter(x=>x!==k):['PS','PaS'].filter(x=>x===k||S.tenses.includes(x));if(!S.tenses.length)S.tenses=[k==='PS'?'PaS':'PS']}
-  else if(b.dataset.m){const k=b.dataset.m;S.types=S.types.includes(k)?S.types.filter(x=>x!==k):ALL_TYPES.filter(x=>x===k||S.types.includes(x))}
+  else if(b.dataset.t){
+   const k=b.dataset.t;if(b.disabled)return;
+   const all=subs.map(s=>s.k);
+   if(st.subs.includes(k)){if(st.subs.length>1)st.subs=st.subs.filter(x=>x!==k)}else st.subs=all.filter(x=>x===k||st.subs.includes(x));
+  }
+  else if(b.dataset.m){const k=b.dataset.m,all=topic.types().map(t=>t.k);st.types=st.types.includes(k)?st.types.filter(x=>x!==k):all.filter(x=>x===k||st.types.includes(x))}
   else if(b.dataset.n!==undefined){S.count=+b.dataset.n}
   else if(b.id==='start')return start();
   else if(b.id==='sheetBtn')return openSheet();
@@ -426,21 +894,23 @@ function renderSetup(){
   renderSetup();
  };
 }
-function chk(){const err=document.getElementById('err');if(!S.types.filter(x=>x!=='whq'||S.lvl==='A').length){err.textContent=L('Wähle mindestens eine Übungsart.','Choose at least one exercise type.');return false}return true}
+function chk(){const err=document.getElementById('err');if(!effTypes().length){err.textContent=L('Wähle mindestens eine Übungsart.','Choose at least one exercise type.');return false}return true}
 function start(){
  if(!chk())return;
- infinite=S.count===0;items=build(infinite?10:S.count);idx=0;score=0;results=[];renderTask();
+ seenG.clear();infinite=S.count===0;items=build(infinite?10:S.count);idx=0;score=0;results=[];renderTask();
 }
+const stemHtml=s=>esc(s).replace('___','<span class="gap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
 function renderTask(){
  screen='task';const it=items[idx];answered=false;built=[];
  let body='';
- const instr=`<p class="instr">${it.instr||(it.type==='fill'?L('Setze das passende Hilfsverb ein.','Fill in the correct auxiliary.'):'')}</p>`;
+ const instr=`<p class="instr">${it.instr||''}</p>`;
  if(it.type==='fill'){
-  const w=Math.max(8,it.sol.length+3);
-  body=`<p class="instr">${L('Setze das passende Hilfsverb ein.','Fill in the correct auxiliary.')} <span class="hint">(${it.hint})</span></p>
+  const w=Math.max(8,it.answers[0].length+3);
+  body=`<p class="instr">${it.instr} ${it.hint?`<span class="hint">${esc(it.hint)}</span>`:''}</p>
    <div class="sentence">${esc(it.before)}<input class="tin" id="inp" style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)}</div>`;
  }else if(it.type==='choice'){
-  body=instr+`<div class="opts" style="grid-template-columns:1fr">${it.opts.map((o,i)=>`<button data-o="${i}" style="text-align:left;font-size:18px">${esc(o)}</button>`).join('')}</div>`;
+  const short=!!it.stem;
+  body=instr+(short?`<div class="sentence">${stemHtml(it.stem)}</div>`:'')+`<div class="opts" style="grid-template-columns:${short?'repeat(auto-fit,minmax(110px,1fr))':'1fr'}">${it.opts.map((o,i)=>`<button data-o="${i}" style="${short?'':'text-align:left;font-size:18px'}">${esc(o)}</button>`).join('')}</div>`;
  }else if(it.type==='order'){
   body=instr+`<div class="built" id="built"></div><div class="wb" id="wb">${it.words.map((w,i)=>`<button data-w="${i}">${esc(w)}</button>`).join('')}</div>
    <div><button class="btn-link" id="reset">${L('↺ Zurücksetzen','↺ Reset')}</button></div>`;
@@ -482,8 +952,7 @@ function check(){
  const it=items[idx];let val;
  if(it.type==='order'){val=built.join(' ');if(!built.length)return}
  else{const inp=document.getElementById('inp');val=inp.value;if(!val.trim()){inp.focus();return}}
- const ok=it.answers.some(a=>nrm(a)===nrm(val));
- done(ok,val);
+ done(it.answers.some(a=>nrm(a)===nrm(val)),val);
 }
 function answerChoice(i){
  const it=items[idx];
@@ -500,7 +969,6 @@ function renderResults(){
  <button class="secondary" id="setup" style="margin-top:10px">${L('‹ Einstellungen','‹ Settings')}</button>`;
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='again')return start();if(b.id==='setup')return renderSetup()};
 }
-
 /* ===== Arbeitsblatt ===== */
 function openSheet(){
  if(!chk())return;
@@ -508,10 +976,14 @@ function openSheet(){
 }
 function sheetTask(it,n){
  const num=`<span class="n">${n}.</span>`;
- if(it.type==='fill')return `<div class="t"><div class="ins">${L('Setze das passende Hilfsverb ein','Fill in the correct auxiliary')} (${it.hint})</div>${num}${esc(it.before)}<span class="blank" style="width:${Math.max(9,it.sol.length+5)}ch"></span>${esc(it.after)}</div>`;
- if(it.type==='choice')return `<div class="t"><div class="ins">${it.instr}</div>${it.opts.map((o,i)=>`<div style="margin:2px 0">${i===0?num:'<span class="n" style="visibility:hidden">0.</span>'}<span class="box"></span>${esc(o)}</div>`).join('')}</div>`;
+ if(it.type==='fill')return `<div class="t"><div class="ins">${it.instr}${it.hint?' <span class="hint">'+esc(it.hint)+'</span>':''}</div>${num}${esc(it.before)}<span class="blank" style="width:${Math.max(9,it.answers[0].length+5)}ch"></span>${esc(it.after)}</div>`;
+ if(it.type==='choice')return `<div class="t"><div class="ins">${it.instr}</div>${it.stem?`<div>${num}${esc(it.stem)}</div><div>${it.opts.map(o=>`<span class="opt"><span class="box"></span>${esc(o)}</span>`).join('')}</div>`:it.opts.map((o,i)=>`<div style="margin:2px 0">${i===0?num:'<span class="n" style="visibility:hidden">0.</span>'}<span class="box"></span>${esc(o)}</div>`).join('')}</div>`;
  if(it.type==='order')return `<div class="t"><div class="ins">${it.instr}</div>${num}<span class="wbx">${it.words.map(w=>`<span>${esc(w)}</span>`).join('')}</span><div class="wl"></div></div>`;
  return `<div class="t"><div class="ins">${it.instr}</div>${num}${it.src}<div class="wl"></div></div>`;
+}
+function subLine(){
+ const st=ST[topic.id],s=topic.subs().filter(x=>st.subs.includes(x.k)&&!(topic.id==='q'&&S.lvl==='C'&&x.noC)).map(x=>x.n);
+ return (s.length?s.join(', ')+' · ':'')+L('Niveau','Level')+' '+S.lvl;
 }
 function renderSheet(){
  screen='sheet';
@@ -522,7 +994,7 @@ function renderSheet(){
   <button class="secondary" id="shMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button>
   <button class="primary" id="shPrint">${L('🖨 Drucken / PDF','🖨 Print / PDF')}</button>
  </div>
- <div class="sheet"><h1>${esc(title)}</h1><p class="sub">${esc(effTenses().map(k=>TNAME[k]).join(', '))} · ${L('Niveau','Level')} ${S.lvl}</p>
+ <div class="sheet"><h1>${esc(title)}</h1><p class="sub">${esc(subLine())}</p>
   <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span></div>
   ${sheetItems.map((it,i)=>sheetTask(it,i+1)).join('')}</div>
  <div class="sheet sol"><h1>${L('Lösungen','Answers')}</h1><p class="sub">${esc(title)}</p>
@@ -533,21 +1005,19 @@ function renderSheet(){
   if(b.id==='shPrint')return window.print()};
  window.scrollTo({top:0});
 }
-
 /* ===== Regeln ===== */
 function openRules(){
  modalBody.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">📘 ${L('Regeln','Rules')} – ${topic?topic.name():''}</h2><button class="btn-link" id="mClose">✕</button></div>
-  <ul class="rl">${RULES().map(r=>`<li><b>${r[0]}</b>${r[1]?'<br>'+r[1]:''}${r[2]?'<br><em>'+r[2]+'</em>':''}</li>`).join('')}</ul>`;
+  <ul class="rl">${topic.rules().map(r=>`<li><b>${r[0]}</b>${r[1]?'<br>'+r[1]:''}${r[2]?'<br><em>'+r[2]+'</em>':''}</li>`).join('')}</ul>`;
  modal.classList.remove('hidden');modal.scrollTop=0;
 }
 function closeModal(){modal.classList.add('hidden')}
 modal.addEventListener('click',e=>{if(e.target===modal||e.target.id==='mClose')closeModal()});
-
 /* ===== Kopfzeile ===== */
 document.getElementById('rulesBtn').onclick=openRules;
 document.getElementById('feedbackBtn').onclick=()=>openAppFeedback();
 document.getElementById('langSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;LANG=b.dataset.l;try{localStorage.setItem('el-lang',LANG)}catch(err){}document.documentElement.lang=LANG;redraw()};
-function redraw(){setHeader();if(screen==='home')renderHome();else if(screen==='setup')renderSetup();else if(screen==='sheet')renderSheet();else if(screen==='results')renderResults();/* Aufgabe bleibt unverändert */}
+function redraw(){setHeader();if(screen==='home')renderHome();else if(screen==='setup')renderSetup();else if(screen==='sheet')renderSheet();else if(screen==='results')renderResults();if(!modal.classList.contains('hidden'))openRules()}
 document.getElementById('logoLink').onclick=e=>{e.preventDefault();renderHome()};
 const FS=[.9,1,1.12,1.25];let fsi=1;
 try{const v=+localStorage.getItem('el-fs');if(v>=0&&v<FS.length)fsi=v}catch(e){}
@@ -559,8 +1029,6 @@ function openAppFeedback(){var q=new URLSearchParams({app:'englishlab',version:A
 document.documentElement.lang=LANG;
 renderHome();
 
-
-/* ===== Zurück-Geste (Handy): ein Schritt zurück statt App schliessen ===== */
 (function(){
  let depth=0,ign=0,raf=0;
  const isSub=()=>{try{return !!(screen!=='home'||!modal.classList.contains('hidden'))}catch(e){return false}};
