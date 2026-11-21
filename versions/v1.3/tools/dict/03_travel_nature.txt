@@ -1,0 +1,496 @@
+# Reisen und Verkehr
+travel|v|reisen
+travel|n|das Reisen
+trip|n|der Ausflug, die Reise
+journey|n|die Reise, die Fahrt
+tour|n|die Rundreise, die Tour
+holiday|n|der Urlaub, der Feiertag
+holidays|n|die Ferien
+vacation|n|der Urlaub
+abroad|adv|im Ausland
+passport|n|der Pass
+visa|n|das Visum
+ticket|n|das Ticket, die Fahrkarte
+luggage|n|das Gepäck
+baggage|n|das Gepäck
+suitcase|n|der Koffer
+backpack|n|der Rucksack
+bag|n|die Tasche
+map|n|die Landkarte
+guidebook|n|der Reiseführer
+timetable|n|der Fahrplan
+platform|n|das Gleis, der Bahnsteig
+station|n|der Bahnhof, die Station
+airport|n|der Flughafen
+harbour|n|der Hafen
+port|n|der Hafen
+bus stop|n|die Bushaltestelle
+terminal|n|das Terminal
+departure|n|die Abfahrt, der Abflug
+arrival|n|die Ankunft
+delay|n|die Verspätung
+delay|v|verzögern
+gate|n|der Flugsteig
+check-in|n|der Check-in
+customs|n|der Zoll
+security|n|die Sicherheit, die Sicherheitskontrolle
+single|n|die einfache Fahrt
+return|n|die Hin- und Rückfahrt
+return ticket|n|das Retourbillett
+car|n|das Auto
+bus|n|der Bus
+coach|n|der Reisebus
+train|n|der Zug
+tram|n|das Tram
+underground|n|die U-Bahn
+subway|n|die U-Bahn
+taxi|n|das Taxi
+plane|n|das Flugzeug
+aeroplane|n|das Flugzeug
+helicopter|n|der Hubschrauber
+boat|n|das Boot
+ship|n|das Schiff
+ferry|n|die Fähre
+bike|n|das Fahrrad
+bicycle|n|das Fahrrad
+motorbike|n|das Motorrad
+scooter|n|der Roller
+lorry|n|der Lastwagen
+truck|n|der Lastwagen
+van|n|der Lieferwagen
+caravan|n|der Wohnwagen
+pilot|n|der Pilot
+driver|n|der Fahrer
+passenger|n|der Passagier
+captain|n|der Kapitän
+crew|n|die Besatzung
+fly|v|fliegen
+flight|n|der Flug
+drive|v|fahren (Auto)
+ride|v|reiten, fahren
+sail|v|segeln
+cycle|v|Rad fahren
+walk|v|gehen, spazieren
+run|v|rennen, laufen
+catch|v|erwischen, nehmen (Bus)
+miss|v|verpassen
+get on|phr|einsteigen
+get off|phr|aussteigen
+get in|phr|einsteigen (Auto)
+get out|phr|aussteigen (Auto)
+change|v|umsteigen, wechseln
+arrive|v|ankommen
+depart|v|abfahren
+leave|v|abfahren, verlassen
+stay|v|bleiben, übernachten
+book|v|buchen
+reserve|v|reservieren
+pack|v|packen
+unpack|v|auspacken
+take off|phr|abheben
+land|v|landen
+park|v|parken
+stop|v|anhalten
+speed|n|die Geschwindigkeit
+fast|adj|schnell
+slow|adj|langsam
+late|adj|spät, verspätet
+early|adj|früh
+on time|phr|pünktlich
+petrol|n|das Benzin
+traffic|n|der Verkehr
+traffic jam|n|der Stau
+accident|n|der Unfall
+seat belt|n|der Sicherheitsgurt
+helmet|n|der Helm
+engine|n|der Motor
+wheel|n|das Rad
+tyre|n|der Reifen
+road sign|n|das Verkehrsschild
+motorway|n|die Autobahn
+speed limit|n|die Geschwindigkeitsbegrenzung
+hotel|n|das Hotel
+room service|n|der Zimmerservice
+reception|n|die Rezeption
+single room|n|das Einzelzimmer
+double room|n|das Doppelzimmer
+campsite|n|der Campingplatz
+tent|n|das Zelt
+sleeping bag|n|der Schlafsack
+youth hostel|n|die Jugendherberge
+beach|n|der Strand
+sea|n|das Meer
+seaside|n|die Küste
+coast|n|die Küste
+island|n|die Insel
+sand|n|der Sand
+sunshine|n|der Sonnenschein
+sunscreen|n|die Sonnencreme
+souvenir|n|das Souvenir
+postcard|n|die Postkarte
+camera|n|die Kamera
+photo|n|das Foto
+photograph|n|die Fotografie
+sightseeing|n|die Besichtigung
+adventure|n|das Abenteuer
+explore|v|erkunden
+visit|v|besuchen
+visit|n|der Besuch
+# Länder und Nationalitäten
+country|n|das Land
+nationality|n|die Nationalität
+language|n|die Sprache
+Switzerland|n|die Schweiz
+Swiss|adj|schweizerisch
+Germany|n|Deutschland
+German|adj|deutsch
+Austria|n|Österreich
+Austrian|adj|österreichisch
+France|n|Frankreich
+French|adj|französisch
+Italy|n|Italien
+Italian|adj|italienisch
+Spain|n|Spanien
+Spanish|adj|spanisch
+Portugal|n|Portugal
+Portuguese|adj|portugiesisch
+Britain|n|Grossbritannien
+British|adj|britisch
+England|n|England
+English|adj|englisch
+Scotland|n|Schottland
+Scottish|adj|schottisch
+Wales|n|Wales
+Welsh|adj|walisisch
+Ireland|n|Irland
+Irish|adj|irisch
+the United Kingdom|n|das Vereinigte Königreich
+the USA|n|die USA
+American|adj|amerikanisch
+Canada|n|Kanada
+Canadian|adj|kanadisch
+Australia|n|Australien
+Australian|adj|australisch
+New Zealand|n|Neuseeland
+Mexico|n|Mexiko
+Mexican|adj|mexikanisch
+Brazil|n|Brasilien
+Brazilian|adj|brasilianisch
+Argentina|n|Argentinien
+Chile|n|Chile
+Peru|n|Peru
+Cuba|n|Kuba
+Greece|n|Griechenland
+Greek|adj|griechisch
+Turkey|n|die Türkei
+Turkish|adj|türkisch
+Russia|n|Russland
+Russian|adj|russisch
+Poland|n|Polen
+Polish|adj|polnisch
+Sweden|n|Schweden
+Swedish|adj|schwedisch
+Norway|n|Norwegen
+Norwegian|adj|norwegisch
+Denmark|n|Dänemark
+Danish|adj|dänisch
+Finland|n|Finnland
+Finnish|adj|finnisch
+the Netherlands|n|die Niederlande
+Dutch|adj|niederländisch
+Belgium|n|Belgien
+Belgian|adj|belgisch
+Croatia|n|Kroatien
+Serbia|n|Serbien
+Kosovo|n|Kosovo
+Albania|n|Albanien
+Ukraine|n|die Ukraine
+Hungary|n|Ungarn
+Czech Republic|n|Tschechien
+China|n|China
+Chinese|adj|chinesisch
+Japan|n|Japan
+Japanese|adj|japanisch
+Korea|n|Korea
+India|n|Indien
+Indian|adj|indisch
+Pakistan|n|Pakistan
+Thailand|n|Thailand
+Vietnam|n|Vietnam
+Egypt|n|Ägypten
+Egyptian|adj|ägyptisch
+Morocco|n|Marokko
+Tunisia|n|Tunesien
+Nigeria|n|Nigeria
+Kenya|n|Kenia
+Ethiopia|n|Äthiopien
+Eritrea|n|Eritrea
+Somalia|n|Somalia
+South Africa|n|Südafrika
+Syria|n|Syrien
+Iran|n|der Iran
+Iraq|n|der Irak
+Israel|n|Israel
+Afghanistan|n|Afghanistan
+Sri Lanka|n|Sri Lanka
+Philippines|n|die Philippinen
+Indonesia|n|Indonesien
+Europe|n|Europa
+European|adj|europäisch
+Asia|n|Asien
+Africa|n|Afrika
+America|n|Amerika
+North America|n|Nordamerika
+South America|n|Südamerika
+Antarctica|n|die Antarktis
+London|n|London
+Paris|n|Paris
+Berlin|n|Berlin
+Rome|n|Rom
+Vienna|n|Wien
+Zurich|n|Zürich
+Geneva|n|Genf
+Basel|n|Basel
+Bern|n|Bern
+New York|n|New York
+# Natur und Landschaft
+nature|n|die Natur
+environment|n|die Umwelt
+world|n|die Welt
+earth|n|die Erde
+planet|n|der Planet
+sun|n|die Sonne
+moon|n|der Mond
+star|n|der Stern
+sky|n|der Himmel
+cloud|n|die Wolke
+space|n|der Weltraum, der Platz
+mountain|n|der Berg
+hill|n|der Hügel
+valley|n|das Tal
+peak|n|der Gipfel
+cliff|n|die Klippe
+cave|n|die Höhle
+rock|n|der Fels, der Stein
+stone|n|der Stein
+sand|n|der Sand
+soil|n|der Boden, die Erde
+ground|n|der Boden
+field|n|das Feld
+meadow|n|die Wiese
+forest|n|der Wald
+wood|n|das Holz, der Wald
+jungle|n|der Dschungel
+desert|n|die Wüste
+plain|n|die Ebene
+lake|n|der See
+river|n|der Fluss
+stream|n|der Bach
+waterfall|n|der Wasserfall
+pond|n|der Teich
+ocean|n|der Ozean
+sea|n|das Meer
+wave|n|die Welle
+beach|n|der Strand
+island|n|die Insel
+glacier|n|der Gletscher
+volcano|n|der Vulkan
+earthquake|n|das Erdbeben
+flood|n|die Überschwemmung
+fire|n|das Feuer, der Brand
+storm|n|der Sturm
+tree|n|der Baum
+plant|n|die Pflanze
+flower|n|die Blume
+grass|n|das Gras
+leaf|n|das Blatt
+leaves|n|die Blätter
+branch|n|der Ast
+root|n|die Wurzel
+seed|n|der Same
+bush|n|der Busch
+rose|n|die Rose
+oak|n|die Eiche
+pine|n|die Kiefer
+path|n|der Weg, der Pfad
+trail|n|der Wanderweg
+view|n|die Aussicht
+scenery|n|die Landschaft
+landscape|n|die Landschaft
+wildlife|n|die Tierwelt
+resource|n|die Ressource
+energy|n|die Energie
+oil|n|das Öl
+coal|n|die Kohle
+gas|n|das Gas
+solar|adj|Solar-
+wind|n|der Wind
+power|n|die Kraft, der Strom
+pollution|n|die Umweltverschmutzung
+waste|n|der Abfall
+waste|v|verschwenden
+recycle|v|recyceln
+recycling|n|das Recycling
+protect|v|schützen
+save|v|retten, sparen
+damage|v|beschädigen
+damage|n|der Schaden
+destroy|v|zerstören
+climate|n|das Klima
+climate change|n|der Klimawandel
+global warming|n|die globale Erwärmung
+endangered|adj|vom Aussterben bedroht
+extinct|adj|ausgestorben
+natural|adj|natürlich
+wild|adj|wild
+green|adj|umweltfreundlich, grün
+# Wetter
+weather|n|das Wetter
+forecast|n|die Vorhersage
+temperature|n|die Temperatur
+degree|n|der Grad
+sunny|adj|sonnig
+cloudy|adj|bewölkt
+rainy|adj|regnerisch
+windy|adj|windig
+foggy|adj|neblig
+stormy|adj|stürmisch
+snowy|adj|verschneit
+icy|adj|eisig
+hot|adj|heiss
+warm|adj|warm
+cool|adj|kühl
+cold|adj|kalt
+freezing|adj|eiskalt
+mild|adj|mild
+dry|adj|trocken
+wet|adj|nass
+humid|adj|feucht
+rain|n|der Regen
+rain|v|regnen
+snow|n|der Schnee
+snow|v|schneien
+hail|n|der Hagel
+fog|n|der Nebel
+mist|n|der Dunst
+frost|n|der Frost
+ice|n|das Eis
+thunder|n|der Donner
+lightning|n|der Blitz
+thunderstorm|n|das Gewitter
+breeze|n|die Brise
+shower|n|der Schauer
+puddle|n|die Pfütze
+rainbow|n|der Regenbogen
+heatwave|n|die Hitzewelle
+drought|n|die Dürre
+season|n|die Jahreszeit
+spring|n|der Frühling
+summer|n|der Sommer
+autumn|n|der Herbst
+fall|n|der Herbst (AE)
+winter|n|der Winter
+shine|v|scheinen
+melt|v|schmelzen
+freeze|v|frieren, gefrieren
+blow|v|wehen, blasen
+fall|v|fallen
+# Tiere
+animal|n|das Tier
+pet|n|das Haustier
+wild animal|n|das Wildtier
+dog|n|der Hund
+puppy|n|der Welpe
+cat|n|die Katze
+kitten|n|das Kätzchen
+rabbit|n|das Kaninchen
+hamster|n|der Hamster
+guinea pig|n|das Meerschweinchen
+mouse|n|die Maus
+mice|n|die Mäuse
+rat|n|die Ratte
+horse|n|das Pferd
+pony|n|das Pony
+donkey|n|der Esel
+cow|n|die Kuh
+bull|n|der Stier
+calf|n|das Kalb
+sheep|n|das Schaf
+lamb|n|das Lamm
+goat|n|die Ziege
+pig|n|das Schwein
+chicken|n|das Huhn
+hen|n|die Henne
+cock|n|der Hahn
+duck|n|die Ente
+goose|n|die Gans
+turkey|n|der Truthahn
+bird|n|der Vogel
+eagle|n|der Adler
+owl|n|die Eule
+parrot|n|der Papagei
+penguin|n|der Pinguin
+swan|n|der Schwan
+pigeon|n|die Taube
+crow|n|die Krähe
+fish|n|der Fisch
+shark|n|der Hai
+whale|n|der Wal
+dolphin|n|der Delfin
+seal|n|die Robbe
+octopus|n|der Krake
+crab|n|die Krabbe
+jellyfish|n|die Qualle
+frog|n|der Frosch
+snake|n|die Schlange
+lizard|n|die Eidechse
+turtle|n|die Schildkröte
+crocodile|n|das Krokodil
+lion|n|der Löwe
+tiger|n|der Tiger
+leopard|n|der Leopard
+elephant|n|der Elefant
+giraffe|n|die Giraffe
+zebra|n|das Zebra
+rhino|n|das Nashorn
+hippo|n|das Nilpferd
+monkey|n|der Affe
+gorilla|n|der Gorilla
+bear|n|der Bär
+polar bear|n|der Eisbär
+panda|n|der Panda
+wolf|n|der Wolf
+fox|n|der Fuchs
+deer|n|der Hirsch, das Reh
+squirrel|n|das Eichhörnchen
+hedgehog|n|der Igel
+bat|n|die Fledermaus
+kangaroo|n|das Känguru
+camel|n|das Kamel
+insect|n|das Insekt
+bee|n|die Biene
+butterfly|n|der Schmetterling
+spider|n|die Spinne
+ant|n|die Ameise
+fly|n|die Fliege
+mosquito|n|die Mücke
+wasp|n|die Wespe
+worm|n|der Wurm
+snail|n|die Schnecke
+tail|n|der Schwanz
+wing|n|der Flügel
+paw|n|die Pfote
+fur|n|das Fell
+feather|n|die Feder
+beak|n|der Schnabel
+nest|n|das Nest
+egg|n|das Ei
+cage|n|der Käfig
+zoo|n|der Zoo
+farm|n|der Bauernhof
+farmer|n|der Bauer
+feed|v|füttern
+hunt|v|jagen
+bite|v|beissen
+bark|v|bellen
+fur|n|das Fell

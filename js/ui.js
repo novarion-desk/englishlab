@@ -1,5 +1,5 @@
 /* ===== Zustand ===== */
-let topic=null,screen='home',items=[],idx=0,score=0,results=[],answered=false,infinite=false,built=[],sheetItems=[];
+let testMode=false,topic=null,screen='home',items=[],idx=0,score=0,results=[],answered=false,infinite=false,built=[],sheetItems=[];
 const T={user:null,demo:/[?&]demo\b/.test(location.search),cur:0,mode:'slides',pres:false,notes:true};
 const teacher=()=>!!T.user||T.demo;
 const hasEx=t=>!!t.gen;
@@ -40,7 +40,7 @@ let homeView='topics';try{if(localStorage.getItem('el-view')==='units')homeView=
 function setHH(){const h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hh',(h.offsetHeight+(window.innerWidth<=600?0:8))+'px')}
 window.addEventListener('resize',setHH);
 function renderHome(q,keep){
- screen='home';topic=null;setHeader();setHH();
+ testMode=false;screen='home';topic=null;setHeader();setHH();
  q=(q||'').trim().toLowerCase();
  const match=t=>!q||(t.name()+' '+t.desc()).toLowerCase().includes(q);
  const card=(t,stg)=>{const g=grpOf(t);const ss=stg?stagesOf(t.id):[];const tag=ss.length?`<i class="stg">${ss.length>1?L('Jahr 1/2 + 3','Year 1/2 + 3'):stageName(ss[0])}</i>`:'';return `<div class="tile${t.feat?' feat':''}" data-topic="${t.id}" style="--c:${g.c}">${tag}<span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
@@ -153,14 +153,15 @@ function renderTask(){
  }
  const auto=(it.type==='choice')?'':`<button class="primary" id="go">${L('Prüfen','Check')}</button>`;
  app.innerHTML=`
- <div class="qtop"><button class="btn-link" id="quit">${infinite?L('✓ Fertig','✓ Done'):L('✕ Beenden','✕ Quit')}</button><span>${infinite?L('Aufgabe ','Exercise ')+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>⭐ ${score}</span></div>
+ <div class="qtop"><button class="btn-link" id="quit">${infinite?L('✓ Fertig','✓ Done'):L('✕ Beenden','✕ Quit')}</button><span>${infinite?L('Aufgabe ','Exercise ')+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>${testMode?'':'⭐ '+score}</span></div>
  ${infinite?'':`<div class="bar"><div style="width:${idx/items.length*100}%"></div></div>`}
- <div class="card"><div class="tag">${typeLabel(it.kind)}</div>${body}<div id="fb"></div><div class="actions">${auto}</div></div>`;
+ <div class="card"><div class="tag">${testMode?(it.tic||'')+' '+esc(it.tname||''):typeLabel(it.kind)}</div>${body}<div id="fb"></div><div class="actions">${auto}</div></div>`;
  app.onclick=e=>{
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='quit'){
    if(infinite&&results.length)return renderResults();
    if(results.length&&!confirm(L('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.','Really quit this round?\nYour answers so far will be lost.')))return;
+   if(testMode){testMode=false;return renderUnitTest(UT.s,UT.u)}
    return renderPractice();
   }
   if(b.dataset.o!==undefined&&!answered)return answerChoice(+b.dataset.o);
@@ -175,6 +176,7 @@ function done(ok,val){
  const it=items[idx];answered=true;if(ok)score++;
  results.push({it,ok,val});
  const fb=document.getElementById('fb');
+ if(testMode){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
  fb.innerHTML=ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why}</div></div>`;
  const go=document.getElementById('go');
@@ -191,11 +193,12 @@ function check(){
 }
 function answerChoice(i){
  const it=items[idx];
- app.querySelectorAll('[data-o]').forEach((b,j)=>{b.disabled=true;if(j===it.correct)b.classList.add('right');else if(j===i)b.classList.add('wrong')});
+ app.querySelectorAll('[data-o]').forEach((b,j)=>{b.disabled=true;if(testMode){if(j===i)b.classList.add('chosen')}else if(j===it.correct)b.classList.add('right');else if(j===i)b.classList.add('wrong')});
  done(i===it.correct,it.opts[i]);
 }
 function next(){idx++;if(!infinite&&idx>=items.length)return renderResults();if(infinite&&idx>=items.length)items.push(...build(5));renderTask()}
 function renderResults(){
+ if(testMode)return renderTestResult();
  screen='results';const n=results.length,pct=n?Math.round(score/n*100):0;
  const wrong=results.filter(r=>!r.ok);
  const medal=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'💪';

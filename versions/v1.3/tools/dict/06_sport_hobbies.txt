@@ -1,0 +1,153 @@
+# Sport und Freizeit
+sport|n|der Sport
+game|n|das Spiel
+match|n|das Spiel, das Match
+team|n|die Mannschaft
+player|n|der Spieler
+coach|n|der Trainer
+referee|n|der Schiedsrichter
+fan|n|der Fan
+supporter|n|der Anhänger
+champion|n|der Meister
+championship|n|die Meisterschaft
+tournament|n|das Turnier
+competition|n|der Wettbewerb
+race|n|das Rennen
+prize|n|der Preis
+medal|n|die Medaille
+cup|n|der Pokal
+trophy|n|die Trophäe
+record|n|der Rekord
+score|n|der Spielstand
+score|v|ein Tor erzielen, punkten
+goal|n|das Tor, das Ziel
+point|n|der Punkt
+win|v|gewinnen
+lose|v|verlieren
+draw|n|das Unentschieden
+beat|v|schlagen
+defeat|n|die Niederlage
+victory|n|der Sieg
+winner|n|der Gewinner
+loser|n|der Verlierer
+final|n|der Final
+semi-final|n|der Halbfinal
+league|n|die Liga
+season|n|die Saison
+training|n|das Training
+train|v|trainieren
+warm up|phr|aufwärmen
+exercise|v|sich bewegen
+stretch|v|dehnen
+jump|v|springen
+throw|v|werfen
+catch|v|fangen
+kick|v|treten, kicken
+hit|v|schlagen
+pass|v|zuspielen
+shoot|v|schiessen
+swim|v|schwimmen
+dive|v|tauchen
+climb|v|klettern
+ski|v|Ski fahren
+snowboard|v|Snowboard fahren
+skate|v|Schlittschuh laufen
+surf|v|surfen
+row|v|rudern
+sail|v|segeln
+hike|v|wandern
+jog|v|joggen
+run|v|rennen
+cycle|v|Velo fahren
+ride|v|reiten
+football|n|der Fussball
+soccer|n|der Fussball
+basketball|n|der Basketball
+volleyball|n|der Volleyball
+handball|n|der Handball
+tennis|n|das Tennis
+badminton|n|das Badminton
+table tennis|n|das Tischtennis
+golf|n|das Golf
+hockey|n|das Hockey
+ice hockey|n|das Eishockey
+baseball|n|der Baseball
+rugby|n|das Rugby
+cricket|n|das Cricket
+athletics|n|die Leichtathletik
+gymnastics|n|das Turnen
+swimming|n|das Schwimmen
+skiing|n|das Skifahren
+snowboarding|n|das Snowboarden
+skating|n|das Eislaufen
+cycling|n|das Radfahren
+climbing|n|das Klettern
+hiking|n|das Wandern
+horse riding|n|das Reiten
+fishing|n|das Fischen, das Angeln
+boxing|n|das Boxen
+judo|n|das Judo
+karate|n|das Karate
+yoga|n|das Yoga
+dancing|n|das Tanzen
+skateboarding|n|das Skateboarden
+sailing|n|das Segeln
+rowing|n|das Rudern
+pitch|n|das Spielfeld
+court|n|der Platz (Tennis)
+track|n|die Laufbahn
+pool|n|das Schwimmbecken
+ring|n|der Ring
+net|n|das Netz
+ball|n|der Ball
+bat|n|der Schläger
+racket|n|der Schläger
+stick|n|der Stock
+skis|n|die Skier
+boots|n|die Schuhe
+goggles|n|die Schwimmbrille
+helmet|n|der Helm
+kit|n|die Ausrüstung
+equipment|n|die Ausrüstung
+sportswear|n|die Sportkleidung
+fit|adj|fit
+active|adj|aktiv
+strong|adj|stark
+fast|adj|schnell
+hobby|n|das Hobby
+free time|n|die Freizeit
+spare time|n|die Freizeit
+interest|n|das Interesse
+activity|n|die Aktivität
+club|n|der Verein, der Club
+collect|v|sammeln
+collection|n|die Sammlung
+stamp|n|die Briefmarke
+chess|n|das Schach
+cards|n|die Karten
+board game|n|das Brettspiel
+puzzle|n|das Puzzle
+joke|n|der Witz
+magic|n|die Magie
+magician|n|der Zauberer
+knit|v|stricken
+sew|v|nähen
+bake|v|backen
+cook|v|kochen
+garden|v|gärtnern
+fish|v|angeln
+camp|v|zelten
+go out|phr|ausgehen
+hang out|phr|abhängen
+meet|v|treffen
+relax|v|sich entspannen
+chill|v|chillen
+stay in|phr|zu Hause bleiben
+have fun|phr|Spass haben
+fun|n|der Spass
+boring|adj|langweilig
+exciting|adj|aufregend
+thrilling|adj|spannend
+enjoyable|adj|angenehm
+dull|adj|öde
+amusing|adj|amüsant

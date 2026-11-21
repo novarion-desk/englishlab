@@ -1,0 +1,442 @@
+# Schule
+school|n|die Schule
+classroom|n|das Klassenzimmer
+teacher|n|der Lehrer, die Lehrerin
+student|n|der Schüler, der Student
+pupil|n|der Schüler, die Schülerin
+class|n|die Klasse, der Unterricht
+lesson|n|die Lektion, die Unterrichtsstunde
+subject|n|das Fach
+homework|n|die Hausaufgaben
+test|n|die Prüfung, der Test
+exam|n|die Prüfung
+mark|n|die Note
+grade|n|die Note
+break|n|die Pause
+playground|n|der Pausenplatz
+headmaster|n|der Schulleiter
+headteacher|n|der Schulleiter, die Schulleiterin
+timetable|n|der Stundenplan
+uniform|n|die Uniform
+desk|n|das Pult, der Schreibtisch
+board|n|die Tafel
+whiteboard|n|das Whiteboard
+blackboard|n|die Wandtafel
+chalk|n|die Kreide
+pen|n|der Kugelschreiber, der Stift
+pencil|n|der Bleistift
+rubber|n|der Radiergummi
+eraser|n|der Radiergummi
+ruler|n|das Lineal
+sharpener|n|der Spitzer
+notebook|n|das Heft, das Notizbuch
+textbook|n|das Lehrbuch
+dictionary|n|das Wörterbuch
+bag|n|die Tasche
+schoolbag|n|die Schultasche
+pencil case|n|das Etui, das Federmäppchen
+folder|n|der Ordner, die Mappe
+sheet|n|das Blatt
+worksheet|n|das Arbeitsblatt
+page|n|die Seite
+line|n|die Linie, die Zeile
+question|n|die Frage
+answer|n|die Antwort
+mistake|n|der Fehler
+exercise|n|die Übung
+project|n|das Projekt
+presentation|n|die Präsentation
+group|n|die Gruppe
+pair|n|das Paar
+partner|n|der Partner
+topic|n|das Thema
+lecture|n|der Vortrag, die Vorlesung
+library|n|die Bibliothek
+canteen|n|die Kantine, die Mensa
+gym|n|die Turnhalle
+hall|n|die Halle, der Saal
+corridor|n|der Gang, der Korridor
+staff room|n|das Lehrerzimmer
+science|n|die Naturwissenschaft
+maths|n|die Mathematik
+mathematics|n|die Mathematik
+English|n|Englisch
+German|n|Deutsch
+French|n|Französisch
+history|n|die Geschichte
+geography|n|die Geografie
+biology|n|die Biologie
+chemistry|n|die Chemie
+physics|n|die Physik
+art|n|die Kunst, das Zeichnen
+music|n|die Musik
+PE|n|der Sportunterricht
+sport|n|der Sport
+drama|n|das Theater, das Drama
+IT|n|die Informatik
+ICT|n|die Informatik
+religion|n|die Religion
+technology|n|die Technik
+study|v|lernen, studieren
+learn|v|lernen
+teach|v|unterrichten
+read|v|lesen
+write|v|schreiben
+spell|v|buchstabieren
+count|v|zählen
+draw|v|zeichnen
+paint|v|malen
+listen|v|zuhören
+repeat|v|wiederholen
+revise|v|wiederholen, repetieren
+practise|v|üben
+practice|n|die Übung, das Training
+remember|v|sich erinnern, sich merken
+forget|v|vergessen
+understand|v|verstehen
+explain|v|erklären
+translate|v|übersetzen
+pass|v|bestehen
+fail|v|durchfallen
+improve|v|verbessern
+correct|v|korrigieren
+correct|adj|richtig
+wrong|adj|falsch
+choose|v|wählen
+guess|v|raten, vermuten
+check|v|prüfen, kontrollieren
+cheat|v|schummeln
+copy|v|abschreiben, kopieren
+underline|v|unterstreichen
+circle|v|einkreisen
+match|v|zuordnen
+tick|v|abhaken
+cross out|phr|durchstreichen
+hand in|phr|abgeben
+look up|phr|nachschlagen
+fill in|phr|ausfüllen
+work out|phr|herausfinden, ausrechnen
+find out|phr|herausfinden
+join in|phr|mitmachen
+sit down|phr|sich hinsetzen
+stand up|phr|aufstehen
+come in|phr|hereinkommen
+clever|adj|klug
+intelligent|adj|intelligent
+smart|adj|schlau, elegant
+easy|adj|einfach, leicht
+difficult|adj|schwierig
+hard|adj|schwer, hart
+boring|adj|langweilig
+interesting|adj|interessant
+useful|adj|nützlich
+important|adj|wichtig
+lazy|adj|faul
+hard-working|adj|fleissig
+quiet|adj|ruhig
+noisy|adj|laut
+# Familie und Menschen
+family|n|die Familie
+parent|n|das Elternteil
+parents|n|die Eltern
+mother|n|die Mutter
+father|n|der Vater
+mum|n|die Mama
+dad|n|der Papa
+mummy|n|die Mami
+daddy|n|der Papi
+sister|n|die Schwester
+brother|n|der Bruder
+twin|n|der Zwilling
+sibling|n|das Geschwister
+child|n|das Kind
+children|n|die Kinder
+baby|n|das Baby
+son|n|der Sohn
+daughter|n|die Tochter
+grandmother|n|die Grossmutter
+grandfather|n|der Grossvater
+grandma|n|die Oma
+grandpa|n|der Opa
+grandparents|n|die Grosseltern
+grandchild|n|das Enkelkind
+aunt|n|die Tante
+uncle|n|der Onkel
+cousin|n|der Cousin, die Cousine
+nephew|n|der Neffe
+niece|n|die Nichte
+husband|n|der Ehemann
+wife|n|die Ehefrau
+partner|n|der Partner, die Partnerin
+relative|n|der Verwandte
+stepmother|n|die Stiefmutter
+stepfather|n|der Stiefvater
+godmother|n|die Patin
+adult|n|der Erwachsene
+teenager|n|der Teenager
+boy|n|der Junge
+girl|n|das Mädchen
+man|n|der Mann
+woman|n|die Frau
+men|n|die Männer
+women|n|die Frauen
+people|n|die Leute
+person|n|die Person
+friend|n|der Freund, die Freundin
+best friend|n|der beste Freund, die beste Freundin
+boyfriend|n|der Freund (Partner)
+girlfriend|n|die Freundin (Partnerin)
+classmate|n|der Klassenkamerad
+neighbour|n|der Nachbar, die Nachbarin
+neighbor|n|der Nachbar, die Nachbarin
+guest|n|der Gast
+visitor|n|der Besucher
+stranger|n|der Fremde
+member|n|das Mitglied
+team|n|das Team, die Mannschaft
+crowd|n|die Menschenmenge
+leader|n|der Anführer, der Leiter
+boss|n|der Chef
+colleague|n|der Kollege
+customer|n|der Kunde
+name|n|der Name
+surname|n|der Nachname
+first name|n|der Vorname
+nickname|n|der Spitzname
+age|n|das Alter
+birthday|n|der Geburtstag
+address|n|die Adresse
+phone number|n|die Telefonnummer
+email|n|die E-Mail
+nationality|n|die Nationalität
+married|adj|verheiratet
+single|adj|ledig, einzeln
+born|adj|geboren
+alive|adj|lebendig
+dead|adj|tot
+young|adj|jung
+old|adj|alt
+elderly|adj|älter, betagt
+# Aussehen und Eigenschaften
+tall|adj|gross (Person)
+short|adj|klein, kurz
+slim|adj|schlank
+thin|adj|dünn
+fat|adj|dick
+heavy|adj|schwer
+light|adj|leicht, hell
+strong|adj|stark
+weak|adj|schwach
+handsome|adj|gutaussehend
+pretty|adj|hübsch
+beautiful|adj|schön
+ugly|adj|hässlich
+cute|adj|süss
+attractive|adj|attraktiv
+fair|adj|hell, fair
+dark|adj|dunkel
+blond|adj|blond
+curly|adj|lockig
+straight|adj|gerade
+bald|adj|kahl
+beard|n|der Bart
+moustache|n|der Schnurrbart
+glasses|n|die Brille
+freckles|n|die Sommersprossen
+friendly|adj|freundlich
+kind|adj|nett, freundlich
+nice|adj|nett, schön
+polite|adj|höflich
+rude|adj|unhöflich
+funny|adj|lustig
+serious|adj|ernst
+shy|adj|schüchtern
+confident|adj|selbstbewusst
+brave|adj|mutig
+careful|adj|vorsichtig
+careless|adj|unvorsichtig
+honest|adj|ehrlich
+generous|adj|grosszügig
+selfish|adj|egoistisch
+patient|adj|geduldig
+creative|adj|kreativ
+talented|adj|begabt
+sporty|adj|sportlich
+helpful|adj|hilfsbereit
+loyal|adj|treu
+jealous|adj|eifersüchtig
+proud|adj|stolz
+curious|adj|neugierig
+sensible|adj|vernünftig
+sensitive|adj|empfindlich, sensibel
+cheerful|adj|fröhlich
+popular|adj|beliebt
+famous|adj|berühmt
+well-known|adj|bekannt
+# Körper
+body|n|der Körper
+head|n|der Kopf
+face|n|das Gesicht
+hair|n|das Haar, die Haare
+eye|n|das Auge
+ear|n|das Ohr
+nose|n|die Nase
+mouth|n|der Mund
+lip|n|die Lippe
+tooth|n|der Zahn
+teeth|n|die Zähne
+tongue|n|die Zunge
+neck|n|der Hals, der Nacken
+throat|n|die Kehle, der Hals
+shoulder|n|die Schulter
+arm|n|der Arm
+elbow|n|der Ellbogen
+hand|n|die Hand
+finger|n|der Finger
+thumb|n|der Daumen
+chest|n|die Brust
+back|n|der Rücken
+stomach|n|der Magen, der Bauch
+leg|n|das Bein
+knee|n|das Knie
+foot|n|der Fuss
+feet|n|die Füsse
+toe|n|der Zeh
+heel|n|die Ferse
+skin|n|die Haut
+bone|n|der Knochen
+muscle|n|der Muskel
+heart|n|das Herz
+brain|n|das Gehirn
+blood|n|das Blut
+lung|n|die Lunge
+# Gesundheit
+health|n|die Gesundheit
+healthy|adj|gesund
+ill|adj|krank
+sick|adj|krank
+well|adj|gesund, wohl
+tired|adj|müde
+sleepy|adj|schläfrig
+hungry|adj|hungrig
+thirsty|adj|durstig
+doctor|n|der Arzt, die Ärztin
+dentist|n|der Zahnarzt
+nurse|n|die Krankenschwester, der Pfleger
+hospital|n|das Spital, das Krankenhaus
+clinic|n|die Klinik
+pharmacy|n|die Apotheke
+chemist|n|die Apotheke, der Apotheker
+medicine|n|das Medikament, die Medizin
+pill|n|die Tablette
+tablet|n|die Tablette
+plaster|n|das Pflaster
+bandage|n|der Verband
+injection|n|die Spritze
+appointment|n|der Termin
+patient|n|der Patient
+cold|n|die Erkältung
+flu|n|die Grippe
+cough|n|der Husten
+fever|n|das Fieber
+temperature|n|die Temperatur, das Fieber
+headache|n|die Kopfschmerzen
+toothache|n|die Zahnschmerzen
+stomach ache|n|die Bauchschmerzen
+backache|n|die Rückenschmerzen
+sore throat|n|die Halsschmerzen
+pain|n|der Schmerz
+illness|n|die Krankheit
+disease|n|die Krankheit
+virus|n|das Virus
+allergy|n|die Allergie
+injury|n|die Verletzung
+accident|n|der Unfall
+emergency|n|der Notfall
+ambulance|n|der Krankenwagen
+cut|n|die Schnittwunde
+bruise|n|der blaue Fleck
+hurt|v|wehtun, verletzen
+ache|v|schmerzen
+bleed|v|bluten
+sneeze|v|niesen
+cough|v|husten
+break|v|brechen, kaputtmachen
+sprain|v|verstauchen
+recover|v|sich erholen
+rest|v|sich ausruhen
+rest|n|die Ruhe, die Pause
+sleep|v|schlafen
+sleep|n|der Schlaf
+dream|n|der Traum
+dream|v|träumen
+wake up|phr|aufwachen
+get up|phr|aufstehen
+lie down|phr|sich hinlegen
+feel|v|fühlen, sich fühlen
+look after|phr|sich kümmern um
+take care|phr|aufpassen
+diet|n|die Ernährung, die Diät
+exercise|n|die Bewegung, die Übung
+fit|adj|fit
+dizzy|adj|schwindlig
+weak|adj|schwach
+# Gefühle
+feeling|n|das Gefühl
+emotion|n|die Emotion
+mood|n|die Stimmung
+happy|adj|glücklich
+sad|adj|traurig
+angry|adj|wütend
+cross|adj|verärgert
+upset|adj|aufgebracht, traurig
+nervous|adj|nervös
+worried|adj|besorgt
+afraid|adj|ängstlich
+scared|adj|verängstigt
+frightened|adj|erschrocken
+excited|adj|aufgeregt
+bored|adj|gelangweilt
+surprised|adj|überrascht
+shocked|adj|schockiert
+embarrassed|adj|verlegen
+ashamed|adj|beschämt
+lonely|adj|einsam
+relaxed|adj|entspannt
+calm|adj|ruhig
+stressed|adj|gestresst
+confused|adj|verwirrt
+disappointed|adj|enttäuscht
+pleased|adj|zufrieden, erfreut
+delighted|adj|hocherfreut
+glad|adj|froh
+grateful|adj|dankbar
+annoyed|adj|genervt
+furious|adj|wütend
+terrified|adj|verängstigt
+amazed|adj|erstaunt
+interested|adj|interessiert
+love|v|lieben
+love|n|die Liebe
+like|v|mögen
+hate|v|hassen
+enjoy|v|geniessen
+prefer|v|bevorzugen
+miss|v|vermissen, verpassen
+fear|n|die Angst
+fear|v|fürchten
+laugh|v|lachen
+smile|v|lächeln
+smile|n|das Lächeln
+cry|v|weinen
+shout|v|schreien
+scream|v|schreien
+hope|v|hoffen
+hope|n|die Hoffnung
+wish|v|wünschen
+wish|n|der Wunsch
+worry|v|sich Sorgen machen
+worry|n|die Sorge
+care|v|sich kümmern
+trust|v|vertrauen
+trust|n|das Vertrauen

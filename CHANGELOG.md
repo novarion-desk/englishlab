@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.3
+- Neu: Unit-Test am Bildschirm («Test am Bildschirm lösen»). Schüler stellen sich selbst einen Test zusammen (Unit, Themen, Niveau, Aufgaben pro Thema), lösen ihn ohne Rückmeldung während des Tests und erhalten am Ende die Punktzahl, eine Übersicht pro Thema (sitzt / fast / üben), Links zu Theorie und Üben für die schwachen Themen, die Liste der Fehler mit richtiger Antwort und «Neuer Test nur mit den schwachen Themen»
+- Neu: Das letzte Testergebnis pro Thema (in Prozent) steht beim nächsten Mal bei den Themen. Gespeichert nur auf dem Gerät
+
 ## 1.2
 - Neu: Theorie drucken (A4, sauberes Layout, Notizzeilen) – Knopf «Theorie drucken» in der Theorie jedes Themas
 - Neu: Unit-Test (nur Grammatik): in der Units-Ansicht bei jeder Unit «Unit-Test». Themen, Niveau und Aufgaben pro Thema wählbar, Arbeitsblatt mit Name / Datum / Punkte und Lösungsblatt, neu mischbar

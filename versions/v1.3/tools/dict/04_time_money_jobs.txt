@@ -1,0 +1,337 @@
+# Zeit
+time|n|die Zeit, das Mal
+second|n|die Sekunde
+minute|n|die Minute
+hour|n|die Stunde
+day|n|der Tag
+week|n|die Woche
+weekend|n|das Wochenende
+month|n|der Monat
+year|n|das Jahr
+decade|n|das Jahrzehnt
+century|n|das Jahrhundert
+morning|n|der Morgen, der Vormittag
+afternoon|n|der Nachmittag
+evening|n|der Abend
+night|n|die Nacht
+midnight|n|die Mitternacht
+noon|n|der Mittag
+today|adv|heute
+tonight|adv|heute Abend
+tomorrow|adv|morgen
+yesterday|adv|gestern
+now|adv|jetzt
+then|adv|dann, damals
+soon|adv|bald
+later|adv|später
+early|adv|früh
+late|adv|spät
+already|adv|schon
+yet|adv|noch, schon
+still|adv|immer noch
+just|adv|gerade, nur
+ago|adv|vor (zeitlich)
+recently|adv|kürzlich
+lately|adv|in letzter Zeit
+once|adv|einmal
+twice|adv|zweimal
+always|adv|immer
+usually|adv|normalerweise
+often|adv|oft
+sometimes|adv|manchmal
+occasionally|adv|gelegentlich
+rarely|adv|selten
+seldom|adv|selten
+never|adv|nie
+ever|adv|je, jemals
+again|adv|wieder
+every day|phr|jeden Tag
+all day|phr|den ganzen Tag
+next week|phr|nächste Woche
+last year|phr|letztes Jahr
+in the past|phr|in der Vergangenheit
+in the future|phr|in der Zukunft
+at the moment|phr|im Moment
+at once|phr|sofort
+for a long time|phr|lange
+for ever|phr|für immer
+from time to time|phr|von Zeit zu Zeit
+in a minute|phr|gleich
+on time|phr|pünktlich
+in time|phr|rechtzeitig
+past|n|die Vergangenheit
+present|n|die Gegenwart
+future|n|die Zukunft
+date|n|das Datum
+calendar|n|der Kalender
+diary|n|das Tagebuch, der Terminkalender
+schedule|n|der Zeitplan
+deadline|n|der Termin, die Frist
+holiday|n|der Feiertag
+birthday|n|der Geburtstag
+Monday|n|der Montag
+Tuesday|n|der Dienstag
+Wednesday|n|der Mittwoch
+Thursday|n|der Donnerstag
+Friday|n|der Freitag
+Saturday|n|der Samstag
+Sunday|n|der Sonntag
+January|n|der Januar
+February|n|der Februar
+March|n|der März
+April|n|der April
+May|n|der Mai
+June|n|der Juni
+July|n|der Juli
+August|n|der August
+September|n|der September
+October|n|der Oktober
+November|n|der November
+December|n|der Dezember
+Christmas|n|Weihnachten
+Easter|n|Ostern
+New Year|n|Neujahr
+wait|v|warten
+hurry|v|sich beeilen
+hurry|n|die Eile
+delay|v|verschieben
+last|v|dauern
+begin|v|beginnen
+start|v|anfangen
+finish|v|beenden
+end|v|enden
+end|n|das Ende
+beginning|n|der Anfang
+during|prep|während
+while|conj|während
+before|prep|vor
+after|prep|nach
+until|prep|bis
+since|prep|seit
+for|prep|für, seit (Dauer)
+by|prep|bis (spätestens), von
+# Zahlen und Mengen
+number|n|die Zahl, die Nummer
+zero|n|die Null
+one|n|eins
+two|n|zwei
+three|n|drei
+four|n|vier
+five|n|fünf
+six|n|sechs
+seven|n|sieben
+eight|n|acht
+nine|n|neun
+ten|n|zehn
+eleven|n|elf
+twelve|n|zwölf
+thirteen|n|dreizehn
+twenty|n|zwanzig
+thirty|n|dreissig
+forty|n|vierzig
+fifty|n|fünfzig
+hundred|n|hundert
+thousand|n|tausend
+million|n|die Million
+first|adj|erste(r)
+second|adj|zweite(r)
+third|adj|dritte(r)
+last|adj|letzte(r)
+next|adj|nächste(r)
+half|n|die Hälfte
+quarter|n|das Viertel
+double|adj|doppelt
+pair|n|das Paar
+dozen|n|das Dutzend
+percent|n|das Prozent
+amount|n|die Menge, der Betrag
+quantity|n|die Menge
+a lot of|phr|viel
+lots of|phr|viele
+many|det|viele
+much|det|viel
+some|det|einige, etwas
+any|det|irgendein
+few|det|wenige
+little|det|wenig
+enough|adv|genug
+too|adv|zu, auch
+more|adv|mehr
+less|adv|weniger
+most|adv|am meisten
+least|adv|am wenigsten
+all|det|alle, alles
+both|det|beide
+each|det|jede(r)
+every|det|jede(r)
+none|pron|keine(r)
+plus|prep|plus
+minus|prep|minus
+add|v|addieren
+subtract|v|subtrahieren
+multiply|v|multiplizieren
+divide|v|teilen
+calculate|v|berechnen
+total|n|die Summe
+total|adj|gesamt
+average|n|der Durchschnitt
+# Einkaufen und Geld
+money|n|das Geld
+cash|n|das Bargeld
+coin|n|die Münze
+note|n|die Banknote, die Notiz
+franc|n|der Franken
+euro|n|der Euro
+dollar|n|der Dollar
+pound|n|das Pfund
+cent|n|der Cent
+price|n|der Preis
+cost|n|die Kosten
+cost|v|kosten
+expensive|adj|teuer
+cheap|adj|billig
+free|adj|gratis, frei
+pay|v|bezahlen
+spend|v|ausgeben, verbringen
+buy|v|kaufen
+sell|v|verkaufen
+borrow|v|ausleihen
+lend|v|leihen
+owe|v|schulden
+save|v|sparen
+earn|v|verdienen
+win|v|gewinnen
+lose|v|verlieren
+afford|v|sich leisten
+charge|v|verlangen
+refund|n|die Rückerstattung
+discount|n|der Rabatt
+sale|n|der Ausverkauf
+offer|n|das Angebot
+bargain|n|das Schnäppchen
+receipt|n|die Quittung
+change|n|das Wechselgeld
+credit card|n|die Kreditkarte
+bank account|n|das Bankkonto
+account|n|das Konto
+bank|n|die Bank
+loan|n|der Kredit
+debt|n|die Schulden
+pocket money|n|das Taschengeld
+salary|n|der Lohn, das Gehalt
+wage|n|der Lohn
+income|n|das Einkommen
+tax|n|die Steuer
+rich|adj|reich
+poor|adj|arm
+wealthy|adj|wohlhabend
+shop assistant|n|der Verkäufer
+cashier|n|der Kassierer
+checkout|n|die Kasse
+till|n|die Kasse
+trolley|n|der Einkaufswagen
+basket|n|der Korb
+shopping|n|das Einkaufen
+shopping list|n|die Einkaufsliste
+customer|n|der Kunde
+brand|n|die Marke
+product|n|das Produkt
+goods|n|die Waren
+item|n|der Artikel
+online shop|n|der Online-Shop
+order|v|bestellen
+order|n|die Bestellung
+delivery|n|die Lieferung
+deliver|v|liefern
+return|v|zurückbringen
+exchange|v|umtauschen
+open|adj|offen
+closed|adj|geschlossen
+# Berufe
+job|n|der Beruf, die Stelle
+work|n|die Arbeit
+work|v|arbeiten
+career|n|die Karriere
+profession|n|der Beruf
+occupation|n|der Beruf
+employee|n|der Angestellte
+employer|n|der Arbeitgeber
+unemployed|adj|arbeitslos
+apply|v|sich bewerben
+application|n|die Bewerbung
+interview|n|das Vorstellungsgespräch, das Interview
+CV|n|der Lebenslauf
+apprentice|n|der Lehrling
+apprenticeship|n|die Lehre
+training|n|die Ausbildung
+qualification|n|die Qualifikation
+experience|n|die Erfahrung
+skill|n|die Fähigkeit
+salary|n|das Gehalt
+full-time|adj|Vollzeit
+part-time|adj|Teilzeit
+shift|n|die Schicht
+overtime|n|die Überstunden
+retire|v|in Pension gehen
+retired|adj|pensioniert
+actor|n|der Schauspieler
+actress|n|die Schauspielerin
+architect|n|der Architekt
+artist|n|der Künstler
+baker|n|der Bäcker
+builder|n|der Bauarbeiter
+butcher|n|der Metzger
+carpenter|n|der Schreiner
+cleaner|n|der Reinigungsangestellte
+dentist|n|der Zahnarzt
+designer|n|der Designer
+doctor|n|der Arzt
+driver|n|der Fahrer
+electrician|n|der Elektriker
+engineer|n|der Ingenieur
+farmer|n|der Bauer
+firefighter|n|der Feuerwehrmann
+fisherman|n|der Fischer
+florist|n|der Florist
+footballer|n|der Fussballspieler
+gardener|n|der Gärtner
+hairdresser|n|der Coiffeur, der Friseur
+journalist|n|der Journalist
+judge|n|der Richter
+lawyer|n|der Anwalt
+manager|n|der Manager, der Leiter
+mechanic|n|der Mechaniker
+musician|n|der Musiker
+nurse|n|die Krankenschwester
+painter|n|der Maler
+pilot|n|der Pilot
+plumber|n|der Sanitärinstallateur
+police officer|n|der Polizist
+policeman|n|der Polizist
+politician|n|der Politiker
+postman|n|der Briefträger
+programmer|n|der Programmierer
+receptionist|n|der Empfangsmitarbeiter
+reporter|n|der Reporter
+sailor|n|der Seemann
+scientist|n|der Wissenschaftler
+secretary|n|der Sekretär
+shop assistant|n|der Verkäufer
+singer|n|der Sänger
+soldier|n|der Soldat
+tailor|n|der Schneider
+taxi driver|n|der Taxifahrer
+teacher|n|der Lehrer
+vet|n|der Tierarzt
+waiter|n|der Kellner
+writer|n|der Schriftsteller
+author|n|der Autor
+director|n|der Regisseur, der Direktor
+photographer|n|der Fotograf
+dancer|n|der Tänzer
+guide|n|der Führer
+pharmacist|n|der Apotheker
+social worker|n|der Sozialarbeiter
+logistician|n|der Logistiker
+office worker|n|der Büroangestellte
+salesperson|n|der Verkäufer
