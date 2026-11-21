@@ -1,11 +1,15 @@
-# EnglishLab
+# EnglishLab 0.3
 
-Englisch-Grammatik üben (Oberstufe). Themen-Startseite, pro Thema Regeln (📘) und Übungen, Arbeitsblatt mit Lösungen, Feedback-Knopf, Zurück-Geste.
+Englisch-Grammatik üben und nachlesen (Teaching Cockpit). Eigenständige App, unabhängig vom Tense Trainer.
 
-Stand: Version 0.1 (Vorschau) – Thema «Fragen & Verneinung». Weitere Themen: Modalverben, Vergleichsformen, Mengenwörter, Präpositionen.
-Der Tense Trainer bleibt eine eigene App.
+- 21 Themen in 5 Gruppen (Zeiten, Verben, Nomen, Adjektive, Präpositionen)
+- Übungen mit Niveau A/B/C, Regeln (📘), Arbeitsblatt mit Lösungen, Feedback, DE/EN
+- Lehrerbereich: Lehrer-Login (Firebase, gleiches Projekt wie Grammatik Trainer), Folien mit Präsentationsmodus (DE/EN, Übungsfolien, Hinweise). Ohne Anmeldung nur mit `?demo`.
+- Zeiten-Themen haben Regeln und Folien; geübt wird im Tense Trainer.
 
-## Version 0.2 (Vorschau)
-Fünf Themen: Fragen und Verneinung, Modalverben, Vergleichsformen, Mengenwörter, Präpositionen.
-Pro Thema: Regeln (📘, DE/EN), Niveau C/B/A, Unterthemen, mehrere Übungsarten, Arbeitsblatt mit Lösungen, Feedback, Zurück-Geste.
-Noch nicht veröffentlicht. Inhalte warten auf den Faktencheck.
+## Struktur
+- `index.html`, `js/core.js`, `js/ui.js`, `topics/*.js` (ein Thema pro Datei), `vendor/` (Firebase)
+- Script-Tags für Themen: `python3 tools/topics_tags.py`
+
+## Neues Thema
+Neue Datei in `topics/` mit `bankTopic({...})` oder `tenseTopic({...})`, danach `tools/topics_tags.py` ausführen.
