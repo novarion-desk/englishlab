@@ -18,7 +18,7 @@ const typeLabel=k=>{const t=topic.types().find(x=>x.k===k);return t?t.icon+' '+t
 const tcol=t=>grpOf(t).c;
 function setTheme(t){document.documentElement.style.setProperty('--accent',t?tcol(t):'#4f46e5');document.documentElement.style.setProperty('--accent-bg',t?`color-mix(in srgb,${tcol(t)} 11%,#fff)`:'#eef2ff')}
 function setHeader(){
- const rb=document.getElementById('rulesBtn');rb.style.display=topic&&screen!=='slides'?'':'none';rb.textContent='📘 '+L('Regeln','Rules');const sl=document.getElementById('searchLbl');if(sl)sl.textContent=L('Suche','Search');
+ const rb=document.getElementById('rulesBtn');rb.style.display='none';rb.textContent='📘 '+L('Regeln','Rules');const vl=document.getElementById('verbsLbl');if(vl)vl.textContent=L('Verben','Verbs');const dl=document.getElementById('dictLbl');if(dl)dl.textContent=L('Wörterbuch','Dictionary');const sl=document.getElementById('searchLbl');if(sl)sl.textContent=L('Suche','Search');
  document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
  const lb=document.getElementById('loginBtn');lb.textContent=T.user?L('Lehrer ✓','Teacher ✓'):T.demo?'Demo':L('Lehrer','Teacher');lb.title=T.user?L('Abmelden','Log out'):'';
  document.body.classList.toggle('home',screen==='home');
@@ -397,13 +397,13 @@ document.getElementById('feedbackBtn').onclick=()=>openAppFeedback();
 document.getElementById('langSeg').onclick=e=>{const b=e.target.closest('button');if(!b)return;LANG=b.dataset.l;try{localStorage.setItem('el-lang',LANG)}catch(err){}document.documentElement.lang=LANG;redraw()};
 function redraw(){setHeader();
  if(screen==='home')renderHome();else if(screen==='setup')renderSetup();else if(screen==='prac')renderPractice();else if(screen==='theory')renderTheory();else if(screen==='sheet')renderSheet();else if(screen==='results')renderResults();else if(screen==='slides')renderSlides();
- if(!modal.classList.contains('hidden')){if(modalMode==='search')openSearch(true);else openRules()}if(T.pres)drawPres()}
+ if(!modal.classList.contains('hidden')){if(modalMode==='search')openSearch(true);else if(modalMode==='verbs')drawVerbs();else openRules()}if(T.pres)drawPres()}
 document.getElementById('logoLink').onclick=e=>{e.preventDefault();if(T.pres)presOff();renderHome()};
 const FS=[.9,1,1.12,1.25];let fsi=1;
 try{const v=+localStorage.getItem('el-fs');if(v>=0&&v<FS.length)fsi=v}catch(e){}
-function applyFs(){document.body.style.zoom=FS[fsi];document.getElementById('fsMinus').disabled=fsi===0;document.getElementById('fsPlus').disabled=fsi===FS.length-1;try{localStorage.setItem('el-fs',fsi)}catch(e){}}
+function applyFs(){document.body.style.zoom=FS[fsi];document.getElementById('fsMinus').disabled=fsi===0;document.getElementById('fsPlus').disabled=fsi===FS.length-1&&window.innerWidth>600;try{localStorage.setItem('el-fs',fsi)}catch(e){}}
 document.getElementById('fsMinus').onclick=()=>{if(fsi>0){fsi--;applyFs()}};
-document.getElementById('fsPlus').onclick=()=>{if(fsi<FS.length-1){fsi++;applyFs()}};
+document.getElementById('fsPlus').onclick=()=>{if(fsi<FS.length-1){fsi++;applyFs()}else if(window.innerWidth<=600){fsi=0;applyFs()}};
 applyFs();
 function openAppFeedback(){var q=new URLSearchParams({app:'englishlab',version:APP_VERSION,geraet:(navigator.userAgent||'').slice(0,120)});window.open('https://tally.so/r/GeR9re?'+q.toString(),'_blank','noopener');}
 /* ===== Start ===== */

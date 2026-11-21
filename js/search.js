@@ -126,4 +126,6 @@ function drawSearch(){
  }
  box.innerHTML=`<div class="sres">${h}</div>`+(AI.available()||teacher()?aiPanel():'');
 }
-document.getElementById('searchBtn').onclick=()=>openSearch();
+document.getElementById('searchBtn').onclick=()=>{sbox.tab='search';openSearch()};
+document.getElementById('dictBtn').onclick=()=>{sbox.tab='dict';openSearch()};
+document.getElementById('verbsBtn').onclick=()=>openVerbs();

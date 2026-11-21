@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.9
+- Neu: Feste Kopfzeile (auch auf dem Handy, kompakt mit Symbolen)
+- Neu: Verben-Knopf mit Verbenliste (unregelmässig und häufige regelmässige Verben, alle Formen beim Antippen)
+- Neu: Wörterbuch-Knopf in der Kopfzeile (öffnet Suche mit Wörterbuch)
+- Neu: Einstiegsfolie «Worum geht's?» in der Theorie aller Themen
+
 ## 0.8
 - Neu: Reiter Theorie / Üben / Folien oben in jedem Thema (Wechsel ohne Umweg über die Startseite)
 - Behoben: Rückkehr zur Themenliste scrollt zuverlässiger an die vorherige Stelle

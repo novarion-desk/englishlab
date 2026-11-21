@@ -171,6 +171,12 @@ header{flex-wrap:wrap;gap:8px}
 .theory2 .rb .sl-tip{background:#ecfdf5;border-radius:12px;padding:10px 14px}
 .theory2 .rb .sl-warn{background:#fff1f2;border-radius:12px;padding:10px 14px}
 .theory2 .rex{margin-top:8px;background:#f4f7ff;border-radius:10px;padding:8px 12px;color:#1d4ed8;font-weight:600}
+.vhead,.vmain{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.4fr;gap:6px;align-items:center}
+.vhead{font-size:12px;color:#667;padding:6px 10px;text-transform:uppercase;letter-spacing:.04em}.vhead *{font-style:normal}
+.vrow{border:2px solid var(--line);border-radius:12px;margin:5px 0;padding:8px 10px;background:#fff;cursor:pointer}
+.vrow.irr .vmain b{color:#2563eb}.vrow.open{border-color:#2563eb;background:#f4f7ff}
+.vmain em{font-style:normal;color:#556;font-size:.92em}
+.vdet{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.vdet div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px}.vdet small{display:block;color:#667;font-size:11px}.vdet p{flex-basis:100%;margin:2px 0 0;color:#b45309;font-weight:600;font-size:.9em}
 /* Reiter */
 .ttabs{display:flex;gap:6px;background:#e8ecfa;border-radius:16px;padding:5px;margin:0 0 14px}
 .ttabs button{flex:1;border:0;background:transparent;border-radius:12px;padding:11px 8px;font-weight:800;font-size:15px;color:#334;white-space:nowrap}
@@ -383,7 +389,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 #lform{display:grid;gap:10px}#lform label{font-size:13px;font-weight:700;color:var(--muted)}
 #lform input{width:100%;font:inherit;border:2px solid var(--line);border-radius:10px;padding:9px 12px}
 .lerr{color:var(--bad);font-weight:600}
-@media(max-width:600px){header{position:static}header .btn-link,header button{white-space:nowrap;font-size:14px!important;padding-left:8px!important;padding-right:8px!important}header{gap:6px!important}.hdr-r{gap:4px 8px!important;flex-wrap:wrap!important;width:100%}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
+@media(max-width:600px){header{top:0!important;margin-left:-6px;margin-right:-6px;padding:8px 8px!important;flex-wrap:nowrap!important;gap:4px!important;border-radius:0 0 16px 16px!important}header .logo{font-size:0!important}header .logo img{width:30px;height:30px}header .logo span{display:none}.lbl{display:none}#fsMinus{display:none}.hdr-r{gap:2px!important;flex-wrap:nowrap!important;flex:1;justify-content:flex-end}header .btn-link,header button{white-space:nowrap;font-size:15px!important;padding-left:7px!important;padding-right:7px!important}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
 @media print{.pres,dialog{display:none!important}}
 
 </style>
@@ -396,9 +402,11 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
       <div class="seg lang" id="langSeg" role="group" aria-label="Sprache / Language"><button data-l="de">DE</button><button data-l="en">EN</button></div>
       <button class="fs" id="fsMinus" aria-label="A−">A−</button>
       <button class="fs" id="fsPlus" aria-label="A+">A+</button>
-      <button class="btn-link" id="searchBtn">🔍 <span id="searchLbl">Suche</span></button>
+      <button class="btn-link" id="verbsBtn">📋 <span class="lbl" id="verbsLbl">Verben</span></button>
+      <button class="btn-link" id="dictBtn">📖 <span class="lbl" id="dictLbl">Wörterbuch</span></button>
+      <button class="btn-link" id="searchBtn">🔍 <span class="lbl" id="searchLbl">Suche</span></button>
       <button class="btn-link" id="rulesBtn" style="display:none">📘 Rules</button>
-      <button class="btn-link" id="feedbackBtn">💬 Feedback</button>
+      <button class="btn-link" id="feedbackBtn">💬 <span class="lbl">Feedback</span></button>
       <button class="btn-link" id="loginBtn">Lehrer</button>
     </div>
   </header>
@@ -437,9 +445,11 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 <script src="topics/zz_zeiten_ex.js"></script>
 <script src="topics/zz_zgfx.js"></script>
 <script src="topics/zzz_tensetrainer.js"></script>
+<script src="topics/zzzz_intro.js"></script>
 <script src="js/ui.js"></script>
 <script src="js/glossary.js"></script>
 <script src="js/live.js"></script>
+<script src="js/verbs.js"></script>
 <script src="js/search.js"></script>
 <script>
 
