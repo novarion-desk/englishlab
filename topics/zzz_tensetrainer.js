@@ -2,8 +2,8 @@
 (()=>{
  const ids=['zbe','zps','zpc','zpas','zpast','zpf','zfut'];
  const ts=ids.map(i=>TOPICS.find(t=>t.id===i)).filter(Boolean);
- const bank=[],err=[],why={};
- ts.forEach(t=>{t.data.bank.forEach(b=>bank.push(Object.assign({},b,{sub:t.id})));t.data.err.forEach(e=>err.push(e));why[t.id]=t._why||''});
+ const bank=[],err=[],why={_:''};
+ ts.forEach(t=>{t.data.bank.forEach(b=>bank.push(Object.assign({},b,{sub:t.id,s:b.s+'  ['+t.name()+']'})));t.data.err.forEach(e=>err.push(e));why[t.id]=t._why||''});
  const names=()=>ts.map(t=>({k:t.id,n:t.name()}));
  const top=bankTopic({id:'ztt',grp:'zeiten',ord:5,ic:'⏱️',de:'Tense Trainer',en:'Tense Trainer',desc:'Alle Zeitformen mischen und gezielt üben',
   fillInstr:()=>L('Setze das Verb in der richtigen Zeit ein.','Put the verb into the correct tense.'),fillDesc:()=>L('das Verb in der richtigen Zeit schreiben','write the verb in the correct tense'),

@@ -1,5 +1,11 @@
 # Changelog
 
+## 0.7
+- Neu: Kein Zwischenschritt mehr: Karten-Knöpfe führen direkt zu Theorie, Üben und Folien; Zurück führt zur Themenliste an dieselbe Scroll-Stelle
+- Neu: Theorie-Knopf blau, Text zentriert; Knöpfe gleich breit
+- Entfernt: Link zur separaten Tense-Trainer-App am Seitenende
+- Behoben: «undefined» in der Live-Übung (Einsetzen); Absturz beim Start des Tense Trainers auf Englisch; Zeitform bei gemischten Sätzen angezeigt; Live-Folie abgeschnitten; doppelter Hinweis; Kopfzeile auf dem Handy kompakter
+
 ## 0.6
 - Behoben: Zurückwischen geht jetzt immer eine Ebene zurück (schliesst die App nicht mehr)
 - Neu: Hub-Karten (Theorie blau, Üben grün, Folien gelb) mit Verlauf

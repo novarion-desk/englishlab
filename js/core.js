@@ -1,4 +1,4 @@
-const APP_VERSION='0.6';
+const APP_VERSION='0.7';
 const TOPICS=[];
 let LANG='de';try{const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
 const L=(de,en)=>LANG==='de'?de:en;
@@ -68,7 +68,7 @@ function bankTopic(o){
  if(o.err){
   const ep=()=>{const l=o.err.filter(e=>e[2]<=lvl());return l.length?l:o.err};
   gen.errors=()=>{
-   if(Math.random()<.5){const e=rnd(ep());return mkWords(e[0],e[1],L('Welcher Satz ist richtig?','Which sentence is correct?'),(o.errWhy||whyOf({sub:''})).split('|')[LANG==='de'?0:1])}
+   if(Math.random()<.5){const e=rnd(ep());return mkWords(e[0],e[1],L('Welcher Satz ist richtig?','Which sentence is correct?'),(o.errWhy?o.errWhy.split('|')[LANG==='de'?0:1]:whyOf({sub:''}))||'')}
    return base.errors();
   };
  }

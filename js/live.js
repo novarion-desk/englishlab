@@ -21,7 +21,7 @@ function mqDraw(el){
  const m=el._m,it=m.cur;let body='';
  if(it.type==='fill'){
   const w=Math.max(8,it.answers[0].length+3);
-  body=`<p class="instr">${it.instr} ${it.hint?`<span class="hint">${esc(it.hint)}</span>`:''}</p><div class="sentence">${esc(it.before)}<input class="tin" data-mqin style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)}</div><div class="actions"><button class="primary" data-mqchk>${L('Prüfen','Check')}</button></div>`;
+  body=`<p class="instr">${it.instr||topic.fillInstr()} ${it.hint?`<span class="hint">${esc(it.hint)}</span>`:''}</p><div class="sentence">${esc(it.before)}<input class="tin" data-mqin style="width:${w}ch" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false">${esc(it.after)}</div><div class="actions"><button class="primary" data-mqchk>${L('Prüfen','Check')}</button></div>`;
  }else{
   const short=!!it.stem;
   body=`<p class="instr">${it.instr||''}</p>${short?`<div class="sentence">${stemHtml(it.stem)}</div>`:''}<div class="opts" style="grid-template-columns:${short?'repeat(auto-fit,minmax(110px,1fr))':'1fr'}">${it.opts.map((o,i)=>`<button data-mqo="${i}" style="${short?'':'text-align:left'}">${esc(o)}</button>`).join('')}</div>`;

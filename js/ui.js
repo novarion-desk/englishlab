@@ -25,7 +25,8 @@ function setHeader(){
  setTheme(screen==='home'?null:topic);
 }
 /* ===== Start ===== */
-function renderHome(q){
+let homeY=0;
+function renderHome(q,keep){
  screen='home';topic=null;setHeader();
  q=(q||'').trim().toLowerCase();
  const match=t=>!q||(t.name()+' '+t.desc()).toLowerCase().includes(q);
@@ -34,27 +35,19 @@ function renderHome(q){
  app.innerHTML=`<div class="hero"><h1>${L('Grammatik üben, nachlesen, verstehen','Practise, read and understand grammar')}</h1>
   <p>${L('Wähle ein Thema. Zu jedem Thema findest du die Regeln und Übungen auf deinem Niveau.','Pick a topic. Every topic has clear rules and exercises at your level.')}</p>
   <input class="search" id="q" type="search" placeholder="${L('Thema suchen …','Search a topic …')}" value="${esc(q)}" autocomplete="off"></div>
-  ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}
-  <section class="grp" style="--c:#475569"><div class="tiles"><a class="tile ext" href="${TENSE_URL}"><span class="ic">⏱️</span><b>Tense Trainer</b><small>${L('Zeitformen üben (eigene App)','Practise tenses (separate app)')}</small></a></div></section>`;
+  ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}`;
  app.onclick=e=>{const t=e.target.closest('[data-topic]');if(!t)return;const g=e.target.closest('[data-go]');topic=TOPICS.find(x=>x.id===t.dataset.topic);
-  if(!g)return renderSetup();const k=g.dataset.go;if(k==='theory')return renderTheory();if(k==='prac')return renderPractice();if(k==='slides')return openSlides()};
+  homeY=window.scrollY;if(!g)return renderTheory();const k=g.dataset.go;if(k==='theory')return renderTheory();if(k==='prac')return renderPractice();if(k==='slides')return openSlides()};
+ if(keep)window.scrollTo(0,homeY);else window.scrollTo(0,0);
  const qi=document.getElementById('q');qi.oninput=()=>{const v=qi.value;renderHome(v);const n=document.getElementById('q');n.focus();n.setSelectionRange(v.length,v.length)};
 }
-function openTopic(id){topic=TOPICS.find(t=>t.id===id);renderSetup()}
+function openTopic(id){topic=TOPICS.find(t=>t.id===id);renderTheory()}
 function hubHead(){
  const g=grpOf(topic);
  return `<button class="btn-link" id="homeBtn">‹ ${L('Themen','Topics')}</button>
  <div class="thead" style="--c:${g.c}"><span class="ic">${topic.ic}</span><div><h1>${topic.name()}</h1><p>${topic.desc()}</p></div></div>`;
 }
-function renderSetup(){
- screen='setup';items=[];setHeader();
- const prac=`<button class="hub" id="pracOpen" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben','Practise')}</b><small>${L('Aufgaben auf deinem Niveau A, B oder C','Exercises at your level A, B or C')}</small></button>`
-  +(topic.grp==='zeiten'&&topic.id!=='ztt'?`<button class="hub" id="tttOpen" style="--c:#2f5bea"><span class="hic">⏱️</span><b>${L('Alle Zeiten mischen','Mix all tenses')}</b><small>${L('Im Tense Trainer alle Zeitformen üben','Practise all tenses in the Tense Trainer')}</small></button>`:'');
- const sl=teacher()&&topic.slides?`<button class="hub tch" id="slidesOpen" style="--c:#d98a00"><span class="hic">🎬</span><b>${L('Folien','Slides')}</b><small>${L('Zum Präsentieren (nur Lehrperson)','For presenting (teacher only)')}</small></button>`:'';
- app.innerHTML=hubHead()+`<div class="hubs"><button class="hub" id="theoryOpen" style="--c:#2563eb"><span class="hic">📘</span><b>${L('Theorie','Theory')}</b><small>${L('Regeln, Beispiele, typische Fehler','Rules, examples, typical mistakes')}</small></button>${prac}${sl}</div>`;
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderHome();if(b.id==='theoryOpen')return renderTheory();if(b.id==='pracOpen')return renderPractice();if(b.id==='tttOpen'){topic=TOPICS.find(x=>x.id==='ztt');return renderPractice()}if(b.id==='slidesOpen')return openSlides()};
- window.scrollTo({top:0});
-}
+function renderSetup(){renderHome(undefined,true)}
 function renderTheory(){
  screen='theory';setHeader();
  const prac=hasEx(topic)?`<button class="primary" id="pracOpen" style="margin-top:14px">✏️ ${L('Jetzt üben →','Practise now →')}</button>`:`<a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:14px" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a>`;
@@ -247,6 +240,7 @@ function cvHtml(s,i,n,thumb){
 function cvFit(cv){
  const b=cv.querySelector('.cvb'),pin=cv.querySelector('.cvin');if(!b||!pin)return;
  const fits=()=>b.scrollHeight<=b.clientHeight+1;
+ if(cv.querySelector('.mq')){b.style.overflowY='auto';pin.style.zoom=Math.min(.9*SCALE[scl],1.4);return}
  b.style.overflowY='hidden';let lo=.4,hi=1.5*SCALE[scl];
  pin.style.zoom=hi;if(fits())return;
  pin.style.zoom=lo;if(!fits()){b.style.overflowY='auto';return}

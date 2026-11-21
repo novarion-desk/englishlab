@@ -155,8 +155,9 @@ header{flex-wrap:wrap;gap:8px}
 /* Karten: Knöpfe, Theorie farbig */
 .tile{cursor:pointer}
 .tile .tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tile .tags .tg{flex:1 1 auto;text-align:center;display:inline-flex;align-items:center;justify-content:center;gap:5px;white-space:nowrap}
 .tg{width:auto;border:2px solid var(--line);background:#fff;border-radius:999px;padding:6px 12px;font-size:14px;font-weight:700;color:var(--ink)}
-.tg.th{background:color-mix(in srgb,var(--c) 12%,#fff);border-color:color-mix(in srgb,var(--c) 45%,#fff);color:var(--c)}
+.tg.th{background:#2563eb;border-color:#2563eb;color:#fff}
 .tg.pr{background:#16a34a;border-color:#16a34a;color:#fff}
 .tg.sl{background:#fff7e6;border-color:#f59e0b;color:#b45309}
 .tg:hover{filter:brightness(.95);transform:translateY(-1px)}
@@ -217,7 +218,7 @@ header{flex-wrap:wrap;gap:8px}
 .pstage{background:#fff;box-shadow:0 0 60px rgba(0,0,0,.5);flex:none}
 .pnote{z-index:3}.pbar{z-index:4;background:rgba(15,18,40,.85)!important}.pbar span{color:#fff}
 .pbar button{background:transparent!important;color:#fff;border-color:rgba(255,255,255,.35)!important}
-@media(max-width:800px){.ppt{grid-template-columns:1fr}.film{flex-direction:row;max-height:none;overflow-x:auto;order:2}.th{flex:none;width:150px}.pmain{order:1}}
+@media(max-width:800px){.film{min-width:0;max-width:100%}.ppt{grid-template-columns:minmax(0,1fr)}.pmain{min-width:0}.film{flex-direction:row;max-height:none;overflow-x:auto;order:2}.th{flex:none;width:150px}.pmain{order:1}}
 .mq{background:#fff}
 .mqcard{margin-top:16px}.mqcard h3{margin:0 0 8px;color:var(--accent)}
 .mqtop{display:flex;align-items:center;gap:10px;margin-bottom:8px;color:#667}
@@ -377,7 +378,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 #lform{display:grid;gap:10px}#lform label{font-size:13px;font-weight:700;color:var(--muted)}
 #lform input{width:100%;font:inherit;border:2px solid var(--line);border-radius:10px;padding:9px 12px}
 .lerr{color:var(--bad);font-weight:600}
-@media(max-width:600px){header{position:static}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
+@media(max-width:600px){header{position:static}header .btn-link,header button{white-space:nowrap;font-size:14px!important;padding-left:8px!important;padding-right:8px!important}header{gap:6px!important}.hdr-r{gap:4px!important;flex-wrap:nowrap!important;width:100%;justify-content:space-between}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
 @media print{.pres,dialog{display:none!important}}
 
 </style>
@@ -442,7 +443,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
  /* Pro Ebene ein Verlaufseintrag: Zurückwischen geht immer genau eine Ebene zurück */
  let lv=0,ign=0;
  const level=()=>{try{
-  const base=screen==='home'?0:screen==='setup'?1:(screen==='prac'||screen==='theory'||screen==='slides')?2:3;
+  const base=screen==='home'?0:(screen==='prac'||screen==='theory'||screen==='slides'||screen==='setup')?1:2;
   return base+((!modal.classList.contains('hidden')||T.pres||document.getElementById('login').open)?1:0)}catch(e){return 0}};
  const goBack=()=>{try{if(T.pres){presOff();return}if(!modal.classList.contains('hidden')){closeModal();return}if(document.getElementById('login').open){closeLogin();return}if(screen==='results'||screen==='sheet'||screen==='task')renderPractice();else if(screen==='prac'||screen==='theory'||screen==='slides')renderSetup();else if(screen==='setup')renderHome()}catch(e){}};
  function sync(){

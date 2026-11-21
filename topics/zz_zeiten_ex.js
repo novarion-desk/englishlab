@@ -98,7 +98,8 @@
   const mg=a=>a.map(o=>{const q=o.split(' / ');return q.length===2?q[0]+' '+(X?X+' ':'')+q[1]:o});
   const pr=/^(you|he|she|they|it|we|I)$/.test(X);
   return Object.assign({},b,{h:(b.h||'')+(X&&!pr?' + '+X:''),s:(A+'___'+C).replace(/\s+/g,' ').replace(/ \?/,' ?'),ok:mg(b.ok),bad:mg(b.bad)})};
- for(const id in D){D[id].bank=D[id].bank.map(fix);
+ const strip=b=>{const m=b.s.match(/\s*\(([^)]*)\)\s*$/);if(!m)return b;return Object.assign({},b,{s:b.s.slice(0,m.index),h:b.h||('('+m[1]+')')})};
+ for(const id in D){D[id].bank=D[id].bank.map(strip).map(fix);
   const t=TOPICS.find(x=>x.id===id);if(!t)continue;const d=D[id];
   const b=bankTopic({id,grp:'zeiten',ord:t.ord,ic:t.ic,de:'',en:'',desc:'',fillInstr:d.fi,fillDesc:()=>L('das passende Wort schreiben','write the right word'),
    lvDe:'C: einfache Sätze. B: dazu Verneinung und Fragen. A: dazu schwierigere Fälle.',lvEn:'C: simple sentences. B: plus negatives and questions. A: plus harder cases.',why:{_:d.W},bank:d.bank,err:d.err,slides:t.slides});
