@@ -93,16 +93,55 @@
   B('I think robots ___ do many jobs in the future.',['will'],['are','do'],3),B('We are late! The bus ___ leave without us.',['is going to','will'],['are going','does'],3)],
   err:[['I will help you.',['I will to help you.','I will helps you.'],1],['She is going to buy a bike.',['She is going buy a bike.','She goes to buy a bike.'],1],["It won't rain tomorrow.",["It don't will rain tomorrow.","It won't to rain tomorrow."],2],['Are you going to come?',['Do you going to come?','Are you going come?'],2],['We will not go.',['We not will go.','We will not to go.'],2],['They are going to win.',['They going to win.','They will going to win.'],2]]}
  };
+
+ /* Unterthemen: Auswahl in Üben und Live-Übung. Zusatzsätze füllen die Unterthemen auf. */
+ const EX={
+  zbe:[B('We ___ late. (not)',["aren't",'are not'],["isn't",'not are'],2,'(not)'),B('___ they at school?',['Are'],['Is','Do'],1),B('Where ___ she from?',['is'],['are','am'],2),B('___ I late?',['Am'],['Is','Are'],2)],
+  zps:[B('She ___ coffee. (not / drink)',["doesn't drink",'does not drink'],["don't drink",'not drinks'],2,'(not / drink)'),B('They ___ here. (not / live)',["don't live",'do not live'],["doesn't live",'not live'],2,'(not / live)'),B('___ your dad cook dinner?',['Does'],['Do','Is'],1),B('What time ___ you get up?',['do'],['does','are'],2)],
+  zpc:[B('I ___ TV now. (not / watch)',['am not watching',"'m not watching"],['not watching','am not watch'],2,'(not / watch)'),B('The kids ___ . (not / sleep)',["aren't sleeping",'are not sleeping'],["isn't sleeping",'not sleeping'],2,'(not / sleep)'),B('___ he reading a book?',['Is'],['Does','Are'],1),B('Where ___ you going?',['are'],['do','is'],2)],
+  zpas:[B('We ___ to music last night.',['listened'],['listen','listens'],1,'(listen)'),B('She ___ her room yesterday.',['cleaned'],['clean','cleans'],1,'(clean)'),B('He ___ at the door.',['knocked'],['knock','knocks'],2,'(knock)'),B('The plane ___ at six.',['landed'],['land','lands'],3,'(land)'),B('She ___ the car in front of the house.',['parked'],['park','parks'],3,'(park)'),
+   B('I ___ a sandwich for lunch.',['ate'],['eat','eaten'],1,'(eat)'),B('He ___ the ball.',['threw'],['throw','thrown'],2,'(throw)'),B('She ___ me a present.',['gave'],['give','given'],3,'(give)'),
+   B('We ___ the bus. (not / miss)',["didn't miss",'did not miss'],['not missed','did not missed'],2,'(not / miss)'),B('She ___ a word. (not / say)',["didn't say",'did not say'],['not said','did not said'],2,'(not / say)'),B('He ___ TV last night. (not / watch)',["didn't watch",'did not watch'],['not watched','did not watched'],2,'(not / watch)'),B('They ___ at home. (not / stay)',["didn't stay",'did not stay'],['not stayed','did not stayed'],3,'(not / stay)'),
+   B('___ they win the game?',['Did'],['Do','Were'],2),B('Where ___ you go last Saturday?',['did'],['do','were'],2),B('___ he phone you yesterday?',['Did'],['Does','Was'],3),B('What time ___ the film end last night?',['did'],['does','was'],3)],
+  zpast:[B('___ you sleeping at ten?',['Were'],['Was','Did'],1),B('___ she watching TV at nine?',['Was'],['Were','Did'],2),B('What ___ they doing at midnight?',['were'],['was','did'],3),
+   B('We ___ playing at four. (not)',["weren't",'were not'],["wasn't",'not were'],1,'(not)'),B('He ___ sleeping at ten. (not)',["wasn't",'was not'],["weren't",'not was'],2,'(not)'),B('I ___ watching TV when you called. (not)',["wasn't",'was not'],["weren't",'did not'],3,'(not)')],
+  zpf:[B('I have never ___ snow.',['seen'],['saw','see'],1,'(see)'),B('Have you ever ___ sushi?',['eaten'],['ate','eat'],1,'(eat)'),B('She has never ___ a horse.',['ridden'],['rode','ride'],2,'(ride)'),B('This is the best pizza I have ever ___ .',['eaten'],['ate','eat'],2,'(eat)'),B('___ you ever been to London?',['Have'],['Do','Are'],2),B('He has never ___ a lie.',['told'],['tell','tells'],3,'(tell)'),
+   B('I have lived here ___ 2020.',['since'],['for','from'],1),B('She has been ill ___ three days.',['for'],['since','from'],1),B('We have known him ___ ten years.',['for'],['since','from'],2),B('He has played the guitar ___ he was ten.',['since'],['for','from'],2),B('They have been married ___ 2010.',['since'],['for','from'],3),B('I have not seen her ___ a long time.',['for'],['since','from'],3),
+   B('I have ___ finished my homework.',['already','just'],['yet','ever'],1),B('Have you finished ___ ?',['yet'],['ever','never'],1),B('I have not eaten ___ .',['yet'],['already','just'],2),B('She has ___ left the room.',['just','already'],['yet','never'],2),B('Have they arrived ___ ?',['yet'],['just','never'],3),
+   B('She has ___ to Italy. She is back now.',['been'],['gone','go'],1),B('He has ___ to Italy. He is not here.',['gone'],['been','go'],1),B('Have you ever ___ to Japan?',['been'],['gone','went'],2),B('Where is Tom? – He has ___ to the shop.',['gone'],['been','went'],2),B('We have ___ to the zoo three times.',['been'],['gone','went'],2),B('My parents have ___ on holiday. The house is empty.',['gone'],['been','went'],3),
+   B('They ___ football yesterday.',['played'],['have played','plays'],1,'(play)'),B('I ___ him last week.',['saw'],['have seen','see'],2,'(see)'),B('She ___ to Paris in 2019.',['went'],['has gone','has been'],2,'(go)'),B('We ___ breakfast an hour ago.',['had'],['have had','has'],2,'(have)'),B('Mozart ___ many songs.',['wrote'],['has written','writes'],2,'(write)'),B('Yesterday I ___ a new phone.',['bought'],['have bought','buy'],3,'(buy)')],
+  zfut:[B('We ___ to Rome on Friday. The tickets are booked.',['are flying'],['fly','flying'],1,'(fly)'),B('I ___ Anna at five. We have arranged it.',['am meeting'],['meet','meeting'],1,'(meet)'),B('What ___ tomorrow evening?',['are you doing'],['you doing','are you do'],1,'(do)'),B('She ___ her grandma on Sunday. It is arranged.',['is visiting'],['visit','visiting'],2,'(visit)'),B('They ___ a party next Saturday. The invitations are sent.',['are having'],['have','having'],2,'(have)'),B('He ___ to the dentist at ten tomorrow.',['is going'],['go','going'],2,'(go)'),B('I ___ to the party tonight. I have to work. (not / come)',["am not coming","'m not coming"],['not coming',"don't coming"],2,'(not / come)'),B('___ Tom coming to the cinema tonight?',['Is'],['Does','Are'],3),B('We ___ our new flat next month. It is all organised.',['are moving into'],['move into','moving into'],3,'(move into)'),
+   B('___ I open the window?',['Shall'],['Are','Does'],1),B('It is hot. ___ we go swimming?',['Shall'],['Are','Does'],1),B('___ I carry your bag?',['Shall'],['Are','Does'],2),B('What ___ we have for dinner?',['shall'],['are','does'],2),B('Where ___ we meet after school?',['shall'],['are','does'],3),B('___ I make you a cup of tea?',['Shall'],['Are','Does'],3),
+   B('If it ___ , I will take an umbrella.',['rains'],['will rain','rain'],1,'(rain)'),B('If it ___ tomorrow, we will stay at home.',['rains'],['will rain','rain'],2,'(rain)'),B('When I ___ home, I will call you.',['get'],['will get','getting'],2,'(get)'),B('She will help you if you ___ her.',['ask'],['will ask','asks'],2,'(ask)'),B('I will tell her as soon as she ___ .',['arrives'],['will arrive','arrive'],3,'(arrive)'),B('We will go out if the weather ___ nice.',['is'],['will be','be'],3,'(be)'),B('Call me before you ___ .',['leave'],['will leave','leaves'],3,'(leave)'),
+   B('Do not worry. I ___ help you.',['will',"'ll"],['am','do'],1),B('I think she ___ like the present.',['will'],['is','does'],2),
+   B('We ___ have a picnic on Sunday. We have bought the food.',['are going to'],['is going to','are going'],2),B('She ___ be a pilot when she grows up. (plan)',['is going to'],['are going to','is going'],1,'(plan)')]
+ };
+ const q_=b=>/\?\s*$/.test(b.s)||/^___ /.test(b.s)||/^(What|Where|Who|How|Why|When) ___ /.test(b.s);
+ const neg_=b=>/\bnot\b|n't/.test(b.s)||/not/.test(b.h)||/n't|\bnot\b/.test(b.ok[0]);
+ const T3=b=>q_(b)?'q':neg_(b)?'neg':'aff';
+ const TAG={zbe:T3,zps:T3,zpc:T3,
+  zpas:b=>q_(b)?'q':neg_(b)?'neg':(/^\w+ed$/.test(b.ok[0])?'reg':'irr'),
+  zpast:b=>/\b(when|while)\b/i.test(b.s)?'whn':T3(b),
+  zpf:b=>{const t=b.s+' '+b.ok[0];return /\b(been|gone)\b/.test(b.ok[0])&&!/\blived\b/.test(t)&&/\b(to|on holiday)\b/.test(b.s)?'bg':/\b(ever|never)\b/.test(t)?'en':/\b(for|since)\b|How long/.test(t)?'fs':/\b(just|already|yet)\b/.test(t)?'jay':/\b(yesterday|last|ago|in 20\d\d|Mozart)\b/i.test(b.s)?'vs':'form'},
+  zfut:b=>{const t=b.s+' '+b.ok[0];if(/^(Is|Are)$/.test(b.ok[0])&&/ing\b/.test(b.s))return 'pc';return /\b[Ss]hall\b/.test(b.ok[0])?'shall':/going to/.test(t)?'gt':/\b(if|when|as soon as|before)\b/i.test(b.s)&&!/going to/.test(t)?'ifw':/^(am|is|are|'m|not|won)/.test(b.ok[0])&&/ing\b/.test(b.ok[0])||/\b(is|are) ___ /.test(b.s)&&!/\bwill\b/.test(t)?'pc':/(am|is|are) (not )?\w+ing/.test(b.ok[0])||/are you doing/.test(b.ok[0])?'pc':'will'}};
+ const SUBS={
+  zbe:()=>[{k:'aff',n:L('Aussagen','Statements')},{k:'neg',n:L('Verneinung','Negatives')},{k:'q',n:L('Fragen','Questions')}],
+  zps:()=>[{k:'aff',n:L('Aussagen','Statements')},{k:'neg',n:L('Verneinung','Negatives')},{k:'q',n:L('Fragen','Questions')}],
+  zpc:()=>[{k:'aff',n:L('Aussagen','Statements')},{k:'neg',n:L('Verneinung','Negatives')},{k:'q',n:L('Fragen','Questions')}],
+  zpas:()=>[{k:'reg',n:L('regelmässig (-ed)','regular (-ed)')},{k:'irr',n:L('unregelmässig','irregular')},{k:'neg',n:L('Verneinung','Negatives')},{k:'q',n:L('Fragen','Questions')}],
+  zpast:()=>[{k:'aff',n:L('Aussagen','Statements')},{k:'neg',n:L('Verneinung','Negatives')},{k:'q',n:L('Fragen','Questions')},{k:'whn',n:'when / while'}],
+  zpf:()=>[{k:'form',n:L('Bildung','Form')},{k:'en',n:'ever / never'},{k:'fs',n:'for / since'},{k:'jay',n:'just / already / yet'},{k:'bg',n:'been / gone'},{k:'vs',n:L('vs. Past simple','vs. past simple')}],
+  zfut:()=>[{k:'will',n:'will'},{k:'gt',n:'going to'},{k:'pc',n:'present continuous'},{k:'shall',n:'shall'},{k:'ifw',n:'if / when'}]};
  const fix=b=>{const n=(b.s.match(/___/g)||[]).length;if(n<2)return b;
   const m=b.s.match(/^(.*?)___(.*?)___(.*)$/);const A=m[1],X=m[2].trim(),C=m[3];
   const mg=a=>a.map(o=>{const q=o.split(' / ');return q.length===2?q[0]+' '+(X?X+' ':'')+q[1]:o});
   const pr=/^(you|he|she|they|it|we|I)$/.test(X);
   return Object.assign({},b,{h:(b.h||'')+(X&&!pr?' + '+X:''),s:(A+'___'+C).replace(/\s+/g,' ').replace(/ \?/,' ?'),ok:mg(b.ok),bad:mg(b.bad)})};
  const strip=b=>{const m=b.s.match(/\s*\(([^)]*)\)\s*$/);if(!m)return b;return Object.assign({},b,{s:b.s.slice(0,m.index),h:b.h||('('+m[1]+')')})};
- for(const id in D){D[id].bank=D[id].bank.map(strip).map(fix);
+ for(const id in D){D[id].bank=D[id].bank.concat(EX[id]||[]).map(strip).map(fix).map(b=>Object.assign({},b,{sub:TAG[id]?TAG[id](b):''}));
   const t=TOPICS.find(x=>x.id===id);if(!t)continue;const d=D[id];
   const b=bankTopic({id,grp:'zeiten',ord:t.ord,ic:t.ic,de:'',en:'',desc:'',fillInstr:d.fi,fillDesc:()=>L('das passende Wort schreiben','write the right word'),
-   lvDe:'C: einfache Sätze. B: dazu Verneinung und Fragen. A: dazu schwierigere Fälle.',lvEn:'C: simple sentences. B: plus negatives and questions. A: plus harder cases.',why:{_:d.W},bank:d.bank,err:d.err,slides:t.slides});
+   lvDe:'C: einfache Sätze. B: dazu Verneinung und Fragen. A: dazu schwierigere Fälle.',lvEn:'C: simple sentences. B: plus negatives and questions. A: plus harder cases.',why:{_:d.W},bank:d.bank,err:d.err,subs:SUBS[id],slides:t.slides});
   t._why=d.W;
   ['fillInstr','lvDesc','subTitle','subs','subDef','types','typeDef','gen','data'].forEach(k=>{t[k]=b[k]});
  }

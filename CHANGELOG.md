@@ -1,5 +1,15 @@
 # Changelog
 
+## 1.1
+- Geändert: «Stufe» heisst jetzt «Unit». In der Units-Ansicht zwei Knöpfe «Jahr 1/2» und «Jahr 3» (Auswahl wird gemerkt), Überschriften «Unit 1» usw.
+- Neu: Unterthemen bei allen Zeitformen (z. B. Zukunft: will, going to, present continuous, shall, if / when; Present perfect: ever / never, for / since, just / already / yet, been / gone, vs. Past simple; Past simple: regelmässig, unregelmässig, Verneinung, Fragen). Wählbar in Üben und in der Live-Übung der Folien. Antippen = nur dieses Unterthema, «Alle» = alles.
+- Neu: Anzahl Aufgaben 5 · 10 · 20 · ∞ oder eine eigene Zahl eintippen
+- Neu: rund 100 zusätzliche Übungssätze für diese Unterthemen
+- Neu: shall für Angebote (Folie und Übungen), Häufigkeitsausdrücke (once a week …)
+- Erweitert nach NI3 Language File: Gerund und Infinitiv (can't help, risk, feel like, keen on, fed up with, succeed in; Verbliste mit to; 16 Adjektive + to), Wahrnehmungsverben wie im Lehrmittel (Hauptregel mit -ing, Grundform nur als Zusatz auf Niveau A; can / could + Wahrnehmung), Indirekte Rede (was going to, had to, wanted to know if), Past perfect mit since
+
+- Neu: Vokabeltrainer (Knopf «Vokabeln» oben und auf der Startseite). 2059 Wörter, aufgeteilt nach Jahr 1/2 und Jahr 3 und nach Units (Lesson-Auswahl, wenn eine Unit gewählt ist). Richtung EN→DE, DE→EN oder beides. Übungsarten: Karteikarten, Auswählen, Eintippen, Lückensatz, Hören, Paare, Mix. Anzahl 5 · 10 · 20 · ∞ oder eigene Zahl. Spaced Repetition (5 Fächer: sofort, 1, 3, 7, 21 Tage), Fortschritt nur auf dem Gerät gespeichert.
+
 ## 1.0
 - Neu: Umschalter «Themen | Units» auf der Hauptseite. Units-Ansicht: Stufe 2 (Welcome bis Unit 8), danach Stufe 3, mit festen Kopfzeilen und Sprungleiste. Themen erscheinen in der Reihenfolge der Units, auch mehrfach
 - Neu: Sprungleiste mit den Gruppen in der Themen-Ansicht; Stufen-Tag auf den Karten

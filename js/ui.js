@@ -18,7 +18,7 @@ const typeLabel=k=>{const t=topic.types().find(x=>x.k===k);return t?t.icon+' '+t
 const tcol=t=>grpOf(t).c;
 function setTheme(t){document.documentElement.style.setProperty('--accent',t?tcol(t):'#4f46e5');document.documentElement.style.setProperty('--accent-bg',t?`color-mix(in srgb,${tcol(t)} 11%,#fff)`:'#eef2ff')}
 function setHeader(){
- const rb=document.getElementById('rulesBtn');rb.style.display='none';rb.textContent='📘 '+L('Regeln','Rules');const vl=document.getElementById('verbsLbl');if(vl)vl.textContent=L('Verben','Verbs');const dl=document.getElementById('dictLbl');if(dl)dl.textContent=L('Wörterbuch','Dictionary');const sl=document.getElementById('searchLbl');if(sl)sl.textContent=L('Suche','Search');
+ const rb=document.getElementById('rulesBtn');rb.style.display='none';rb.textContent='📘 '+L('Regeln','Rules');const vcl=document.getElementById('vocabLbl');if(vcl)vcl.textContent=L('Vokabeln','Vocabulary');const vl=document.getElementById('verbsLbl');if(vl)vl.textContent=L('Verben','Verbs');const dl=document.getElementById('dictLbl');if(dl)dl.textContent=L('Wörterbuch','Dictionary');const sl=document.getElementById('searchLbl');if(sl)sl.textContent=L('Suche','Search');
  document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
  const lb=document.getElementById('loginBtn');lb.textContent=T.user?L('Lehrer ✓','Teacher ✓'):T.demo?'Demo':L('Lehrer','Teacher');lb.title=T.user?L('Abmelden','Log out'):'';
  document.body.classList.toggle('home',screen==='home');
@@ -35,6 +35,7 @@ function tabsBar(act){
  return `<div class="ttabs">${tabs.map(t=>`<button data-tab="${t[0]}" class="${t[0]===act?'on':''}">${t[1]} ${t[2]}</button>`).join('')}</div>`;
 }
 document.addEventListener('click',e=>{const b=e.target.closest('[data-tab]');if(!b||!topic)return;e.stopPropagation();const k=b.dataset.tab;if(k===screen)return;if(k==='theory')renderTheory();else if(k==='prac')renderPractice();else if(k==='slides')openSlides()},true);
+let homeJahr=2;try{if(localStorage.getItem('el-jahr')==='3')homeJahr=3}catch(e){}
 let homeView='topics';try{if(localStorage.getItem('el-view')==='units')homeView='units'}catch(e){}
 function setHH(){const h=document.querySelector('header');if(h)document.documentElement.style.setProperty('--hh',(h.offsetHeight+(window.innerWidth<=600?0:8))+'px')}
 window.addEventListener('resize',setHH);
@@ -42,11 +43,11 @@ function renderHome(q,keep){
  screen='home';topic=null;setHeader();setHH();
  q=(q||'').trim().toLowerCase();
  const match=t=>!q||(t.name()+' '+t.desc()).toLowerCase().includes(q);
- const card=(t,stg)=>{const g=grpOf(t);const ss=stg?stagesOf(t.id):[];const tag=ss.length?`<i class="stg">${ss.length>1?L('Stufe 2 + 3','Stage 2 + 3'):stageName(ss[0])}</i>`:'';return `<div class="tile${t.feat?' feat':''}" data-topic="${t.id}" style="--c:${g.c}">${tag}<span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
+ const card=(t,stg)=>{const g=grpOf(t);const ss=stg?stagesOf(t.id):[];const tag=ss.length?`<i class="stg">${ss.length>1?L('Jahr 1/2 + 3','Year 1/2 + 3'):stageName(ss[0])}</i>`:'';return `<div class="tile${t.feat?' feat':''}" data-topic="${t.id}" style="--c:${g.c}">${tag}<span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
  let sec='',jump='';
  if(homeView==='units'){
-  jump=[2,3].map(st=>`<div class="jrow"><b>${stageName(st)}</b>${UNITS.filter(x=>x.s===st).map(x=>`<button class="jb" data-jump="u-${st}-${x.u}">${x.u?x.u:'W'}</button>`).join('')}</div>`).join('');
-  sec=[2,3].map(st=>{const us=UNITS.filter(x=>x.s===st).map(x=>{const ts=x.t.map(id=>TOPICS.find(t=>t.id===id)).filter(t=>t&&match(t));return ts.length?`<section class="unit" id="u-${st}-${x.u}"><h2 class="uh"><span class="us">${stageName(st)}</span> · ${unitName(x)}</h2><div class="tiles">${ts.map(t=>card(t,false)).join('')}</div></section>`:''}).join('');return us?`<h2 class="stagehead">${stageName(st)}</h2>`+us:''}).join('');
+  jump=[homeJahr].map(st=>`<div class="jrow">${UNITS.filter(x=>x.s===st).map(x=>`<button class="jb" data-jump="u-${st}-${x.u}">${x.u?x.u:'W'}</button>`).join('')}</div>`).join('');
+  sec=[homeJahr].map(st=>{const us=UNITS.filter(x=>x.s===st).map(x=>{const ts=x.t.map(id=>TOPICS.find(t=>t.id===id)).filter(t=>t&&match(t));return ts.length?`<section class="unit" id="u-${st}-${x.u}"><h2 class="uh">${unitName(x)}</h2><div class="tiles">${ts.map(t=>card(t,false)).join('')}</div></section>`:''}).join('');return us}).join('');
  }else{
   const gs=GROUPS.filter(g=>TOPICS.some(t=>t.grp===g.id&&match(t)));
   jump=`<div class="jrow">${gs.map(g=>`<button class="jb" data-jump="g-${g.id}" style="--c:${g.c}">${g.ic} ${g.n()}</button>`).join('')}</div>`;
@@ -55,10 +56,12 @@ function renderHome(q,keep){
  app.innerHTML=`<div class="hero"><h1>${L('Grammatik üben, nachlesen, verstehen','Practise, read and understand grammar')}</h1>
   <p>${L('Wähle ein Thema. Zu jedem Thema findest du die Regeln und Übungen auf deinem Niveau.','Pick a topic. Every topic has clear rules and exercises at your level.')}</p>
   <input class="search" id="q" type="search" placeholder="${L('Thema suchen …','Search a topic …')}" value="${esc(q)}" autocomplete="off">
-  <div class="seg viewseg"><button data-view="topics" class="${homeView==='topics'?'on':''}">${L('Themen','Topics')}</button><button data-view="units" class="${homeView==='units'?'on':''}">Units</button></div>
+  <button class="vocta" data-openvoc="1"><span>🃏</span><span><b>${L('Vokabeltrainer','Vocabulary trainer')}</b><small>${L('Wörter nach Units üben, mit Wiederholung','Practise words by unit, with spaced repetition')}</small></span><span class="vgo">›</span></button>
+  <div class="seg viewseg"><button data-view="topics" class="${homeView==='topics'?'on':''}">${L('Themen','Topics')}</button><button data-view="units" class="${homeView==='units'?'on':''}">Units</button></div>${homeView==='units'?`<div class="seg viewseg jahr"><button data-jahr="2" class="${homeJahr===2?'on':''}">${stageName(2)}</button><button data-jahr="3" class="${homeJahr===3?'on':''}">${stageName(3)}</button></div>`:''}
   <div class="jump">${jump}</div></div>
   ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}`;
  app.onclick=e=>{
+  const jy=e.target.closest('[data-jahr]');if(jy){const j=+jy.dataset.jahr;if(j===homeJahr)return;homeJahr=j;try{localStorage.setItem('el-jahr',String(j))}catch(_){}homeY=0;return renderHome(q)}
   const vb=e.target.closest('[data-view]');if(vb){if(vb.dataset.view===homeView)return;homeView=vb.dataset.view;try{localStorage.setItem('el-view',homeView)}catch(_){}homeY=0;return renderHome(q)}
   const jb=e.target.closest('[data-jump]');if(jb){const el=document.getElementById(jb.dataset.jump);if(el){const hh=(document.querySelector('header')||{}).offsetHeight||60;window.scrollTo({top:el.getBoundingClientRect().top+window.scrollY-hh-(el.classList.contains('unit')?44:20),behavior:'smooth'})}return}
   const t=e.target.closest('[data-topic]');if(!t)return;const g=e.target.closest('[data-go]');topic=TOPICS.find(x=>x.id===t.dataset.topic);
@@ -100,7 +103,8 @@ function renderPractice(){
  <div class="card"><h2>${subs.length?3:2} · ${L('Übungsart','Exercise type')}</h2>
   <div class="modes">${topic.types().filter(t=>!t.A||S.lvl==='A').map(m=>`<button class="mode ${st.types.includes(m.k)?'on':''}" data-m="${m.k}"><b>${m.icon} ${m.label}</b><small>${m.desc}</small></button>`).join('')}</div></div>
  <div class="card"><h2>${subs.length?4:3} · ${L('Anzahl Aufgaben','Number of exercises')}</h2>
-  <div class="seg">${[10,15,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}">${n||'∞'}</button>`).join('')}</div></div>
+  <div class="seg">${[5,10,20,0].map(n=>`<button class="${S.count===n?'on':''}" data-n="${n}">${n||'∞'}</button>`).join('')}</div>
+  <label class="cntown">${L('oder eigene Zahl:','or your own number:')} <input id="cntIn" type="number" inputmode="numeric" min="1" max="200" placeholder="z. B. 12" value="${[5,10,20,0].includes(S.count)?'':S.count}"></label></div>
  <button class="primary" id="start">${L("Los geht's →","Let's go →")}</button>
  <button class="secondary" id="sheetBtn" style="margin-top:10px">${L('🖨 Arbeitsblatt (Vorschau, PDF / Druck)','🖨 Worksheet (preview, PDF / print)')}</button>
  <p class="err" id="err"></p>`;
@@ -112,7 +116,8 @@ function renderPractice(){
   else if(b.dataset.t){
    const k=b.dataset.t;if(b.disabled)return;
    const all=subs.map(s=>s.k);
-   if(st.subs.includes(k)){if(st.subs.length>1)st.subs=st.subs.filter(x=>x!==k)}else st.subs=all.filter(x=>x===k||st.subs.includes(x));
+   if(topic.id!=='q'&&all.length>2&&st.subs.length===all.length)st.subs=[k];
+   else if(st.subs.includes(k)){st.subs=st.subs.length>1?st.subs.filter(x=>x!==k):all.slice()}else st.subs=all.filter(x=>x===k||st.subs.includes(x));
   }
   else if(b.dataset.m){const k=b.dataset.m,all=topic.types().map(t=>t.k);st.types=st.types.includes(k)?st.types.filter(x=>x!==k):all.filter(x=>x===k||st.types.includes(x))}
   else if(b.dataset.n!==undefined){S.count=+b.dataset.n}
@@ -368,6 +373,7 @@ document.addEventListener('keydown',e=>{
 document.addEventListener('fullscreenchange',()=>{if(!document.fullscreenElement&&T.pres)presOff()});
 window.addEventListener('resize',()=>{if(T.pres)fitPres();else if(screen==='slides')cvScale(app)});
 /* Lösungen aufdecken (Folien und Regeln) */
+document.addEventListener('input',e=>{if(e.target.id!=='cntIn')return;const v=parseInt(e.target.value,10);if(v>=1){S.count=Math.min(200,v);document.querySelectorAll('[data-n]').forEach(x=>x.classList.toggle('on',+x.dataset.n===S.count))}});
 document.addEventListener('click',e=>{
  const r=e.target.closest('[data-rev]');
  if(r){const a=r.parentElement.querySelector('.sl-a');a.hidden=!a.hidden;r.textContent=a.hidden?L('Lösung','Answer'):'✓';if(T.pres)setTimeout(fitPres,0);return}

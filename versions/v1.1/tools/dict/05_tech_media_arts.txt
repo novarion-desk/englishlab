@@ -1,0 +1,373 @@
+# Technik und Computer
+technology|n|die Technologie
+invention|n|die Erfindung
+inventor|n|der Erfinder
+invent|v|erfinden
+discover|v|entdecken
+discovery|n|die Entdeckung
+machine|n|die Maschine
+robot|n|der Roboter
+engine|n|der Motor
+device|n|das Gerät
+tool|n|das Werkzeug
+gadget|n|das Gerät, die Spielerei
+battery|n|die Batterie, der Akku
+charger|n|das Ladegerät
+cable|n|das Kabel
+plug|n|der Stecker
+socket|n|die Steckdose
+switch|n|der Schalter
+switch on|phr|einschalten
+switch off|phr|ausschalten
+turn on|phr|einschalten
+turn off|phr|ausschalten
+computer|n|der Computer
+laptop|n|der Laptop
+tablet|n|das Tablet
+smartphone|n|das Smartphone
+mobile phone|n|das Handy
+phone|n|das Telefon
+screen|n|der Bildschirm
+keyboard|n|die Tastatur
+mouse|n|die Maus
+printer|n|der Drucker
+scanner|n|der Scanner
+headphones|n|die Kopfhörer
+speaker|n|der Lautsprecher
+microphone|n|das Mikrofon
+camera|n|die Kamera
+drone|n|die Drohne
+console|n|die Spielkonsole
+game|n|das Spiel
+video game|n|das Videospiel
+app|n|die App
+program|n|das Programm
+software|n|die Software
+hardware|n|die Hardware
+file|n|die Datei
+folder|n|der Ordner
+document|n|das Dokument
+data|n|die Daten
+password|n|das Passwort
+username|n|der Benutzername
+account|n|das Konto
+profile|n|das Profil
+website|n|die Website
+web page|n|die Webseite
+webcam|n|die Webcam
+internet|n|das Internet
+online|adj|online
+offline|adj|offline
+wifi|n|das WLAN
+network|n|das Netzwerk
+link|n|der Link
+email|n|die E-Mail
+message|n|die Nachricht
+text|n|der Text, die SMS
+chat|n|der Chat
+chat|v|chatten
+post|n|der Beitrag
+post|v|posten
+comment|n|der Kommentar
+like|n|das Like
+share|v|teilen
+follow|v|folgen
+follower|n|der Follower
+social media|n|die sozialen Medien
+blog|n|der Blog
+video|n|das Video
+podcast|n|der Podcast
+stream|v|streamen
+download|v|herunterladen
+upload|v|hochladen
+install|v|installieren
+update|v|aktualisieren
+delete|v|löschen
+save|v|speichern
+copy|v|kopieren
+paste|v|einfügen
+click|v|klicken
+type|v|tippen
+search|v|suchen
+search engine|n|die Suchmaschine
+log in|phr|sich anmelden
+log out|phr|sich abmelden
+sign up|phr|sich registrieren
+connect|v|verbinden
+crash|v|abstürzen
+hack|v|hacken
+virus|n|der Virus
+spam|n|der Spam
+privacy|n|die Privatsphäre
+cyberbullying|n|das Cybermobbing
+artificial intelligence|n|die künstliche Intelligenz
+AI|n|die KI
+digital|adj|digital
+electronic|adj|elektronisch
+modern|adj|modern
+useful|adj|nützlich
+useless|adj|nutzlos
+fast|adj|schnell
+wireless|adj|kabellos
+touchscreen|n|der Touchscreen
+science|n|die Wissenschaft
+experiment|n|das Experiment
+research|n|die Forschung
+laboratory|n|das Labor
+scientist|n|der Wissenschaftler
+theory|n|die Theorie
+fact|n|die Tatsache
+proof|n|der Beweis
+solution|n|die Lösung
+problem|n|das Problem
+progress|n|der Fortschritt
+develop|v|entwickeln
+design|v|entwerfen
+design|n|der Entwurf
+create|v|erschaffen
+build|v|bauen
+make|v|machen, herstellen
+produce|v|herstellen
+repair|v|reparieren
+fix|v|reparieren
+break down|phr|kaputtgehen
+work|v|funktionieren
+use|v|benutzen
+# Medien und Kommunikation
+media|n|die Medien
+newspaper|n|die Zeitung
+magazine|n|die Zeitschrift
+article|n|der Artikel
+headline|n|die Schlagzeile
+news|n|die Nachrichten
+report|n|der Bericht
+report|v|berichten
+journalist|n|der Journalist
+television|n|das Fernsehen
+TV|n|der Fernseher
+channel|n|der Kanal
+programme|n|die Sendung
+series|n|die Serie
+episode|n|die Folge
+documentary|n|die Dokumentation
+reality show|n|die Reality-Show
+quiz show|n|die Quizsendung
+cartoon|n|der Zeichentrickfilm
+soap opera|n|die Seifenoper
+advert|n|die Werbung
+advertisement|n|die Werbung
+commercial|n|der Werbespot
+radio|n|das Radio
+presenter|n|der Moderator
+audience|n|das Publikum
+viewer|n|der Zuschauer
+fan|n|der Fan
+star|n|der Star
+celebrity|n|die Berühmtheit
+film|n|der Film
+movie|n|der Film
+cinema|n|das Kino
+screen|n|die Leinwand
+scene|n|die Szene
+plot|n|die Handlung
+character|n|die Figur
+hero|n|der Held
+heroine|n|die Heldin
+villain|n|der Bösewicht
+actor|n|der Schauspieler
+director|n|der Regisseur
+producer|n|der Produzent
+comedy|n|die Komödie
+thriller|n|der Thriller
+horror film|n|der Horrorfilm
+action film|n|der Actionfilm
+romance|n|die Liebesgeschichte
+science fiction|n|die Science-Fiction
+fantasy|n|die Fantasie
+animated film|n|der Animationsfilm
+special effects|n|die Spezialeffekte
+trailer|n|der Trailer
+review|n|die Kritik, die Rezension
+ending|n|das Ende
+sequel|n|die Fortsetzung
+book|n|das Buch
+novel|n|der Roman
+story|n|die Geschichte
+tale|n|die Erzählung
+fairy tale|n|das Märchen
+poem|n|das Gedicht
+poetry|n|die Dichtung
+comic|n|das Comic
+diary|n|das Tagebuch
+biography|n|die Biografie
+author|n|der Autor
+writer|n|der Schriftsteller
+reader|n|der Leser
+chapter|n|das Kapitel
+title|n|der Titel
+cover|n|der Umschlag
+letter|n|der Brief
+postcard|n|die Postkarte
+parcel|n|das Paket
+stamp|n|die Briefmarke
+envelope|n|der Briefumschlag
+send|v|senden
+receive|v|erhalten
+reply|v|antworten
+call|v|anrufen, nennen
+ring|v|anrufen
+text|v|simsen
+phone|v|telefonieren
+hang up|phr|auflegen
+speak|v|sprechen
+talk|v|reden
+say|v|sagen
+tell|v|erzählen, sagen
+ask|v|fragen
+answer|v|antworten
+explain|v|erklären
+discuss|v|diskutieren
+discussion|n|die Diskussion
+argue|v|streiten
+argument|n|der Streit, das Argument
+agree|v|zustimmen
+disagree|v|nicht zustimmen
+mention|v|erwähnen
+announce|v|bekannt geben
+whisper|v|flüstern
+shout|v|rufen
+complain|v|sich beschweren
+promise|v|versprechen
+promise|n|das Versprechen
+suggest|v|vorschlagen
+suggestion|n|der Vorschlag
+advise|v|raten
+advice|n|der Rat
+warn|v|warnen
+apologise|v|sich entschuldigen
+apology|n|die Entschuldigung
+thank|v|danken
+invite|v|einladen
+invitation|n|die Einladung
+introduce|v|vorstellen
+greet|v|begrüssen
+welcome|v|willkommen heissen
+congratulate|v|gratulieren
+express|v|ausdrücken
+describe|v|beschreiben
+description|n|die Beschreibung
+communicate|v|kommunizieren
+communication|n|die Kommunikation
+language|n|die Sprache
+word|n|das Wort
+sentence|n|der Satz
+meaning|n|die Bedeutung
+mean|v|bedeuten
+sign|n|das Zeichen, das Schild
+symbol|n|das Symbol
+gesture|n|die Geste
+body language|n|die Körpersprache
+accent|n|der Akzent
+dialect|n|der Dialekt
+pronounce|v|aussprechen
+pronunciation|n|die Aussprache
+# Kunst und Musik
+art|n|die Kunst
+artist|n|der Künstler
+painting|n|das Gemälde
+picture|n|das Bild
+drawing|n|die Zeichnung
+sculpture|n|die Skulptur
+photograph|n|die Fotografie
+exhibition|n|die Ausstellung
+museum|n|das Museum
+gallery|n|die Galerie
+brush|n|der Pinsel
+paint|n|die Farbe
+canvas|n|die Leinwand
+portrait|n|das Porträt
+masterpiece|n|das Meisterwerk
+creative|adj|kreativ
+culture|n|die Kultur
+tradition|n|die Tradition
+festival|n|das Fest, das Festival
+carnival|n|der Karneval
+parade|n|der Umzug
+fireworks|n|das Feuerwerk
+costume|n|das Kostüm
+mask|n|die Maske
+party|n|die Party
+celebrate|v|feiern
+celebration|n|die Feier
+custom|n|der Brauch
+religion|n|die Religion
+music|n|die Musik
+musician|n|der Musiker
+singer|n|der Sänger
+song|n|das Lied
+lyrics|n|der Liedtext
+tune|n|die Melodie
+melody|n|die Melodie
+rhythm|n|der Rhythmus
+beat|n|der Beat, der Takt
+note|n|die Note
+chord|n|der Akkord
+scale|n|die Tonleiter
+band|n|die Band
+group|n|die Gruppe
+orchestra|n|das Orchester
+choir|n|der Chor
+concert|n|das Konzert
+stage|n|die Bühne
+album|n|das Album
+single|n|die Single
+track|n|der Titel, der Song
+playlist|n|die Playlist
+instrument|n|das Instrument
+guitar|n|die Gitarre
+piano|n|das Klavier
+keyboard|n|das Keyboard
+violin|n|die Geige
+cello|n|das Cello
+flute|n|die Flöte
+trumpet|n|die Trompete
+saxophone|n|das Saxofon
+drums|n|das Schlagzeug
+bass|n|der Bass
+recorder|n|die Blockflöte
+accordion|n|das Akkordeon
+harp|n|die Harfe
+pop|n|der Pop
+rock|n|der Rock
+rap|n|der Rap
+hip hop|n|der Hip-Hop
+jazz|n|der Jazz
+classical|adj|klassisch
+folk|n|die Volksmusik
+reggae|n|der Reggae
+techno|n|der Techno
+sing|v|singen
+play|v|spielen
+perform|v|auftreten, aufführen
+performance|n|die Aufführung
+rehearse|v|proben
+compose|v|komponieren
+record|v|aufnehmen
+dance|v|tanzen
+dance|n|der Tanz
+dancer|n|der Tänzer
+ballet|n|das Ballett
+theatre|n|das Theater
+play|n|das Theaterstück
+musical|n|das Musical
+opera|n|die Oper
+show|n|die Show
+act|v|schauspielern
+audience|n|das Publikum
+applause|n|der Applaus
+clap|v|klatschen
+loud|adj|laut
+quiet|adj|leise
+sound|n|der Klang, das Geräusch
+noise|n|der Lärm
+voice|n|die Stimme

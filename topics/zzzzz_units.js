@@ -22,4 +22,4 @@ const UNITS=[
 /* In welchen Stufen kommt ein Thema vor? */
 const stagesOf=id=>[...new Set(UNITS.filter(x=>x.t.includes(id)).map(x=>x.s))];
 const unitName=x=>x.u?('Unit '+x.u):'Welcome';
-const stageName=s=>L('Stufe '+s,'Stage '+s);
+const stageName=s=>s===2?L('Jahr 1/2','Year 1/2'):L('Jahr 3','Year 3');

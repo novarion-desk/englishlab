@@ -9,6 +9,11 @@
   st:'say ohne Person (He said that …), tell immer mit Person (He told me that …).|say without a person (He said that …), tell always with a person (He told me that …).',
   tm:'Pronomen, Zeit- und Ortsangaben passen sich der neuen Sicht an: I → he / she, today → that day, tomorrow → the next day, here → there.|Pronouns, time and place words change to the new point of view: I → he / she, today → that day, tomorrow → the next day, here → there.'};
  const bsB=[
+  B("“We must find a better way.” – He said they ___ find a better way.",['had to'],['must','have to'],2,'bs'),
+  B("“We are going to solve it.” – He said they ___ going to solve it.",['were'],['are','was'],2,'bs'),
+  B("“I can't remember.” – He said he ___ remember.",["couldn't",'could not'],["can't",'not could'],2,'bs'),
+  B("“We will have to find a solution.” – He said they ___ have to find a solution.",['would'],['will','had'],3,'bs'),
+  B("“Email has had an effect.” – He said email ___ had an effect.",['had'],['has','was'],3,'bs'),
   B("“I am tired.” – She said she ___ tired.",['was'],['is','am'],1,'bs'),
   B("“It is raining.” – She said it ___ raining.",['was'],['is','were'],1,'bs'),
   B("“I like pizza.” – He said he ___ pizza.",['liked'],['likes','like'],1,'bs'),
@@ -60,7 +65,7 @@
    slide(L('Direkte und indirekte Rede','Direct and reported speech'),
     SL.tbl([L('Direkte Rede','Direct speech'),L('Indirekte Rede','Reported speech')],[['She said, “I <b>am</b> tired.”','She said (that) she <b>was</b> tired.'],['Tom said, “I <b>like</b> pizza.”','Tom said (that) he <b>liked</b> pizza.']])+SL.tip(L('<b>that</b> darf man weglassen. Keine Anführungszeichen, kein Komma nach <i>said</i>.','You can leave out <b>that</b>. No quotation marks, no comma after <i>said</i>.'))),
    slide(L('Die Zeit rutscht einen Schritt zurück','The tense moves one step back'),
-    SL.tbl([L('Direkte Rede','Direct speech'),L('Indirekte Rede','Reported speech')],[['present simple<br><i>I like it.</i>','past simple<br><i>he liked it.</i>'],['present continuous<br><i>I am working.</i>','past continuous<br><i>he was working.</i>'],['past simple<br><i>I saw it.</i>','past perfect<br><i>he had seen it.</i>'],['present perfect<br><i>I have seen it.</i>','past perfect<br><i>he had seen it.</i>'],['will · can<br><i>I will come. I can swim.</i>','would · could<br><i>he would come. he could swim.</i>']])),
+    SL.tbl([L('Direkte Rede','Direct speech'),L('Indirekte Rede','Reported speech')],[['present simple<br><i>I like it.</i>','past simple<br><i>he liked it.</i>'],['present continuous<br><i>I am working.</i>','past continuous<br><i>he was working.</i>'],['past simple<br><i>I saw it.</i>','past perfect<br><i>he had seen it.</i>'],['present perfect<br><i>I have seen it.</i>','past perfect<br><i>he had seen it.</i>'],['will · can<br><i>I will come. I can swim.</i>','would · could<br><i>he would come. he could swim.</i>'],['am / is / are going to<br><i>I am going to win.</i>','was / were going to<br><i>he was going to win.</i>'],['must<br><i>I must go.</i>','had to<br><i>he had to go.</i>']])),
    slide(L('Pronomen, Zeit und Ort','Pronouns, time and place'),
     SL.tbl([L('direkt','direct'),L('indirekt','reported')],[['I / we','he, she / they'],['my / our','his, her / their'],['today','that day'],['now','then / at that time'],['yesterday','the day before'],['tomorrow','the next day / the following day'],['next week','the following week'],['here','there'],['this / these','that / those']])),
    slide(L('say oder tell?','say or tell?'),
@@ -109,6 +114,8 @@
  const WQ={wh:'In der indirekten Frage steht der Satz wie eine Aussage: Fragewort + Subjekt + Verb. Kein do / does / did, kein Fragezeichen, Zeit rutscht zurück.|In a reported question the word order is like a statement: question word + subject + verb. No do / does / did, no question mark, the tense moves back.',
   yn:'Ja/Nein-Fragen werden mit if oder whether weitergegeben. Danach Aussagesatz.|Yes/no questions are reported with if or whether. Then a statement word order.'};
  const iqB=[
+  B("“Have you gone back to school?” – They wanted to know if he ___ gone back to school.",['had'],['has','have'],3,'yn'),
+  B("“Are you thinking of changing your phone?” – She asked if I ___ of changing my phone.",['was thinking'],['am thinking','thought'],3,'yn'),
   B("“Where do you live?” – She asked me where I ___.",['lived'],['do live','did live'],1,'wh'),
   B("“What is your name?” – He asked me what my name ___.",['was'],['is','did be'],1,'wh'),
   B("“How old are you?” – He asked me how old I ___.",['was'],['am','were'],1,'wh'),
@@ -134,7 +141,7 @@
   errWhy:WQ.wh,
   slides:()=>[
    slide(L('Fragen weitergeben','Reporting questions'),
-    SL.tbl([L('Direkt','Direct'),L('Indirekt','Reported')],[['“Where <b>do you live</b>?”','She asked me where I <b>lived</b>.'],['“What <b>is</b> your name?”','He asked what my name <b>was</b>.'],['“<b>Do you like</b> pizza?”','She asked me <b>if</b> I <b>liked</b> pizza.']])),
+    SL.tbl([L('Direkt','Direct'),L('Indirekt','Reported')],[['“Where <b>do you live</b>?”','She asked me where I <b>lived</b>.'],['“What <b>is</b> your name?”','He asked what my name <b>was</b>.'],['“<b>Do you like</b> pizza?”','She asked me <b>if</b> I <b>liked</b> pizza.'],['“<b>Have you</b> gone back?”','They <b>wanted to know if</b> he <b>had</b> gone back.']])),
    slide(L('Drei Veränderungen','Three changes'),
     SL.ul([L('<b>Wortstellung wie ein Aussagesatz</b>: Fragewort + Subjekt + Verb','<b>Statement word order</b>: question word + subject + verb'),L('<b>kein</b> do / does / did und <b>kein</b> Fragezeichen','<b>no</b> do / does / did and <b>no</b> question mark'),L('Die <b>Zeit rutscht zurück</b> (wie bei den Aussagen)','The <b>tense moves back</b> (as in statements)')])+SL.ex(['“Where <s>do</s> you live?” → She asked where I <b>lived</b>.'])),
    slide(L('Ja/Nein-Fragen: if oder whether','Yes/no questions: if or whether'),

@@ -1,0 +1,495 @@
+# Essen und Trinken
+food|n|das Essen, das Lebensmittel
+drink|n|das Getränk
+drink|v|trinken
+eat|v|essen
+meal|n|die Mahlzeit
+breakfast|n|das Frühstück
+lunch|n|das Mittagessen
+dinner|n|das Abendessen
+supper|n|das Abendessen
+snack|n|der Imbiss, der Snack
+dessert|n|das Dessert, der Nachtisch
+starter|n|die Vorspeise
+main course|n|das Hauptgericht
+menu|n|die Speisekarte
+bill|n|die Rechnung
+tip|n|das Trinkgeld, der Tipp
+waiter|n|der Kellner
+waitress|n|die Kellnerin
+chef|n|der Koch
+cook|n|der Koch, die Köchin
+cook|v|kochen
+bake|v|backen
+fry|v|braten
+boil|v|kochen (Wasser)
+roast|v|braten (im Ofen)
+grill|v|grillen
+mix|v|mischen
+stir|v|rühren
+cut|v|schneiden
+chop|v|hacken
+peel|v|schälen
+pour|v|giessen
+add|v|hinzufügen
+taste|v|schmecken, probieren
+taste|n|der Geschmack
+smell|v|riechen
+smell|n|der Geruch
+recipe|n|das Rezept
+ingredient|n|die Zutat
+bread|n|das Brot
+roll|n|das Brötchen
+toast|n|der Toast
+butter|n|die Butter
+cheese|n|der Käse
+milk|n|die Milch
+cream|n|die Sahne, der Rahm
+yoghurt|n|der Joghurt
+egg|n|das Ei
+ham|n|der Schinken
+sausage|n|die Wurst
+bacon|n|der Speck
+meat|n|das Fleisch
+beef|n|das Rindfleisch
+pork|n|das Schweinefleisch
+chicken|n|das Huhn, das Hähnchen
+lamb|n|das Lamm
+turkey|n|der Truthahn
+fish|n|der Fisch
+salmon|n|der Lachs
+tuna|n|der Thunfisch
+prawn|n|die Garnele
+rice|n|der Reis
+pasta|n|die Nudeln, die Pasta
+noodles|n|die Nudeln
+spaghetti|n|die Spaghetti
+pizza|n|die Pizza
+burger|n|der Burger
+chips|n|die Pommes frites
+crisps|n|die Chips
+french fries|n|die Pommes frites
+sandwich|n|das Sandwich
+salad|n|der Salat
+soup|n|die Suppe
+sauce|n|die Sauce
+ketchup|n|der Ketchup
+mustard|n|der Senf
+salt|n|das Salz
+pepper|n|der Pfeffer
+sugar|n|der Zucker
+honey|n|der Honig
+jam|n|die Konfitüre, die Marmelade
+oil|n|das Öl
+vinegar|n|der Essig
+flour|n|das Mehl
+cake|n|der Kuchen, die Torte
+biscuit|n|der Keks
+cookie|n|der Keks
+chocolate|n|die Schokolade
+sweet|n|die Süssigkeit
+sweets|n|die Süssigkeiten
+candy|n|die Süssigkeit
+ice cream|n|die Glace, das Eis
+pie|n|die Pastete, der Kuchen
+pancake|n|der Pfannkuchen
+cereal|n|das Müsli, die Frühstücksflocken
+porridge|n|der Haferbrei
+fruit|n|die Frucht, das Obst
+vegetable|n|das Gemüse
+apple|n|der Apfel
+banana|n|die Banane
+orange|n|die Orange
+lemon|n|die Zitrone
+pear|n|die Birne
+peach|n|der Pfirsich
+plum|n|die Pflaume
+cherry|n|die Kirsche
+strawberry|n|die Erdbeere
+raspberry|n|die Himbeere
+grape|n|die Traube
+melon|n|die Melone
+pineapple|n|die Ananas
+tomato|n|die Tomate
+potato|n|die Kartoffel
+carrot|n|die Karotte, die Rübe
+onion|n|die Zwiebel
+garlic|n|der Knoblauch
+cucumber|n|die Gurke
+lettuce|n|der Kopfsalat
+cabbage|n|der Kohl
+pepper|n|die Paprika
+mushroom|n|der Pilz
+pea|n|die Erbse
+bean|n|die Bohne
+corn|n|der Mais
+nut|n|die Nuss
+water|n|das Wasser
+juice|n|der Saft
+tea|n|der Tee
+coffee|n|der Kaffee
+hot chocolate|n|die heisse Schokolade
+lemonade|n|die Limonade
+cola|n|die Cola
+beer|n|das Bier
+wine|n|der Wein
+glass|n|das Glas
+cup|n|die Tasse
+mug|n|der Becher
+bottle|n|die Flasche
+can|n|die Dose
+plate|n|der Teller
+bowl|n|die Schüssel
+dish|n|das Gericht, die Schüssel
+knife|n|das Messer
+fork|n|die Gabel
+spoon|n|der Löffel
+teaspoon|n|der Teelöffel
+napkin|n|die Serviette
+tray|n|das Tablett
+delicious|adj|köstlich
+tasty|adj|lecker
+sweet|adj|süss
+sour|adj|sauer
+bitter|adj|bitter
+salty|adj|salzig
+spicy|adj|scharf, würzig
+hot|adj|heiss, scharf
+fresh|adj|frisch
+raw|adj|roh
+ripe|adj|reif
+juicy|adj|saftig
+crunchy|adj|knusprig
+greasy|adj|fettig
+healthy|adj|gesund
+vegetarian|n|der Vegetarier
+vegan|n|der Veganer
+organic|adj|biologisch
+full|adj|satt, voll
+empty|adj|leer
+# Kleidung
+clothes|n|die Kleider, die Kleidung
+clothing|n|die Kleidung
+wear|v|tragen
+dress|v|anziehen
+get dressed|phr|sich anziehen
+put on|phr|anziehen
+take off|phr|ausziehen
+try on|phr|anprobieren
+fit|v|passen
+suit|v|stehen (Kleidung)
+match|v|passen zu
+shirt|n|das Hemd
+T-shirt|n|das T-Shirt
+blouse|n|die Bluse
+sweater|n|der Pullover
+jumper|n|der Pullover
+hoodie|n|der Kapuzenpullover
+jacket|n|die Jacke
+coat|n|der Mantel
+raincoat|n|der Regenmantel
+trousers|n|die Hose
+pants|n|die Hose
+jeans|n|die Jeans
+shorts|n|die Shorts
+skirt|n|der Rock
+dress|n|das Kleid
+suit|n|der Anzug
+tie|n|die Krawatte
+scarf|n|der Schal
+hat|n|der Hut
+cap|n|die Mütze, die Kappe
+gloves|n|die Handschuhe
+socks|n|die Socken
+tights|n|die Strumpfhose
+underwear|n|die Unterwäsche
+pyjamas|n|der Pyjama
+swimsuit|n|der Badeanzug
+trainers|n|die Turnschuhe
+sneakers|n|die Turnschuhe
+shoes|n|die Schuhe
+boots|n|die Stiefel
+sandals|n|die Sandalen
+slippers|n|die Hausschuhe
+belt|n|der Gürtel
+pocket|n|die Tasche (Kleidung)
+button|n|der Knopf
+zip|n|der Reissverschluss
+collar|n|der Kragen
+sleeve|n|der Ärmel
+jewellery|n|der Schmuck
+ring|n|der Ring
+necklace|n|die Halskette
+earring|n|der Ohrring
+bracelet|n|das Armband
+watch|n|die Armbanduhr
+sunglasses|n|die Sonnenbrille
+umbrella|n|der Regenschirm
+handbag|n|die Handtasche
+backpack|n|der Rucksack
+wallet|n|das Portemonnaie
+purse|n|das Portemonnaie
+size|n|die Grösse
+fashion|n|die Mode
+style|n|der Stil
+colour|n|die Farbe
+color|n|die Farbe
+red|adj|rot
+blue|adj|blau
+green|adj|grün
+yellow|adj|gelb
+black|adj|schwarz
+white|adj|weiss
+grey|adj|grau
+gray|adj|grau
+brown|adj|braun
+pink|adj|rosa
+purple|adj|violett
+orange|adj|orange
+gold|adj|golden
+silver|adj|silbern
+navy|adj|dunkelblau
+striped|adj|gestreift
+checked|adj|kariert
+plain|adj|einfarbig, schlicht
+fashionable|adj|modisch
+casual|adj|lässig
+formal|adj|formell
+comfortable|adj|bequem
+tight|adj|eng
+loose|adj|weit, locker
+smart|adj|elegant
+trendy|adj|trendy
+# Haus und Wohnen
+house|n|das Haus
+home|n|das Zuhause
+flat|n|die Wohnung
+apartment|n|die Wohnung
+block of flats|n|das Mehrfamilienhaus
+villa|n|die Villa
+cottage|n|das Häuschen
+farm|n|der Bauernhof
+castle|n|das Schloss, die Burg
+room|n|das Zimmer, der Raum
+living room|n|das Wohnzimmer
+bedroom|n|das Schlafzimmer
+bathroom|n|das Badezimmer
+toilet|n|die Toilette
+kitchen|n|die Küche
+dining room|n|das Esszimmer
+hall|n|der Flur, die Diele
+attic|n|der Dachboden
+cellar|n|der Keller
+basement|n|das Untergeschoss
+garage|n|die Garage
+garden|n|der Garten
+balcony|n|der Balkon
+terrace|n|die Terrasse
+yard|n|der Hof
+roof|n|das Dach
+wall|n|die Wand, die Mauer
+floor|n|der Boden, das Stockwerk
+ground floor|n|das Erdgeschoss
+first floor|n|der erste Stock
+stairs|n|die Treppe
+lift|n|der Lift
+elevator|n|der Lift
+door|n|die Tür
+window|n|das Fenster
+gate|n|das Tor
+fence|n|der Zaun
+key|n|der Schlüssel
+lock|n|das Schloss
+lock|v|abschliessen
+bell|n|die Klingel, die Glocke
+chimney|n|der Kamin
+fireplace|n|der Kamin
+ceiling|n|die Decke
+carpet|n|der Teppich
+curtain|n|der Vorhang
+furniture|n|die Möbel
+table|n|der Tisch
+chair|n|der Stuhl
+armchair|n|der Sessel
+sofa|n|das Sofa
+couch|n|das Sofa
+bed|n|das Bett
+bunk bed|n|das Etagenbett
+cupboard|n|der Schrank
+wardrobe|n|der Kleiderschrank
+shelf|n|das Regal
+bookcase|n|das Bücherregal
+drawer|n|die Schublade
+mirror|n|der Spiegel
+lamp|n|die Lampe
+light|n|das Licht
+clock|n|die Uhr
+picture|n|das Bild
+poster|n|das Poster
+cushion|n|das Kissen
+pillow|n|das Kissen
+blanket|n|die Decke
+duvet|n|die Bettdecke
+sheet|n|das Bettlaken
+towel|n|das Handtuch
+soap|n|die Seife
+shampoo|n|das Shampoo
+toothbrush|n|die Zahnbürste
+toothpaste|n|die Zahnpasta
+shower|n|die Dusche
+bath|n|das Bad, die Badewanne
+sink|n|das Waschbecken, die Spüle
+tap|n|der Wasserhahn
+fridge|n|der Kühlschrank
+freezer|n|der Tiefkühler
+oven|n|der Ofen
+cooker|n|der Herd
+microwave|n|die Mikrowelle
+dishwasher|n|der Geschirrspüler
+washing machine|n|die Waschmaschine
+kettle|n|der Wasserkocher
+toaster|n|der Toaster
+pan|n|die Pfanne
+pot|n|der Topf
+rubbish|n|der Abfall
+bin|n|der Mülleimer
+broom|n|der Besen
+vacuum cleaner|n|der Staubsauger
+iron|n|das Bügeleisen
+iron|v|bügeln
+clean|v|putzen
+clean|adj|sauber
+dirty|adj|schmutzig
+tidy|adj|ordentlich
+tidy up|phr|aufräumen
+messy|adj|unordentlich
+wash|v|waschen
+wash up|phr|abwaschen
+dry|v|trocknen
+dry|adj|trocken
+wet|adj|nass
+sweep|v|wischen, fegen
+dust|n|der Staub
+laundry|n|die Wäsche
+housework|n|der Haushalt
+chore|n|die Hausarbeit
+rent|n|die Miete
+rent|v|mieten
+move|v|umziehen, bewegen
+move house|phr|umziehen
+neighbourhood|n|die Nachbarschaft
+cosy|adj|gemütlich
+spacious|adj|geräumig
+modern|adj|modern
+old-fashioned|adj|altmodisch
+comfortable|adj|bequem
+# Stadt und Orte
+town|n|die Stadt, das Dorf
+city|n|die Stadt, die Grossstadt
+village|n|das Dorf
+capital|n|die Hauptstadt
+centre|n|das Zentrum
+center|n|das Zentrum
+suburb|n|der Vorort
+countryside|n|das Land
+country|n|das Land
+street|n|die Strasse
+road|n|die Strasse
+avenue|n|die Allee
+square|n|der Platz
+corner|n|die Ecke
+pavement|n|der Gehsteig
+crossing|n|der Übergang
+traffic light|n|die Ampel
+roundabout|n|der Kreisel
+bridge|n|die Brücke
+tunnel|n|der Tunnel
+park|n|der Park
+playground|n|der Spielplatz
+fountain|n|der Brunnen
+statue|n|die Statue
+monument|n|das Denkmal
+church|n|die Kirche
+cathedral|n|die Kathedrale
+mosque|n|die Moschee
+temple|n|der Tempel
+tower|n|der Turm
+palace|n|der Palast
+museum|n|das Museum
+gallery|n|die Galerie
+theatre|n|das Theater
+cinema|n|das Kino
+concert hall|n|der Konzertsaal
+stadium|n|das Stadion
+swimming pool|n|das Schwimmbad
+sports centre|n|das Sportzentrum
+library|n|die Bibliothek
+bank|n|die Bank
+post office|n|die Post
+police station|n|die Polizeistation
+fire station|n|die Feuerwache
+town hall|n|das Rathaus
+court|n|das Gericht
+prison|n|das Gefängnis
+hospital|n|das Spital
+market|n|der Markt
+shop|n|das Geschäft, der Laden
+shop|v|einkaufen
+supermarket|n|der Supermarkt
+shopping centre|n|das Einkaufszentrum
+mall|n|das Einkaufszentrum
+bakery|n|die Bäckerei
+butcher's|n|die Metzgerei
+newsagent's|n|der Kiosk
+bookshop|n|die Buchhandlung
+clothes shop|n|das Kleidergeschäft
+chemist's|n|die Drogerie, die Apotheke
+florist|n|der Blumenladen
+toy shop|n|das Spielwarengeschäft
+department store|n|das Warenhaus
+restaurant|n|das Restaurant
+café|n|das Café
+cafe|n|das Café
+pub|n|die Kneipe
+bar|n|die Bar
+fast-food restaurant|n|das Fast-Food-Restaurant
+hotel|n|das Hotel
+hostel|n|die Jugendherberge
+campsite|n|der Campingplatz
+petrol station|n|die Tankstelle
+car park|n|der Parkplatz
+parking|n|das Parken
+factory|n|die Fabrik
+office|n|das Büro
+building|n|das Gebäude
+skyscraper|n|der Wolkenkratzer
+tourist|n|der Tourist
+tourist information|n|die Touristeninformation
+sights|n|die Sehenswürdigkeiten
+sightseeing|n|die Besichtigung
+map|n|die Karte, der Stadtplan
+signpost|n|der Wegweiser
+direction|n|die Richtung
+directions|n|die Wegbeschreibung
+left|adj|links
+right|adj|rechts
+straight on|phr|geradeaus
+turn left|phr|links abbiegen
+turn right|phr|rechts abbiegen
+go past|phr|vorbeigehen
+next to|prep|neben
+opposite|prep|gegenüber
+between|prep|zwischen
+behind|prep|hinter
+in front of|prep|vor
+near|prep|nahe bei
+far|adv|weit
+close|adj|nahe
+crowded|adj|überfüllt
+busy|adj|belebt, beschäftigt
+lively|adj|lebhaft
+quiet|adj|ruhig
+safe|adj|sicher
+dangerous|adj|gefährlich
+dirty|adj|schmutzig
+polluted|adj|verschmutzt

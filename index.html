@@ -394,7 +394,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 
 
 /* Hauptseite: Umschalter, Sprungleisten, Unit-Abschnitte */
-.viewseg{display:inline-flex;margin:12px auto 4px}.viewseg button{padding:8px 22px;font-size:15px}
+.viewseg{display:inline-flex;margin:12px 4px 4px}.viewseg button{padding:8px 22px;font-size:15px}
 .jump{margin:8px auto 0;max-width:760px}.jrow{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;align-items:center;margin:6px 0}
 .jrow>b{font-size:13px;color:var(--muted);margin-right:4px}
 .jb{border:2px solid var(--line);background:#fff;border-radius:99px;padding:4px 11px;font-size:14px;font-weight:700;color:var(--ink,#1e293b);cursor:pointer}
@@ -406,6 +406,30 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 .uh .us{color:var(--muted);font-weight:600}
 .tile .stg{position:absolute;top:10px;right:10px;font-style:normal;font-size:11px;font-weight:700;padding:2px 8px;border-radius:99px;background:#eef0f5;color:#5b6475}
 .tile.feat .stg{display:none}
+.cntown{display:flex;align-items:center;gap:10px;margin-top:12px;font-size:.95em;color:var(--muted,#555)}.cntown input{width:110px;padding:10px 12px;border:1.5px solid #cfd6e4;border-radius:10px;font:inherit}
+.voc{position:fixed;inset:0;z-index:60;background:var(--bg);overflow:auto;-webkit-overflow-scrolling:touch}.voc.hidden{display:none}body.voc-open{overflow:hidden}
+.vocin{max-width:760px;margin:0 auto;padding:12px 14px 60px}.vhead{display:flex;justify-content:space-between;align-items:center;font-size:1.15em;margin-bottom:10px}
+.vlink{background:none;border:0;color:var(--accent);font-weight:700;padding:6px 8px;font-size:.9em;cursor:pointer}.vx{font-size:1.3em}
+.vrow{display:flex;justify-content:center;margin-bottom:10px}.vmsg{background:var(--warnbg);color:var(--warn);border-radius:12px;padding:10px 14px;margin-bottom:10px}
+.vtiles{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:8px}
+.vtile{display:flex;align-items:center;gap:10px;text-align:left;border:2px solid var(--line);background:#fff;border-radius:14px;padding:8px 10px;color:var(--ink);cursor:pointer}
+.vtile.on{border-color:var(--accent);background:var(--accent-bg)}.vtile .vtn{display:flex;flex-direction:column;line-height:1.25}.vtile small{color:var(--muted)}
+.chips{display:flex;flex-wrap:wrap;gap:8px}.chip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.vtop{display:flex;justify-content:space-between;align-items:center}.vcount{font-weight:700;color:var(--muted)}.vbar{height:6px;background:#e4e1d8;border-radius:99px;margin:4px 0 12px;overflow:hidden}.vbar i{display:block;height:100%;background:var(--accent);transition:width .25s}
+.vq{padding:18px}.vq0{margin:0 0 8px;font-size:.9em}.vword{font-size:1.7em;font-weight:800;margin:6px 0 14px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+.vpos{font-size:.45em;font-weight:600;color:var(--muted);border:1px solid var(--line);border-radius:6px;padding:1px 6px}
+.vspk{border:2px solid var(--line);background:#fff;border-radius:999px;width:42px;height:42px;font-size:1.1rem;cursor:pointer}.vspk.big{width:72px;height:72px;font-size:2rem}
+.vopts{display:grid;gap:8px}.vopt{border:2px solid var(--line);background:#fff;border-radius:12px;padding:14px;font-size:1.05em;font-weight:600;color:var(--ink);text-align:left;cursor:pointer}
+.vopt.ok{background:var(--okbg);border-color:var(--ok)}.vopt.bad{background:var(--badbg);border-color:var(--bad)}
+.vin{width:100%;box-sizing:border-box;font-size:1.2em;padding:12px 14px;border:2px solid var(--line);border-radius:12px;margin:6px 0 12px}.vin.ok{border-color:var(--ok);background:var(--okbg)}.vin.bad{border-color:var(--bad);background:var(--badbg)}
+.vsent{font-size:1.25em;line-height:1.5;margin:6px 0 10px}.vgap{display:inline-block;border-bottom:3px solid var(--accent);color:transparent;margin:0 4px}
+.vfb{border-radius:12px;padding:12px 14px;margin:12px 0}.vfb.ok{background:var(--okbg)}.vfb.near{background:var(--warnbg)}.vfb.bad{background:var(--badbg)}.vans{font-size:1.2em;font-weight:800;margin:4px 0}.vex{margin-top:6px;line-height:1.5}
+.vhide{display:none}#vback{margin:10px 0}.vgrid2{display:grid;grid-template-columns:1fr 1fr;gap:10px}.vno,.vyes{border:2px solid var(--line);border-radius:12px;padding:14px;font-weight:700;font-size:1.05em;background:#fff;cursor:pointer}.vyes{border-color:var(--ok);background:var(--okbg)}.vno{border-color:var(--bad);background:var(--badbg)}
+.vmatch{display:grid;grid-template-columns:1fr 1fr;gap:12px}.vmatch>div{display:grid;gap:8px;align-content:start}.vm{border:2px solid var(--line);background:#fff;border-radius:12px;padding:12px 8px;font-weight:600;color:var(--ink);cursor:pointer;min-height:48px}.vm.sel{border-color:var(--accent);background:var(--accent-bg)}.vm.ok{background:var(--okbg);border-color:var(--ok)}.vm.bad{background:var(--badbg);border-color:var(--bad)}
+.vend .vbig{font-size:3rem;text-align:center}.vwl{padding-left:18px;line-height:1.6}.vsecond{width:100%;margin-top:10px;border:2px solid var(--line);background:#fff;border-radius:12px;padding:14px;font-weight:700;color:var(--accent);cursor:pointer}
+.voc .primary{width:100%}
+.ubadge{display:inline-block;margin-left:6px;font-size:.72em;font-weight:700;color:var(--accent);background:var(--accent-bg);border-radius:999px;padding:1px 8px;white-space:nowrap}
+.vocta{display:flex;align-items:center;gap:12px;width:100%;max-width:560px;margin:4px auto 10px;text-align:left;border:2px solid var(--line);background:#fff;border-radius:16px;padding:12px 14px;color:var(--ink);cursor:pointer}.vocta>span:first-child{font-size:1.8rem}.vocta small{display:block;color:var(--muted);font-weight:500}.vocta .vgo{margin-left:auto;font-size:1.6rem;color:var(--accent)}
 </style>
 </head>
 <body>
@@ -416,6 +440,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
       <div class="seg lang" id="langSeg" role="group" aria-label="Sprache / Language"><button data-l="de">DE</button><button data-l="en">EN</button></div>
       <button class="fs" id="fsMinus" aria-label="A−">A−</button>
       <button class="fs" id="fsPlus" aria-label="A+">A+</button>
+      <button class="btn-link" id="vocabBtn">🃏 <span class="lbl" id="vocabLbl">Vokabeln</span></button>
       <button class="btn-link" id="verbsBtn">📋 <span class="lbl" id="verbsLbl">Verben</span></button>
       <button class="btn-link" id="dictBtn">📖 <span class="lbl" id="dictLbl">Wörterbuch</span></button>
       <button class="btn-link" id="searchBtn">🔍 <span class="lbl" id="searchLbl">Suche</span></button>
@@ -478,6 +503,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 <script src="js/live.js"></script>
 <script src="js/verbs.js"></script>
 <script src="js/search.js"></script>
+<script src="js/vocab.js"></script>
 <script>
 
 /* ===== Zurück-Geste (Handy): ein Schritt zurück statt App schliessen ===== */
@@ -486,8 +512,8 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
  let lv=0,ign=0;
  const level=()=>{try{
   const base=screen==='home'?0:(screen==='prac'||screen==='theory'||screen==='slides'||screen==='setup')?1:2;
-  return base+((!modal.classList.contains('hidden')||T.pres||document.getElementById('login').open)?1:0)}catch(e){return 0}};
- const goBack=()=>{try{if(T.pres){presOff();return}if(!modal.classList.contains('hidden')){closeModal();return}if(document.getElementById('login').open){closeLogin();return}if(screen==='results'||screen==='sheet'||screen==='task')renderPractice();else if(screen==='prac'||screen==='theory'||screen==='slides')renderSetup();else if(screen==='setup')renderHome()}catch(e){}};
+  return base+((!modal.classList.contains('hidden')||T.pres||document.getElementById('login').open)?1:0)+(document.body.classList.contains('voc-open')?1:0)}catch(e){return 0}};
+ const goBack=()=>{try{if(document.body.classList.contains('voc-open')){closeVoc();return}if(T.pres){presOff();return}if(!modal.classList.contains('hidden')){closeModal();return}if(document.getElementById('login').open){closeLogin();return}if(screen==='results'||screen==='sheet'||screen==='task')renderPractice();else if(screen==='prac'||screen==='theory'||screen==='slides')renderSetup();else if(screen==='setup')renderHome()}catch(e){}};
  function sync(){
   const want=level();
   while(lv<want){lv++;history.pushState({l:lv},'')}

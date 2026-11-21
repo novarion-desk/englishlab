@@ -15,7 +15,7 @@ function mqCfg(){
  const lab={fill:L('Einsetzen','Fill in'),choice:L('Auswählen','Choose'),errors:L('Fehler finden','Spot the mistake')};
  const ic={fill:'✏️',choice:'✔️',errors:'🔍'};
  return `<div class="mqcfg"><div class="mqrow"><span>${L('Aufgabenart','Type')}</span>${MQK.filter(k=>topic.gen[k]).map(k=>`<button class="mchip ${kinds.includes(k)?'on':''}" data-mqk="${k}">${ic[k]} ${lab[k]}</button>`).join('')}</div>`
-  +(subs.length>1?`<div class="mqrow"><span>${topic.subTitle?topic.subTitle():L('Thema','Topic')}</span>${subs.map(x=>`<button class="mchip ${st.subs.includes(x.k)?'on':''}" data-mqs="${x.k}">${x.n}</button>`).join('')}</div>`:'')+`</div>`;
+  +(subs.length>1?`<div class="mqrow"><span>${topic.subTitle?topic.subTitle():L('Thema','Topic')}</span><button class="mchip ${st.subs.length===subs.length?'on':''}" data-mqs="*">${L('Alle','All')}</button>${subs.map(x=>`<button class="mchip ${st.subs.length<subs.length&&st.subs.includes(x.k)?'on':''}" data-mqs="${x.k}">${x.n}</button>`).join('')}</div>`:'')+`</div>`;
 }
 function mqDraw(el){
  const m=el._m,it=m.cur;let body='';
@@ -48,7 +48,7 @@ document.addEventListener('click',e=>{
  const el=b.closest('.mq'),m=el._m;if(!m)return;
  e.stopPropagation();
  if(b.dataset.mqk){let k=mqKinds();const x=b.dataset.mqk;k=k.includes(x)?k.filter(y=>y!==x):k.concat(x);if(!k.length)return;S.mqKinds=k;try{localStorage.setItem('el-mqk',JSON.stringify(k))}catch(e){}return mqNew(el)}
- if(b.dataset.mqs){const st=ST[topic.id];let a=st.subs;const x=b.dataset.mqs;a=a.includes(x)?a.filter(y=>y!==x):a.concat(x);if(!a.length)return;st.subs=a;return mqNew(el)}
+ if(b.dataset.mqs){const st=ST[topic.id],all=topic.subs().map(y=>y.k);let a=st.subs;const x=b.dataset.mqs;if(x==='*')a=all.slice();else if(a.length===all.length)a=[x];else{a=a.includes(x)?a.filter(y=>y!==x):a.concat(x);if(!a.length)a=all.slice()}st.subs=all.filter(y=>a.includes(y));return mqNew(el)}
  if(b.dataset.mqlv){S.lvl=b.dataset.mqlv;return mqNew(el)}
  if(b.dataset.mqnext!==undefined)return mqNew(el);
  if(m.ans)return;

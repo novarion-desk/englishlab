@@ -1,4 +1,4 @@
-/* Passiv: present simple und past simple (Unit 2 / 6 Stufe 3) */
+/* Passiv: present simple und past simple (Unit 2 / 6 Jahr 3) */
 TOPICS.push((()=>{
  const W={pres:'Present simple Passiv: am / is / are + 3. Form (Partizip). Das Objekt des Aktivsatzes wird zum Subjekt.|Present simple passive: am / is / are + past participle. The object of the active sentence becomes the subject.',
   past:'Past simple Passiv: was / were + 3. Form (Partizip). Einzahl: was, Mehrzahl: were.|Past simple passive: was / were + past participle. Singular: was, plural: were.'};

@@ -1,4 +1,4 @@
-const APP_VERSION='1.0';
+const APP_VERSION='1.1';
 const TOPICS=[];
 let LANG='de';try{const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
 const L=(de,en)=>LANG==='de'?de:en;
@@ -61,7 +61,9 @@ function bankTopic(o){
  const pool=()=>{
   const s=o.subs?sub(o.id):[];
   let p=o.bank.filter(b=>b.lv<=lvl()&&(!o.subs||!s.length||s.includes(b.sub)));
-  return p.length?p:o.bank.filter(b=>b.lv<=lvl());
+  if(p.length)return p;
+  const q=o.bank.filter(b=>!o.subs||!s.length||s.includes(b.sub));
+  return q.length?q:o.bank.filter(b=>b.lv<=lvl());
  };
  const whyOf=b=>{const w=o.why[b.sub||'_']||o.why._||'';return w.split('|')[LANG==='de'?0:1]};
  const base=bankGens(pool,whyOf);
