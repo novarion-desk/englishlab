@@ -2,12 +2,20 @@
 function mqInit(root){
  (root||document).querySelectorAll('.mq[data-mq]').forEach(el=>{if(!el._m){el._m={n:0,ok:0,cur:null,ans:false};mqNew(el)}});
 }
+const MQK=['fill','choice','errors'];
+function mqKinds(){let k=[];try{k=JSON.parse(localStorage.getItem('el-mqk')||'null')||[]}catch(e){}if(S.mqKinds)k=S.mqKinds;k=k.filter(x=>MQK.includes(x));return k.length?k:MQK.slice()}
 function mqNew(el){
  const m=el._m;if(!topic||!topic.gen)return;
- const kinds=['choice','fill','errors'].filter(k=>topic.gen[k]);
- const r=Math.random();const k=kinds.length>2?(r<.5?'choice':r<.8?'fill':'errors'):kinds[0];
+ const kinds=mqKinds().filter(k=>topic.gen[k]);const k=kinds.length?rnd(kinds):'choice';
  let it;try{it=topic.gen[k]()}catch(e){it=topic.gen.choice()}
  m.cur=it;m.ans=false;mqDraw(el);
+}
+function mqCfg(){
+ const kinds=mqKinds(),st=ST[topic.id],subs=topic.subs?topic.subs():[];
+ const lab={fill:L('Einsetzen','Fill in'),choice:L('Auswählen','Choose'),errors:L('Fehler finden','Spot the mistake')};
+ const ic={fill:'✏️',choice:'✔️',errors:'🔍'};
+ return `<div class="mqcfg"><div class="mqrow"><span>${L('Aufgabenart','Type')}</span>${MQK.filter(k=>topic.gen[k]).map(k=>`<button class="mchip ${kinds.includes(k)?'on':''}" data-mqk="${k}">${ic[k]} ${lab[k]}</button>`).join('')}</div>`
+  +(subs.length>1?`<div class="mqrow"><span>${topic.subTitle?topic.subTitle():L('Thema','Topic')}</span>${subs.map(x=>`<button class="mchip ${st.subs.includes(x.k)?'on':''}" data-mqs="${x.k}">${x.n}</button>`).join('')}</div>`:'')+`</div>`;
 }
 function mqDraw(el){
  const m=el._m,it=m.cur;let body='';
@@ -18,7 +26,7 @@ function mqDraw(el){
   const short=!!it.stem;
   body=`<p class="instr">${it.instr||''}</p>${short?`<div class="sentence">${stemHtml(it.stem)}</div>`:''}<div class="opts" style="grid-template-columns:${short?'repeat(auto-fit,minmax(110px,1fr))':'1fr'}">${it.opts.map((o,i)=>`<button data-mqo="${i}" style="${short?'':'text-align:left'}">${esc(o)}</button>`).join('')}</div>`;
  }
- el.innerHTML=`<div class="mqtop"><span>${L('Niveau','Level')}</span><div class="seg mqlv">${['C','B','A'].map(l=>`<button data-mqlv="${l}" class="${S.lvl===l?'on':''}">${l}</button>`).join('')}</div><span class="mqsc">⭐ ${m.ok} / ${m.n}</span></div>${body}<div class="mqfb"></div>`;
+ el.innerHTML=`${mqCfg()}<div class="mqtop"><span>${L('Niveau','Level')}</span><div class="seg mqlv">${['C','B','A'].map(l=>`<button data-mqlv="${l}" class="${S.lvl===l?'on':''}">${l}</button>`).join('')}</div><span class="mqsc">⭐ ${m.ok} / ${m.n}</span></div>${body}<div class="mqfb"></div>`;
  const inp=el.querySelector('[data-mqin]');
  if(inp){inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();m.ans?mqNew(el):mqCheck(el)}};if(!T.pres)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(x){}},0)}
 }
@@ -39,6 +47,8 @@ document.addEventListener('click',e=>{
  const b=e.target.closest('.mq button');if(!b)return;
  const el=b.closest('.mq'),m=el._m;if(!m)return;
  e.stopPropagation();
+ if(b.dataset.mqk){let k=mqKinds();const x=b.dataset.mqk;k=k.includes(x)?k.filter(y=>y!==x):k.concat(x);if(!k.length)return;S.mqKinds=k;try{localStorage.setItem('el-mqk',JSON.stringify(k))}catch(e){}return mqNew(el)}
+ if(b.dataset.mqs){const st=ST[topic.id];let a=st.subs;const x=b.dataset.mqs;a=a.includes(x)?a.filter(y=>y!==x):a.concat(x);if(!a.length)return;st.subs=a;return mqNew(el)}
  if(b.dataset.mqlv){S.lvl=b.dataset.mqlv;return mqNew(el)}
  if(b.dataset.mqnext!==undefined)return mqNew(el);
  if(m.ans)return;

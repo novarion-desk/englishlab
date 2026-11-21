@@ -1,5 +1,12 @@
 # Changelog
 
+## 0.6
+- Behoben: Zurückwischen geht jetzt immer eine Ebene zurück (schliesst die App nicht mehr)
+- Neu: Hub-Karten (Theorie blau, Üben grün, Folien gelb) mit Verlauf
+- Neu: Tense Trainer in EnglishLab (alle Zeiten gemischt, Zeiten wählbar), oben bei den Zeiten
+- Neu: Folien mit Grafiken (Zeitstrahl, farbige Satzbausteine, Beispiel-Bubbles) für alle Zeitformen
+- Neu: Live-Übung mit Einstellungen (Aufgabenart, Unterthemen, Niveau), in Theorie und auf der letzten Folie
+
 ## 0.5
 - Neu: Themenkarten mit Knöpfen Theorie / Üben / Folien (direkt anklickbar)
 - Neu: Theorie farbig gestaltet (nummerierte Karten pro Abschnitt)

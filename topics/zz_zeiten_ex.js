@@ -43,7 +43,7 @@
   B('He ___ a lot of mistakes at the moment. (make)',['is making'],['makes','is makeing'],3,'(make)'),B('Why ___ you ___ ? (smile)',['are / smiling'],['do / smiling','are / smile'],3,'(smile)'),
   B('We ___ the match. (not / watch)',["aren't watching",'are not watching'],["don't watching","aren't watch"],3,'(not / watch)'),B('The sun ___ . (shine)',['is shining'],['shines','is shineing'],3,'(shine)')],
   err:[['She is reading a book.',['She reading a book.','She is read a book.'],1],['They are playing outside.',['They playing outside.','They is playing outside.'],1],["I'm not sleeping.",["I don't sleeping.",'I not am sleeping.'],2],['Is he working now?',['Does he working now?','Is he work now?'],2],['We are running.',['We are runing.','We running are.'],2],['What are you doing?',['What you are doing?','What do you doing?'],2]]},
- zpas:{W:'Present perfect: have / has + Partizip (3. Form). Für Erfahrungen, Resultate und Dinge, die bis jetzt dauern.|Present perfect: have / has + past participle. For experiences, results and things that last up to now.',
+ zpf:{W:'Present perfect: have / has + Partizip (3. Form). Für Erfahrungen, Resultate und Dinge, die bis jetzt dauern.|Present perfect: have / has + past participle. For experiences, results and things that last up to now.',
   fi:()=>L('Bilde das present perfect.','Form the present perfect.'),
   bank:[
   B('I ___ never ___ sushi. (eat)',['have / eaten'],['has / eaten','have / ate'],1,'(eat)'),B('She ___ already ___ her homework. (do)',['has / done'],['have / done','has / did'],1,'(do)'),
@@ -57,7 +57,7 @@
   B('Has he ___ his room yet? (clean)',['cleaned'],['clean','cleans'],3,'(clean)'),B('It is the best book I ___ ever ___ . (read)',['have / read'],['has / read','did / read'],3,'(read)'),
   B('How long ___ you ___ English? (learn)',['have / learned','have / learnt'],['do / learn','did / learn'],3,'(learn)'),B('I have ___ the answer. (know)',['known'],['knew','know'],2,'(know)')],
   err:[['I have seen that film.',['I have saw that film.','I has seen that film.'],1],['She has never been to Paris.',['She has never be to Paris.','She never has been to Paris.'],2],['Have you finished?',['Did you finished?','Have you finish?'],1],['He has lived here for ten years.',['He lives here for ten years.','He has live here for ten years.'],2],["We haven't eaten yet.",["We didn't ate yet.","We haven't ate yet."],2],['They have just left.',['They have just leave.','They has just left.'],2]]},
- zpast:{W:'Past simple: Verb + -ed (regelmässig) oder 2. Form (unregelmässig). Verneinung und Fragen mit did / didn\'t + Grundform.|Past simple: verb + -ed (regular) or 2nd form (irregular). Negatives and questions with did / didn\'t + base form.',
+ zpas:{W:'Past simple: Verb + -ed (regelmässig) oder 2. Form (unregelmässig). Verneinung und Fragen mit did / didn\'t + Grundform.|Past simple: verb + -ed (regular) or 2nd form (irregular). Negatives and questions with did / didn\'t + base form.',
   fi:()=>L('Setze das Verb in der Vergangenheit ein.','Put the verb into the past.'),
   bank:[
   B('I ___ football yesterday. (play)',['played'],['play','plaied'],1,'(play)'),B('She ___ to school by bus. (go)',['went'],['goed','gone'],1,'(go)'),B('We ___ a film last night. (watch)',['watched'],['watch','watching'],1,'(watch)'),
@@ -69,7 +69,7 @@
   B('We ___ the answer. (know)',['knew'],['known','knowed'],3,'(know)'),B('She ___ a beautiful song. (sing)',['sang'],['sung','singed'],3,'(sing)'),B('He ___ his leg in the game. (break)',['broke'],['broken','breaked'],3,'(break)'),
   B('I ___ a lot of water. (drink)',['drank'],['drunk','drinked'],3,'(drink)'),B('Did she ___ a car? (have)',['have'],['had','has'],3,'(have)'),B('We ___ ___ the exam. (not / pass)',["didn't pass",'did not pass'],["didn't passed","don't pass"],3,'(not / pass)')],
   err:[['I played tennis yesterday.',['I play tennis yesterday.','I plaied tennis yesterday.'],1],['She went home.',['She goed home.','She gone home.'],1],["He didn't know the answer.",["He didn't knew the answer.","He not knew the answer."],2],['Did you see him?',['Did you saw him?','Do you saw him?'],2],['We were happy.',['We was happy.','We are happy yesterday.'],1],['They bought a house.',['They buyed a house.','They bought a house yesterday ago.'],2]]},
- zpf:{W:'Past continuous: was / were + Verb-ing. Für Handlungen, die zu einem Zeitpunkt in der Vergangenheit gerade liefen, oft mit when / while.|Past continuous: was / were + verb-ing. For actions in progress at a time in the past, often with when / while.',
+ zpast:{W:'Past continuous: was / were + Verb-ing. Für Handlungen, die zu einem Zeitpunkt in der Vergangenheit gerade liefen, oft mit when / while.|Past continuous: was / were + verb-ing. For actions in progress at a time in the past, often with when / while.',
   fi:()=>L('Bilde das past continuous.','Form the past continuous.'),
   bank:[
   B('I ___ TV at eight. (watch)',['was watching'],['watched','were watching'],1,'(watch)'),B('They ___ football at five. (play)',['were playing'],['was playing','played'],1,'(play)'),B('She ___ a book. (read)',['was reading'],['were reading','read'],1,'(read)'),
@@ -96,11 +96,13 @@
  const fix=b=>{const n=(b.s.match(/___/g)||[]).length;if(n<2)return b;
   const m=b.s.match(/^(.*?)___(.*?)___(.*)$/);const A=m[1],X=m[2].trim(),C=m[3];
   const mg=a=>a.map(o=>{const q=o.split(' / ');return q.length===2?q[0]+' '+(X?X+' ':'')+q[1]:o});
-  return Object.assign({},b,{s:(A+'___'+C).replace(/\s+/g,' ').replace(/ \?/,' ?'),ok:mg(b.ok),bad:mg(b.bad)})};
+  const pr=/^(you|he|she|they|it|we|I)$/.test(X);
+  return Object.assign({},b,{h:(b.h||'')+(X&&!pr?' + '+X:''),s:(A+'___'+C).replace(/\s+/g,' ').replace(/ \?/,' ?'),ok:mg(b.ok),bad:mg(b.bad)})};
  for(const id in D){D[id].bank=D[id].bank.map(fix);
   const t=TOPICS.find(x=>x.id===id);if(!t)continue;const d=D[id];
   const b=bankTopic({id,grp:'zeiten',ord:t.ord,ic:t.ic,de:'',en:'',desc:'',fillInstr:d.fi,fillDesc:()=>L('das passende Wort schreiben','write the right word'),
    lvDe:'C: einfache Sätze. B: dazu Verneinung und Fragen. A: dazu schwierigere Fälle.',lvEn:'C: simple sentences. B: plus negatives and questions. A: plus harder cases.',why:{_:d.W},bank:d.bank,err:d.err,slides:t.slides});
+  t._why=d.W;
   ['fillInstr','lvDesc','subTitle','subs','subDef','types','typeDef','gen','data'].forEach(k=>{t[k]=b[k]});
  }
 })();

@@ -29,7 +29,7 @@ function renderHome(q){
  screen='home';topic=null;setHeader();
  q=(q||'').trim().toLowerCase();
  const match=t=>!q||(t.name()+' '+t.desc()).toLowerCase().includes(q);
- const card=t=>{const g=grpOf(t);return `<div class="tile" data-topic="${t.id}" style="--c:${g.c}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
+ const card=t=>{const g=grpOf(t);return `<div class="tile${t.feat?' feat':''}" data-topic="${t.id}" style="--c:${g.c}"><span class="ic">${t.ic}</span><b>${t.name()}</b><small>${t.desc()}</small><span class="tags"><button class="tg th" data-go="theory">📘 ${L('Theorie','Theory')}</button><button class="tg pr" data-go="prac">✏️ ${L('Üben','Practise')}</button>${teacher()&&t.slides?`<button class="tg sl" data-go="slides">🎬 ${L('Folien','Slides')}</button>`:''}</span></div>`};
  const sec=GROUPS.map(g=>{const ts=TOPICS.filter(t=>t.grp===g.id&&match(t));return ts.length?`<section class="grp" style="--c:${g.c}"><h2><span class="dot">${g.ic}</span>${g.n()}</h2><div class="tiles">${ts.map(card).join('')}</div></section>`:''}).join('');
  app.innerHTML=`<div class="hero"><h1>${L('Grammatik üben, nachlesen, verstehen','Practise, read and understand grammar')}</h1>
   <p>${L('Wähle ein Thema. Zu jedem Thema findest du die Regeln und Übungen auf deinem Niveau.','Pick a topic. Every topic has clear rules and exercises at your level.')}</p>
@@ -49,10 +49,10 @@ function hubHead(){
 function renderSetup(){
  screen='setup';items=[];setHeader();
  const prac=`<button class="hub" id="pracOpen" style="--c:#16a34a"><span class="hic">✏️</span><b>${L('Üben','Practise')}</b><small>${L('Aufgaben auf deinem Niveau A, B oder C','Exercises at your level A, B or C')}</small></button>`
-  +(topic.grp==='zeiten'?`<a class="hub" href="${TENSE_URL}" target="_blank" rel="noopener" style="--c:#2f5bea"><span class="hic">⏱️</span><b>${L('Mehr im Tense Trainer','More in the Tense Trainer')}</b><small>${L('Alle Zeitformen mit vielen Aufgabenarten','All tenses with many exercise types')}</small></a>`:'');
+  +(topic.grp==='zeiten'&&topic.id!=='ztt'?`<button class="hub" id="tttOpen" style="--c:#2f5bea"><span class="hic">⏱️</span><b>${L('Alle Zeiten mischen','Mix all tenses')}</b><small>${L('Im Tense Trainer alle Zeitformen üben','Practise all tenses in the Tense Trainer')}</small></button>`:'');
  const sl=teacher()&&topic.slides?`<button class="hub tch" id="slidesOpen" style="--c:#d98a00"><span class="hic">🎬</span><b>${L('Folien','Slides')}</b><small>${L('Zum Präsentieren (nur Lehrperson)','For presenting (teacher only)')}</small></button>`:'';
- app.innerHTML=hubHead()+`<div class="hubs"><button class="hub" id="theoryOpen" style="--c:${grpOf(topic).c}"><span class="hic">📘</span><b>${L('Theorie','Theory')}</b><small>${L('Regeln, Beispiele, typische Fehler','Rules, examples, typical mistakes')}</small></button>${prac}${sl}</div>`;
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderHome();if(b.id==='theoryOpen')return renderTheory();if(b.id==='pracOpen')return renderPractice();if(b.id==='slidesOpen')return openSlides()};
+ app.innerHTML=hubHead()+`<div class="hubs"><button class="hub" id="theoryOpen" style="--c:#2563eb"><span class="hic">📘</span><b>${L('Theorie','Theory')}</b><small>${L('Regeln, Beispiele, typische Fehler','Rules, examples, typical mistakes')}</small></button>${prac}${sl}</div>`;
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderHome();if(b.id==='theoryOpen')return renderTheory();if(b.id==='pracOpen')return renderPractice();if(b.id==='tttOpen'){topic=TOPICS.find(x=>x.id==='ztt');return renderPractice()}if(b.id==='slidesOpen')return openSlides()};
  window.scrollTo({top:0});
 }
 function renderTheory(){
