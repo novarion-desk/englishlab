@@ -297,6 +297,7 @@ function renderSlides(){
  const s=V[T.cur];
  app.innerHTML=`${tabsBar('slides')}<div class="tbar"><button class="btn-link" id="slBack">‹ ${topic.name()}</button>
   <button class="primary sm" id="slPres">▶ ${L('Präsentieren','Present')}</button>
+  <button class="secondary sm" id="slHo">🖨 ${L('Handout','Handout')}</button>
   <button class="secondary sm" id="slNotes">${L('Hinweise','Notes')}: ${T.notes?L('an','on'):L('aus','off')}</button>
   <span class="muted tinfo">${T.cur+1} / ${V.length}</span></div>
   <div class="ppt"><div class="film" id="film">${V.map((x,i)=>`<button class="th ${i===T.cur?'on':''} ${x.kind==='live'||x.kind==='try'?'ex':''}" data-go="${i}"><span class="thn">${i+1}</span><div class="cvw thumb">${cvHtml(x,i,V.length,true)}</div></button>`).join('')}</div>
@@ -309,6 +310,7 @@ function renderSlides(){
   const b=e.target.closest('button');if(!b)return;
   if(b.id==='slBack')return renderSetup();
   if(b.id==='slPres')return presOn();
+  if(b.id==='slHo')return openHandoutPrint();
   if(b.id==='slNotes'){T.notes=!T.notes;return renderSlides()}
   if(b.dataset.go!==undefined){T.cur=+b.dataset.go;return renderSlides()}
   if(b.dataset.nav){slGo(+b.dataset.nav)}

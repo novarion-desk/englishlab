@@ -19,6 +19,17 @@ function openTheoryPrint(){
  window.scrollTo({top:0});
 }
 
+/* --- Handout: Folien, 6 pro A4 --- */
+function openHandoutPrint(){
+ const V=slidesList().filter(x=>x.kind!=='live'&&x.kind!=='try');
+ screen='tprint';setHeader();
+ app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="hoBack">${L('‹ Zurück zu den Folien','‹ Back to slides')}</button><button class="primary" id="hoPrint">${L('🖨 Drucken / PDF (6 Folien pro A4)','🖨 Print / PDF (6 slides per A4)')}</button></div>
+ <div class="sheet hosh">${Array.from({length:Math.ceil(V.length/6)},(_,g)=>`<div class="hogrid">${V.slice(g*6,g*6+6).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*6+j,V.length,false)}</div></div>`).join('')}</div>`).join('')}</div>`;
+ cvScale(app);
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return window.print()};
+ window.scrollTo({top:0});
+}
+
 /* --- Unit-Test --- */
 function renderUnitTest(s,u){
  UT.free=false;const key=s+'-'+u;if(UT.key!==key){UT.key=key;UT.off={}}

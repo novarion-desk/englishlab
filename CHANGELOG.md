@@ -1,5 +1,9 @@
 # Changelog
 
+## 1.6
+- Neu: Thema «Verbindungswörter» erweitert um Gegensatz (but, while, whereas, although, despite / in spite of), Zusatz (also, too, as well, either, besides, moreover), Folge (therefore, as a result, so), Zweck (to / in order to, so that) und Zeit (while, until, after, once, as soon as). 25 neue Übungssätze (Niveau A/B/C), 4 neue Folien, neue Fehler-Aufgaben, neue Unterthemen
+- Neu: Handout für Folien (Lehrerbereich, Folien-Ansicht, Knopf «Handout»): 6 Folien pro A4 zum Drucken oder als PDF
+
 ## 1.5
 - Neu: Eigene Lernliste. Im Wörterbuch (und bei Treffern aus den Units) merkt man ein Wort mit ☆. Im Vokabeltrainer gibt es neben «Jahr 1/2» und «Jahr 3» die Auswahl «Meine Liste»: alle Übungsarten, Richtung und Lernstand (Leitner) funktionieren wie sonst. Wörter lassen sich mit ✕ wieder entfernen. Gespeichert nur auf dem Gerät
 
