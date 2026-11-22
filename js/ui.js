@@ -206,9 +206,10 @@ function renderResults(){
  const medal=pct>=90?'🏆':pct>=70?'🎉':pct>=50?'👍':'💪';
  app.innerHTML=`<div class="card"><div class="big"><span class="medal">${medal}</span>${score} / ${n}<small>${pct} %</small></div></div>
  ${wrong.length?`<div class="card"><h2>${L('Zum Nachschauen','To review')}</h2><ul class="rl">${wrong.map(r=>`<li>${r.it.src?'<div class="src" style="font-size:17px">'+r.it.src+'</div>':''}${r.val?`<span class="err2">${esc(r.val)}</span><br>`:''}<b>${esc(r.it.sol)}</b></li>`).join('')}</ul></div>`:''}
- <button class="primary" id="again">${L('Nochmal','Again')}</button>
+ ${wrong.length?`<button class="primary" id="retryw">${L('🔁 Nur die Fehler nochmals üben ('+wrong.length+')','🔁 Practise only the mistakes ('+wrong.length+')')}</button>`:''}
+ <button class="${wrong.length?'secondary':'primary'}" id="again" ${wrong.length?'style="margin-top:10px"':''}>${L('Nochmal','Again')}</button>
  <button class="secondary" id="setup" style="margin-top:10px">${L('‹ Einstellungen','‹ Settings')}</button>`;
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='again')return start();if(b.id==='setup')return renderPractice()};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='retryw'){items=wrong.map(r=>r.it);infinite=false;idx=0;score=0;results=[];return renderTask()}if(b.id==='again')return start();if(b.id==='setup')return renderPractice()};
 }
 /* ===== Arbeitsblatt ===== */
 function openSheet(){

@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.7
+- Neu: Am Ende einer Runde gibt es «🔁 Nur die Fehler nochmals üben», damit falsch gelöste Aufgaben gezielt wiederholt werden
+
 ## 1.6
 - Neu: Thema «Verbindungswörter» erweitert um Gegensatz (but, while, whereas, although, despite / in spite of), Zusatz (also, too, as well, either, besides, moreover), Folge (therefore, as a result, so), Zweck (to / in order to, so that) und Zeit (while, until, after, once, as soon as). 25 neue Übungssätze (Niveau A/B/C), 4 neue Folien, neue Fehler-Aufgaben, neue Unterthemen
 - Neu: Handout für Folien (Lehrerbereich, Folien-Ansicht, Knopf «Handout»): 6 Folien pro A4 zum Drucken oder als PDF
