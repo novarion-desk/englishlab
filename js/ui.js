@@ -56,11 +56,13 @@ function renderHome(q,keep){
  app.innerHTML=`<div class="hero"><h1>${L('Grammatik üben, nachlesen, verstehen','Practise, read and understand grammar')}</h1>
   <p>${L('Wähle ein Thema. Zu jedem Thema findest du die Regeln und Übungen auf deinem Niveau.','Pick a topic. Every topic has clear rules and exercises at your level.')}</p>
   <input class="search" id="q" type="search" placeholder="${L('Thema suchen …','Search a topic …')}" value="${esc(q)}" autocomplete="off">
+  <button class="vocta" data-tprep="1"><span>📝</span><span><b>${L('Testvorbereitung','Test preparation')}</b><small>${L('Themen mischen, Punkte sammeln, Übungsprüfung drucken','Mix topics, collect points, print a practice test')}</small></span><span class="vgo">›</span></button>
   <button class="vocta" data-openvoc="1"><span>🃏</span><span><b>${L('Vokabeltrainer','Vocabulary trainer')}</b><small>${L('Wörter nach Units üben, mit Wiederholung','Practise words by unit, with spaced repetition')}</small></span><span class="vgo">›</span></button>
   <div class="seg viewseg"><button data-view="topics" class="${homeView==='topics'?'on':''}">${L('Themen','Topics')}</button><button data-view="units" class="${homeView==='units'?'on':''}">Units</button></div>${homeView==='units'?`<div class="seg viewseg jahr"><button data-jahr="2" class="${homeJahr===2?'on':''}">${stageName(2)}</button><button data-jahr="3" class="${homeJahr===3?'on':''}">${stageName(3)}</button></div>`:''}
   <div class="jump">${jump}</div></div>
   ${sec||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}`;
  app.onclick=e=>{
+  if(e.target.closest('[data-tprep]'))return renderTprep();
   const ut=e.target.closest('[data-utest]');if(ut){const [us,uu]=ut.dataset.utest.split('-').map(Number);homeY=window.scrollY;return renderUnitTest(us,uu)}
   const jy=e.target.closest('[data-jahr]');if(jy){const j=+jy.dataset.jahr;if(j===homeJahr)return;homeJahr=j;try{localStorage.setItem('el-jahr',String(j))}catch(_){}homeY=0;return renderHome(q)}
   const vb=e.target.closest('[data-view]');if(vb){if(vb.dataset.view===homeView)return;homeView=vb.dataset.view;try{localStorage.setItem('el-view',homeView)}catch(_){}homeY=0;return renderHome(q)}
@@ -153,7 +155,7 @@ function renderTask(){
  }
  const auto=(it.type==='choice')?'':`<button class="primary" id="go">${L('Prüfen','Check')}</button>`;
  app.innerHTML=`
- <div class="qtop"><button class="btn-link" id="quit">${infinite?L('✓ Fertig','✓ Done'):L('✕ Beenden','✕ Quit')}</button><span>${infinite?L('Aufgabe ','Exercise ')+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>${testMode?'':'⭐ '+score}</span></div>
+ <div class="qtop"><button class="btn-link" id="quit">${infinite?L('✓ Fertig','✓ Done'):L('✕ Beenden','✕ Quit')}</button><span>${infinite?L('Aufgabe ','Exercise ')+(idx+1)+' · ∞':(idx+1)+' / '+items.length}</span><span>${testMode?(UT.timer?'⏱ <b id="clk">0:00</b>':''):'⭐ '+score}</span></div>
  ${infinite?'':`<div class="bar"><div style="width:${idx/items.length*100}%"></div></div>`}
  <div class="card"><div class="tag">${testMode?(it.tic||'')+' '+esc(it.tname||''):typeLabel(it.kind)}</div>${body}<div id="fb"></div><div class="actions">${auto}</div></div>`;
  app.onclick=e=>{
@@ -161,7 +163,7 @@ function renderTask(){
   if(b.id==='quit'){
    if(infinite&&results.length)return renderResults();
    if(results.length&&!confirm(L('Runde wirklich beenden?\nDeine bisherigen Antworten gehen verloren.','Really quit this round?\nYour answers so far will be lost.')))return;
-   if(testMode){testMode=false;return renderUnitTest(UT.s,UT.u)}
+   if(testMode){testMode=false;clearInterval(UT.clk);return utBack()}
    return renderPractice();
   }
   if(b.dataset.o!==undefined&&!answered)return answerChoice(+b.dataset.o);
@@ -213,8 +215,8 @@ function openSheet(){
  if(!chk())return;
  seenG.clear();sheetItems=build(S.count>0?S.count:20);renderSheet();
 }
-function sheetTask(it,n){
- const num=`<span class="n">${n}.</span>`;
+function sheetTask(it,n,p){
+ const num=`<span class="n">${n}.</span>`+(p?`<span class="pt">${p} ${L('P.','pts')}</span>`:'');
  if(it.type==='fill')return `<div class="t"><div class="ins">${it.instr}${it.hint?' <span class="hint">'+esc(it.hint)+'</span>':''}</div>${num}${esc(it.before)}<span class="blank" style="width:${Math.max(9,it.answers[0].length+5)}ch"></span>${esc(it.after)}</div>`;
  if(it.type==='choice')return `<div class="t"><div class="ins">${it.instr}</div>${it.stem?`<div>${num}${esc(it.stem)}</div><div>${it.opts.map(o=>`<span class="opt"><span class="box"></span>${esc(o)}</span>`).join('')}</div>`:it.opts.map((o,i)=>`<div style="margin:2px 0">${i===0?num:'<span class="n" style="visibility:hidden">0.</span>'}<span class="box"></span>${esc(o)}</div>`).join('')}</div>`;
  if(it.type==='order')return `<div class="t"><div class="ins">${it.instr}</div>${num}<span class="wbx">${it.words.map(w=>`<span>${esc(w)}</span>`).join('')}</span><div class="wl"></div></div>`;
