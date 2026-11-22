@@ -26,7 +26,7 @@ function ensureVoc(cb){
  document.head.appendChild(s);
 }
 const unitName=u=>u?('Unit '+u):'Welcome';
-const yearName=y=>y===2?L('Jahr 1/2','Year 1/2'):L('Jahr 3','Year 3');
+const yearName=y=>y===0?L('Meine Liste','My list'):y===2?L('Jahr 1/2','Year 1/2'):L('Jahr 3','Year 3');
 const lessonName=l=>({C:'Culture',X:'Extra',R:'Review','':'–'}[l]||('Lesson '+l));
 
 /* ---------- Antworten prüfen ---------- */
@@ -83,8 +83,8 @@ const hi=w=>{const c=cloze(w);return c?esc(c.pre)+'<b>'+esc(c.ans)+'</b>'+esc(c.
 /* ---------- Fortschritt ---------- */
 const dirsOf=()=>SET.dir==='both'?['e','d']:[SET.dir];
 const stOf=(w,d)=>P[w.id+'|'+d];
-function setSel(y){const all=[...new Set(W.filter(w=>w.y===y).map(w=>w.u))].sort((a,b)=>a-b);let s=SET.sel[y];if(!Array.isArray(s)||!s.length)s=all.slice();SET.sel[y]=s.filter(u=>all.includes(u));if(!SET.sel[y].length)SET.sel[y]=all;return {all,sel:SET.sel[y]}}
-function poolWords(){const {sel}=setSel(SET.y);let p=W.filter(w=>w.y===SET.y&&sel.includes(w.u));if(sel.length===1&&SET.les.length){const f=p.filter(w=>SET.les.includes(w.l));if(f.length)p=f}return p}
+function setSel(y){if(y===0)return {all:[0],sel:[0]};const all=[...new Set(W.filter(w=>w.y===y).map(w=>w.u))].sort((a,b)=>a-b);let s=SET.sel[y];if(!Array.isArray(s)||!s.length)s=all.slice();SET.sel[y]=s.filter(u=>all.includes(u));if(!SET.sel[y].length)SET.sel[y]=all;return {all,sel:SET.sel[y]}}
+function poolWords(){if(SET.y===0)return window.MYLIST?MYLIST.all():[];const {sel}=setSel(SET.y);let p=W.filter(w=>w.y===SET.y&&sel.includes(w.u));if(sel.length===1&&SET.les.length){const f=p.filter(w=>SET.les.includes(w.l));if(f.length)p=f}return p}
 function unitStats(y,u){
  const ws=W.filter(w=>w.y===y&&w.u===u),ds=dirsOf(),now=Date.now();let learned=0,due=0,started=0;
  ws.forEach(w=>{let all=true,any=false;ds.forEach(d=>{const s=stOf(w,d);if(s){any=true;if(s[1]<=now)due++;if(s[0]<4)all=false}else all=false});if(all)learned++;if(any)started++});
@@ -121,7 +121,7 @@ function pick(n,exclude){
 
 /* ---------- Aufgaben bauen ---------- */
 function distract(w,d,k){
- const same=(W.filter(x=>x.y===w.y&&x.id!==w.id&&x.p===w.p)),any=W.filter(x=>x.y===w.y&&x.id!==w.id);
+ const same=(W.filter(x=>(w.y===0||x.y===w.y)&&x.id!==w.id&&x.p===w.p)),any=W.filter(x=>(w.y===0||x.y===w.y)&&x.id!==w.id);
  const txt=x=>d==='e'?shownDe(x):x.en;let pool=shuf(same).concat(shuf(any)),out=[],seen=new Set([txt(w).toLowerCase()]);
  for(const x of pool){const t=txt(x);if(t.length>38)continue;if(seen.has(t.toLowerCase()))continue;seen.add(t.toLowerCase());out.push(t);if(out.length>=k)break}
  return out;
@@ -169,6 +169,10 @@ const body=()=>document.getElementById('vocBody');
 function speak(t){if(!canSpeak())return;try{speechSynthesis.cancel();const u=new SpeechSynthesisUtterance(t);u.lang='en-GB';u.rate=.9;speechSynthesis.speak(u)}catch(e){}}
 function ring(p,txt){const r=15,c=2*Math.PI*r;return `<svg class="vring" viewBox="0 0 40 40" width="46" height="46"><circle cx="20" cy="20" r="${r}" fill="none" stroke="#e4e1d8" stroke-width="5"/><circle cx="20" cy="20" r="${r}" fill="none" stroke="var(--ok)" stroke-width="5" stroke-linecap="round" stroke-dasharray="${(c*p).toFixed(1)} ${c.toFixed(1)}" transform="rotate(-90 20 20)"/><text x="20" y="24" text-anchor="middle" font-size="11" font-weight="700" fill="#1d2433">${txt}</text></svg>`}
 
+function myCard(pool,due,fresh){
+ const rows=pool.map(w=>`<div class="mylrow"><span><b>${esc(w.en)}</b> <small>${esc(w.p)}</small><br><small>${esc(w.de)}</small></span><button class="mystar on" data-vrm="${esc(w.id)}" title="${L('Entfernen','Remove')}" aria-label="${L('Entfernen','Remove')}" style="color:#dc2626">✕</button></div>`).join('');
+ return `<div class="card"><h2>1 · ${L('Meine Liste','My list')} (${pool.length})</h2>${pool.length?rows+`<p class="muted" style="margin:10px 0 0">${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p>`:`<p class="muted">${L('Noch leer. Öffne das Wörterbuch (📖) und tippe bei einem Wort auf ☆.','Still empty. Open the dictionary (📖) and tap ☆ next to a word.')}</p>`}</div>`;
+}
 function drawHome(msg){
  const {all,sel}=setSel(SET.y),pool=poolWords();
  const ds=dirsOf(),now=Date.now();
@@ -181,10 +185,10 @@ function drawHome(msg){
  const c=SET.count,custom=[5,10,20,0].includes(c)?'':c;
  body().innerHTML=`
  ${msg?`<div class="vmsg">${msg}</div>`:''}
- <div class="vrow"><div class="seg viewseg">${[2,3].map(y=>`<button data-vy="${y}" class="${SET.y===y?'on':''}">${yearName(y)}</button>`).join('')}</div></div>
- <div class="card"><h2>1 · ${L('Units wählen','Choose units')} ${sel.length===all.length?'':`<button class="vlink" data-vall="1">${L('alle auswählen','select all')}</button>`}</h2><div class="vtiles">${tiles}</div>
-  <p class="muted" style="margin:10px 0 0">${pool.length} ${L('Wörter','words')} · ${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p></div>
- ${lchips}
+ <div class="vrow"><div class="seg viewseg">${[2,3,0].map(y=>`<button data-vy="${y}" class="${SET.y===y?'on':''}">${yearName(y)}</button>`).join('')}</div></div>
+ ${SET.y===0?myCard(pool,due,fresh):`<div class="card"><h2>1 · ${L('Units wählen','Choose units')} ${sel.length===all.length?'':`<button class="vlink" data-vall="1">${L('alle auswählen','select all')}</button>`}</h2><div class="vtiles">${tiles}</div>
+  <p class="muted" style="margin:10px 0 0">${pool.length} ${L('Wörter','words')} · ${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p></div>`}
+ ${SET.y===0?'':lchips}
  <div class="card"><h2>2 · ${L('Richtung','Direction')}</h2><div class="seg">${[['e','EN → DE'],['d','DE → EN'],['both',L('beides','both')]].map(([k,l])=>`<button data-vd="${k}" class="${SET.dir===k?'on':''}">${l}</button>`).join('')}</div></div>
  <div class="card"><h2>3 · ${L('Übungsart','Exercise type')}</h2><div class="chips">${types.map(([k,l])=>`<button class="chip ${SET.type===k?'on':''}" data-vt="${k}">${l}</button>`).join('')}</div></div>
  <div class="card"><h2>4 · ${L('Welche Wörter?','Which words?')}</h2><div class="seg">${[['smart',L('Lernen + Wiederholen','Learn + review')],['hard',L('Schwierige','Difficult')],['all',L('Alle (Zufall)','All (random)')]].map(([k,l])=>`<button data-vm="${k}" class="${SET.mode===k?'on':''}">${l}</button>`).join('')}</div>
@@ -314,7 +318,7 @@ function ensureRoot(){
 /* ---------- Drucken ---------- */
 const PR={kind:'list',dir:'e',n:20,seed:0};
 const kindName=()=>({list:L('Wortliste','Word list'),test:L('Vokabeltest','Vocabulary test'),cards:L('Karteikarten','Flashcards')}[PR.kind]);
-function selTitle(){const {all,sel}=setSel(SET.y);const u=sel.length===all.length?L('alle Units','all units'):sel.map(unitName).join(', ');return yearName(SET.y)+' · '+u}
+function selTitle(){if(SET.y===0)return L('Meine Liste','My list');const {all,sel}=setSel(SET.y);const u=sel.length===all.length?L('alle Units','all units'):sel.map(unitName).join(', ');return yearName(SET.y)+' · '+u}
 function drawPrintSetup(){
  const pool=poolWords();
  body().innerHTML=`<button class="vlink" id="vprBack">${L('‹ Zurück','‹ Back')}</button>
@@ -384,7 +388,8 @@ function onClick(e){
  if(b.id==='vclose')return closeVoc();
  if(b.id==='vend')return S.inf&&S.tot?drawEnd():drawHome();
  if(dset.vspk!==undefined)return speak(dset.vspk);
- if(dset.vy){SET.y=+dset.vy;saveS();return drawHome()}
+ if(dset.vrm){if(window.MYLIST)MYLIST.remove(dset.vrm);return drawHome()}
+ if(dset.vy!==undefined){SET.y=+dset.vy;saveS();return drawHome()}
  if(dset.vu!==undefined){const {all,sel}=setSel(SET.y),u=+dset.vu;let n;
   if(sel.length===all.length&&all.length>2)n=[u];else n=sel.includes(u)?sel.filter(x=>x!==u):sel.concat(u);
   if(!n.length)n=all.slice();SET.sel[SET.y]=n.sort((a,b)=>a-b);SET.les=[];saveS();return drawHome()}

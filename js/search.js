@@ -151,14 +151,14 @@ function drawSearch(){
   else{
    const r=q?runSearch(q):null;
    const g=r?r.gl:[];
-   const row=x=>`<div class="gl"><div><b>${q?hl(x.en,r.terms):esc(x.en)}</b><small>${L(POSN[x.pos]||'',POSE[x.pos]||'')}</small>${vocBadge(x.en)}</div><div style="text-align:right">${q?hl(x.de,r.terms):esc(x.de)}</div></div>`;
+   const row=x=>`<div class="gl"><div><b>${q?hl(x.en,r.terms):esc(x.en)}</b><small>${L(POSN[x.pos]||'',POSE[x.pos]||'')}</small>${vocBadge(x.en)}</div><div style="text-align:right">${q?hl(x.de,r.terms):esc(x.de)} ${window.MYLIST?MYLIST.star(x.en,x.pos,x.de):''}</div></div>`;
    if(q){
     const dr=dictSearch(q);
     h+=dr.length?`<h4>${L('Wörterbuch','Dictionary')} (${dr.length})</h4>`+dr.slice(0,60).map(row).join('')+(dr.length>60?`<p class="muted">${L('Weitere Treffer: Suche genauer eingeben.','More results: type a more exact search.')}</p>`:''):'';
     if(!VIDX&&window.VOCAB)vocLoad(()=>{if(sbox.tab==='dict'&&sbox.q===q)drawSearch()});
     if(VIDX){const f=fold(q).trim(),seen=new Set(dr.map(d=>vkey(d.en)));
      const vm=VOCAB.W.filter(w=>!seen.has(vkey(w.en))&&(vkey(w.en).startsWith(f)||(f.length>=3&&fold(w.de).includes(f)))).slice(0,30);
-     if(vm.length)h+=`<h4>${L('Aus den Units','From the units')} (${vm.length})</h4>`+vm.map(w=>`<div class="gl"><div><b>${esc(w.en)}</b><small>${esc(w.p)}</small>${vocBadge(w.en)}</div><div style="text-align:right">${esc(w.de)}</div></div>`).join('')}
+     if(vm.length)h+=`<h4>${L('Aus den Units','From the units')} (${vm.length})</h4>`+vm.map(w=>`<div class="gl"><div><b>${esc(w.en)}</b><small>${esc(w.p)}</small>${vocBadge(w.en)}</div><div style="text-align:right">${esc(w.de)} ${window.MYLIST?MYLIST.star(w.en,w.p,w.de):''}</div></div>`).join('')}
     h+=g.length?`<h4>${L('Grammatikbegriffe','Grammar terms')}</h4>`+g.slice(0,20).map(x=>`<div class="gl"><div><b>${hl(x[0],r.terms)}</b><small>${x[2]?esc(x[2]):''}</small></div><div style="text-align:right">${hl(x[1],r.terms)}</div></div>`).join(''):'';
     if(!dr.length&&!g.length)h+=`<p class="muted">${L('Nichts gefunden.','Nothing found.')}</p>`;
     const eq=encodeURIComponent(q);

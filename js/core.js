@@ -1,4 +1,4 @@
-const APP_VERSION='1.4';
+const APP_VERSION='1.5';
 const TOPICS=[];
 let LANG='de';try{const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
 const L=(de,en)=>LANG==='de'?de:en;

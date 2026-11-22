@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.5
+- Neu: Eigene Lernliste. Im Wörterbuch (und bei Treffern aus den Units) merkt man ein Wort mit ☆. Im Vokabeltrainer gibt es neben «Jahr 1/2» und «Jahr 3» die Auswahl «Meine Liste»: alle Übungsarten, Richtung und Lernstand (Leitner) funktionieren wie sonst. Wörter lassen sich mit ✕ wieder entfernen. Gespeichert nur auf dem Gerät
+
 ## 1.4
 - Neu: Testvorbereitung (Karte auf der Startseite). Schüler wählen Themen aus allen Units, Niveau und Anzahl Aufgaben (10, 20, 30 oder eigene Zahl), optional mit Stoppuhr. Punkte pro Aufgabe: Einsetzen und Auswählen 1, Satz ordnen und Umformen 2
 - Neu: Auswertung zeigt «x von y Punkten» pro Thema, «Nur die falschen nochmals üben» und «Neuer Test nur mit den schwachen Themen»
