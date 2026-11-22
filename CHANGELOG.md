@@ -1,5 +1,11 @@
 # Changelog
 
+## 1.4
+- Neu: Testvorbereitung (Karte auf der Startseite). Schüler wählen Themen aus allen Units, Niveau und Anzahl Aufgaben (10, 20, 30 oder eigene Zahl), optional mit Stoppuhr. Punkte pro Aufgabe: Einsetzen und Auswählen 1, Satz ordnen und Umformen 2
+- Neu: Auswertung zeigt «x von y Punkten» pro Thema, «Nur die falschen nochmals üben» und «Neuer Test nur mit den schwachen Themen»
+- Neu: Übungsprüfung zum Drucken mit Name / Datum / Punkten pro Aufgabe und Lösungsblatt
+- Geändert: Der Unit-Test zeigt Punkte statt Anzahl
+
 ## 1.3
 - Neu: Unit-Test am Bildschirm («Test am Bildschirm lösen»). Schüler stellen sich selbst einen Test zusammen (Unit, Themen, Niveau, Aufgaben pro Thema), lösen ihn ohne Rückmeldung während des Tests und erhalten am Ende die Punktzahl, eine Übersicht pro Thema (sitzt / fast / üben), Links zu Theorie und Üben für die schwachen Themen, die Liste der Fehler mit richtiger Antwort und «Neuer Test nur mit den schwachen Themen»
 - Neu: Das letzte Testergebnis pro Thema (in Prozent) steht beim nächsten Mal bei den Themen. Gespeichert nur auf dem Gerät
