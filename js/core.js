@@ -8,7 +8,7 @@ const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(M
 const cap=s=>s.charAt(0).toUpperCase()+s.slice(1);
 const nrm=s=>String(s).toLowerCase().replace(/[’‘`´]/g,"'").replace(/[.,!?;:]/g,' ').replace(/\s+/g,' ').trim();
 const app=document.getElementById('app'),modal=document.getElementById('modal'),modalBody=document.getElementById('modalBody');
-const S={lvl:'B',count:10};
+const S={lvl:'A',count:10};
 const ST={};
 const sub=id=>(ST[id]&&ST[id].subs)||[];
 const mkFill=(before,after,answers,hint,why)=>({type:'fill',before,after,answers,hint:hint||'',sol:(before+answers[0]+after).replace(/\s+/g,' ').trim(),why});

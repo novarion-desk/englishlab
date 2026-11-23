@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.1
+- Niveau A ist jetzt die Voreinstellung (vorher B)
+
 ## 2.0
 - Fix: «Drucken / PDF» tat auf dem iPad nichts, wenn die App vom Home-Bildschirm geöffnet war (dort ist der Druckbefehl des Browsers blockiert). Jetzt öffnet sich in diesem Fall das Blatt in einem eigenen Fenster mit «Drucken»-Knopf und Hinweis (Teilen → Drucken / als PDF sichern). Gilt für Unit-Test, Arbeitsblatt, Theorie, Folien-Handout und Vokabelblätter.
 
