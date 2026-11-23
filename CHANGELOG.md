@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.2
+- Fix: Der «Drucken / PDF»-Knopf im neuen Druckfenster (iPad, Home-Bildschirm-App) war wegen eines Namenskonflikts im Stil unsichtbar. Jetzt gut sichtbar.
+
 ## 2.1
 - Niveau A ist jetzt die Voreinstellung (vorher B)
 
