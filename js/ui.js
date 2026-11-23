@@ -21,12 +21,12 @@ async function askKI(){
  const free=!['fill','choice','order'].includes(it.type);
  const task=[st(it.instr||''),it.src?st(it.src):'',it.before!=null?st(it.before)+' ____ '+st(it.after||''):'',it.stem?st(it.stem):'',it.words?'Wörter: '+it.words.map(st).join(' / '):'',it.opts?'Auswahl: '+it.opts.map(st).join(' / '):''].filter(Boolean).join(' – ');
  kiBusy=true;if(btn)btn.disabled=true;
- box.innerHTML='<div class="ki wait">'+L('Die KI überlegt …','The AI is thinking …')+'</div>';
+ box.innerHTML='<div class="ki wait">'+L('Marty überlegt …','Marty is thinking …')+'</div>';
  try{
   const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:(free&&!r0.ok)?'check':'explain',device:kiDevice(),topic:st(topic.name()),task,right:st(it.sol),mine:r0.ok?'':st(r0.val)})});
   const j=await r.json().catch(()=>({}));
-  if(!r.ok||!j.answer){box.innerHTML='<div class="ki err">'+esc(j.error||'Die KI ist gerade nicht erreichbar.')+'</div>';if(btn)btn.disabled=(r.status===429)}
-  else{box.innerHTML='<div class="ki"><b>💡 '+L('Erklärung der KI','Explanation by the AI')+'</b><div class="kit">'+esc(String(j.answer).replace(/\*\*|__|^#+\s*/gm,''))+'</div><div class="kin">'+L('Die KI kann sich irren. Gib nie Namen oder persönliche Daten ein.','The AI can be wrong. Never enter names or personal data.')+(typeof j.remaining==='number'?' '+L('Noch '+j.remaining+' Fragen heute.',j.remaining+' questions left today.'):'')+'</div></div>';if(btn)btn.disabled=true}
+  if(!r.ok||!j.answer){box.innerHTML='<div class="ki err">'+esc(j.error||'Marty ist gerade nicht erreichbar.')+'</div>';if(btn)btn.disabled=(r.status===429)}
+  else{box.innerHTML='<div class="ki"><b>💡 '+L('Marty erklärt','Marty explains')+'</b><div class="kit">'+esc(String(j.answer).replace(/\*\*|__|^#+\s*/gm,''))+'</div><div class="kin">'+L('Marty ist eine KI und kann sich irren. Gib nie Namen oder persönliche Daten ein.','Marty is an AI and can be wrong. Never enter names or personal data.')+(typeof j.remaining==='number'?' '+L('Noch '+j.remaining+' Fragen heute.',j.remaining+' questions left today.'):'')+'</div></div>';if(btn)btn.disabled=true}
  }catch(e){box.innerHTML='<div class="ki err">Keine Verbindung. Versuche es später.</div>';if(btn)btn.disabled=false}
  kiBusy=false;
 }
@@ -204,7 +204,7 @@ function done(ok,val){
  if(testMode){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
  fb.innerHTML=ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why}</div></div>`;
- if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Ist mein Satz auch richtig?','Is my sentence also right?'):L('Frag die KI','Ask the AI'))+'</button></div><div id="kiBox"></div>')}
+ if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Ist mein Satz auch richtig?','Is my sentence also right?'):L('Frag Marty','Ask Marty'))+'</button></div><div id="kiBox"></div>')}
  const go=document.getElementById('go');
  const last=!infinite&&idx===items.length-1;
  const lab=last?L('Ergebnis','Results'):L('Weiter →','Next →');
