@@ -92,21 +92,71 @@ function bankTopic(o){
 const tenseTopic=o=>({id:o.id,grp:'zeiten',ord:o.ord,ic:o.ic,ready:1,name:()=>L(o.de,o.en),desc:()=>o.desc,slides:o.slides});
 
 /* Drucken: Auf dem iPad passiert in einer App vom Home-Bildschirm bei window.print() nichts.
-   Dort öffnen wir die Seite als eigenes Fenster mit «Drucken»-Knopf (Teilen → Drucken / PDF). */
+   Dort erstellen wir eine PDF-Datei und öffnen das Teilen-Menü (Drucken, In Dateien sichern, AirDrop …). */
 function doPrint(){
  const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
  const standalone=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
- if(ios&&standalone)return openPrintWindow();
- try{window.print()}catch(e){openPrintWindow()}
+ if(ios&&standalone)return makePdf();
+ try{window.print()}catch(e){makePdf()}
 }
-function openPrintWindow(){
- const root=document.getElementById('vpr')||document.getElementById('app')||document.body;
- const c=root.cloneNode(true);c.querySelectorAll('.sheetbar,.vprbar,script').forEach(n=>n.remove());
- c.removeAttribute('id');c.classList.remove('vpr');c.style.cssText='position:static;overflow:visible;padding:0;background:#fff';
- const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
- const w=window.open('','_blank');
- if(!w){alert(L('Das Fenster wurde blockiert. Bitte Pop-ups erlauben und nochmals tippen.','The window was blocked. Please allow pop-ups and tap again.'));return}
- w.document.open();
- w.document.write('<!doctype html><html lang="'+LANG+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EnglishLab</title><style>'+css+'\n.xprbar{position:sticky;top:0;z-index:9;background:#eef2ff;border-bottom:1px solid #c7d2fe;padding:10px 12px;font:15px/1.4 system-ui,sans-serif;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.xprbar button{font:600 15px system-ui;padding:9px 14px;border-radius:10px;border:0;background:#4f46e5;color:#fff}@media print{.xprbar{display:none!important}}</style></head><body><div class="xprbar"><button onclick="window.print()">🖨 '+L('Drucken / PDF','Print / PDF')+'</button><span>'+L('Falls nichts passiert: im Browser auf Teilen tippen, dann «Drucken». Dort kannst du auch als PDF sichern.','If nothing happens: tap Share in the browser, then “Print”. You can also save as PDF there.')+'</span></div><div class="wrap">'+c.outerHTML+'</div></body></html>');
- w.document.close();
+const loadScript=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=()=>no(new Error('load '+src));document.head.appendChild(s)});
+let pdfBusy=false;
+/* html2canvas kennt neue CSS-Farben (color-mix, color()) nicht: im Klon in einfache Farben umrechnen */
+function fixColors(doc){
+ const c2=document.createElement('canvas').getContext('2d'),win=doc.defaultView||window;
+ const rgb=v=>{
+  const m=/color\(srgb\s+([\d.e+-]+)\s+([\d.e+-]+)\s+([\d.e+-]+)(?:\s*\/\s*([\d.e+-]+%?))?\)/.exec(v);
+  if(m){const q=x=>Math.max(0,Math.min(255,Math.round(parseFloat(x)*255)));let al=m[4]===undefined?1:(m[4].endsWith('%')?parseFloat(m[4])/100:parseFloat(m[4]));return 'rgba('+q(m[1])+','+q(m[2])+','+q(m[3])+','+al+')'}
+  try{c2.fillStyle='#000';c2.fillStyle=v;const r=c2.fillStyle;return /color\(|color-mix|lab\(|lch\(|oklab|oklch/.test(r)?null:r}catch(e){return null}};
+ const P=[['color','color'],['backgroundColor','background-color'],['borderTopColor','border-top-color'],['borderRightColor','border-right-color'],['borderBottomColor','border-bottom-color'],['borderLeftColor','border-left-color'],['outlineColor','outline-color'],['textDecorationColor','text-decoration-color']];
+ const bad=/color\(|color-mix|lab\(|lch\(|oklab|oklch/;
+ doc.querySelectorAll('*').forEach(el=>{
+  let cs;try{cs=win.getComputedStyle(el)}catch(e){return}
+  P.forEach(([j,k])=>{const v=cs[j];if(v&&bad.test(v)){const r=rgb(v);if(r)el.style.setProperty(k,r,'important')}});
+  const bi=cs.backgroundImage;if(bi&&bad.test(bi))el.style.setProperty('background-image','none','important');
+ });
+}
+async function makePdf(){
+ if(pdfBusy)return;pdfBusy=true;
+ const msg=document.createElement('div');msg.style.cssText='position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:99999;background:#1e1b4b;color:#fff;padding:12px 18px;border-radius:12px;font:600 15px system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.3)';
+ msg.textContent=L('PDF wird erstellt …','Creating PDF …');document.body.appendChild(msg);
+ const stage=document.createElement('div');
+ try{
+  if(!window.html2canvas)await loadScript('vendor/html2canvas.min.js');
+  if(!window.jspdf)await loadScript('vendor/jspdf.umd.min.js');
+  const root=document.getElementById('vpr')||document.getElementById('app');
+  const clone=root.cloneNode(true);clone.querySelectorAll('.sheetbar,.vprbar,script').forEach(n=>n.remove());
+  clone.removeAttribute('id');clone.classList.remove('vpr');
+  stage.id='xpdfstage';stage.style.cssText='position:absolute;left:-10000px;top:0;width:794px;background:#fff';
+  stage.appendChild(clone);document.body.appendChild(stage);
+  const hasHand=!!stage.querySelector('.hosh');
+  if(hasHand&&typeof cvScale==='function'){try{cvScale(stage)}catch(e){}}
+  const css=document.createElement('style');css.textContent='.sheet{border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;max-width:none!important;width:794px!important;padding:38px 42px!important;box-sizing:border-box;background:#fff}.sheet.sol{break-before:auto}#xpdfstage *{font-family:Helvetica,Arial,sans-serif!important;text-rendering:auto!important;font-kerning:none!important;letter-spacing:0.02px!important;font-feature-settings:normal!important;font-variant-ligatures:none!important}#xpdfstage .rsec h3{display:block!important}#xpdfstage .rsec h3 .rn{display:inline-flex!important;vertical-align:middle;margin-right:10px}';
+  stage.appendChild(css);
+  let blocks=[...stage.querySelectorAll('.sheet')];if(!blocks.length)blocks=[stage];
+  const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'pt',format:'a4',compress:true});
+  const PW=pdf.internal.pageSize.getWidth(),PH=pdf.internal.pageSize.getHeight();
+  let first=true;
+  for(const b of blocks){
+   const cv=await html2canvas(b,{scale:2,backgroundColor:'#fff',useCORS:true,logging:false,onclone:fixColors});
+   const pxPerPage=Math.floor(cv.width*PH/PW);
+   for(let y=0;y<cv.height;y+=pxPerPage){
+    const h=Math.min(pxPerPage,cv.height-y);
+    const part=document.createElement('canvas');part.width=cv.width;part.height=h;
+    const g=part.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,part.width,h);g.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
+    if(!first)pdf.addPage();first=false;
+    pdf.addImage(part.toDataURL('image/jpeg',0.92),'JPEG',0,0,PW,h*PW/cv.width);
+   }
+  }
+  const blob=pdf.output('blob');
+  const file=new File([blob],'EnglishLab.pdf',{type:'application/pdf'});
+  msg.remove();
+  if(navigator.canShare&&navigator.canShare({files:[file]})){
+   try{await navigator.share({files:[file],title:'EnglishLab'})}catch(e){if(e&&e.name!=='AbortError')throw e}
+  }else{
+   const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download='EnglishLab.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);
+  }
+ }catch(e){
+  console.error('PDFERR',e&&e.message,e&&e.stack);msg.remove();alert(L('Das PDF konnte nicht erstellt werden. Bitte nochmals versuchen.','The PDF could not be created. Please try again.'));
+ }finally{stage.remove();pdfBusy=false}
 }

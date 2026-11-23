@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.3
+- Neu: Auf dem iPad (App vom Home-Bildschirm) erstellt «Drucken / PDF» jetzt eine PDF-Datei und öffnet das Teilen-Menü (Drucken, In Dateien sichern, AirDrop …). Vorher passierte dort nichts. Das gilt für Unit-Test, Arbeitsblatt, Theorie, Folien-Handout und Vokabelblätter. Auf Computer und im normalen Browser druckt es wie bisher. Die PDF-Bausteine (jsPDF, html2canvas) werden erst bei Bedarf geladen.
+
 ## 2.2
 - Fix: Der «Drucken / PDF»-Knopf im neuen Druckfenster (iPad, Home-Bildschirm-App) war wegen eines Namenskonflikts im Stil unsichtbar. Jetzt gut sichtbar.
 
