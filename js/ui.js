@@ -204,7 +204,7 @@ function done(ok,val){
  if(testMode){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
  fb.innerHTML=ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why}</div></div>`;
- if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Ist mein Satz auch richtig?','Is my sentence also right?'):L('Frag Marty','Ask Marty'))+'</button></div><div id="kiBox"></div>')}
+ if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Frag Marty: Ist mein Satz auch richtig?','Ask Marty: Is my sentence also right?'):L('Frag Marty','Ask Marty'))+'</button></div><div id="kiBox"></div>')}
  const go=document.getElementById('go');
  const last=!infinite&&idx===items.length-1;
  const lab=last?L('Ergebnis','Results'):L('Weiter →','Next →');

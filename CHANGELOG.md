@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.4
+- Der KI-Knopf heisst jetzt überall «Frag Marty» / «Ask Marty». Bei einer falschen freien Antwort steht «Frag Marty: Ist mein Satz auch richtig?»
+
 ## 2.3
 - Neu: Auf dem iPad (App vom Home-Bildschirm) erstellt «Drucken / PDF» jetzt eine PDF-Datei und öffnet das Teilen-Menü (Drucken, In Dateien sichern, AirDrop …). Vorher passierte dort nichts. Das gilt für Unit-Test, Arbeitsblatt, Theorie, Folien-Handout und Vokabelblätter. Auf Computer und im normalen Browser druckt es wie bisher. Die PDF-Bausteine (jsPDF, html2canvas) werden erst bei Bedarf geladen.
 
