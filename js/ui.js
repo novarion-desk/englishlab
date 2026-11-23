@@ -8,6 +8,28 @@ function initTopics(){
 }
 const effTypes=()=>topic.types().filter(x=>ST[topic.id].types.includes(x.k)&&(!x.A||S.lvl==='A')).map(x=>x.k);
 function typeSeq(n){const m=effTypes();let bag=[],seq=[];for(let i=0;i<n;i++){if(!bag.length)bag=shuffle(m);let j=0;if(m.length>1&&seq.length&&bag[0]===seq[seq.length-1])j=bag.findIndex(x=>x!==seq[seq.length-1])||0;if(j<0)j=0;seq.push(bag.splice(j,1)[0])}return seq}
+/* KI-Erklärung (Test: nur auf Geräten sichtbar, auf denen einmal «#ki-test» geöffnet wurde) */
+const KI_URL='https://tc-ki-proxy.novarian-desk.workers.dev/ask';
+try{if(/ki-test/.test(location.hash))localStorage.setItem('el-ki','1');if(/ki-aus/.test(location.hash))localStorage.removeItem('el-ki');}catch(e){}
+const KI_ON=()=>{try{return localStorage.getItem('el-ki')==='1'}catch(e){return false}};
+function kiDevice(){try{let d=localStorage.getItem('el-dev');if(!d){d=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem('el-dev',d)}return d}catch(e){return 'x'}}
+let kiBusy=false;
+async function askKI(){
+ const r0=results[results.length-1],box=document.getElementById('kiBox'),btn=document.getElementById('kiBtn');
+ if(!r0||!box||kiBusy)return;
+ const it=r0.it,st=v=>String(v==null?'':v).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
+ const free=!['fill','choice','order'].includes(it.type);
+ const task=[st(it.instr||''),it.src?st(it.src):'',it.before!=null?st(it.before)+' ____ '+st(it.after||''):'',it.stem?st(it.stem):'',it.words?'Wörter: '+it.words.map(st).join(' / '):'',it.opts?'Auswahl: '+it.opts.map(st).join(' / '):''].filter(Boolean).join(' – ');
+ kiBusy=true;if(btn)btn.disabled=true;
+ box.innerHTML='<div class="ki wait">'+L('Die KI überlegt …','The AI is thinking …')+'</div>';
+ try{
+  const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:(free&&!r0.ok)?'check':'explain',device:kiDevice(),topic:st(topic.name()),task,right:st(it.sol),mine:r0.ok?'':st(r0.val)})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.answer){box.innerHTML='<div class="ki err">'+esc(j.error||'Die KI ist gerade nicht erreichbar.')+'</div>';if(btn)btn.disabled=(r.status===429)}
+  else{box.innerHTML='<div class="ki"><b>💡 '+L('Erklärung der KI','Explanation by the AI')+'</b><div class="kit">'+esc(String(j.answer).replace(/\*\*|__|^#+\s*/gm,''))+'</div><div class="kin">'+L('Die KI kann sich irren. Gib nie Namen oder persönliche Daten ein.','The AI can be wrong. Never enter names or personal data.')+(typeof j.remaining==='number'?' '+L('Noch '+j.remaining+' Fragen heute.',j.remaining+' questions left today.'):'')+'</div></div>';if(btn)btn.disabled=true}
+ }catch(e){box.innerHTML='<div class="ki err">Keine Verbindung. Versuche es später.</div>';if(btn)btn.disabled=false}
+ kiBusy=false;
+}
 const seenG=new Set();
 function build(n){
  const out=[],seq=typeSeq(n),seen=new Set();
@@ -169,6 +191,7 @@ function renderTask(){
   if(b.dataset.o!==undefined&&!answered)return answerChoice(+b.dataset.o);
   if(b.dataset.w!==undefined&&!answered){built.push(it.words[+b.dataset.w]);b.disabled=true;drawBuilt();return}
   if(b.id==='reset'&&!answered){built=[];app.querySelectorAll('#wb button').forEach(x=>x.disabled=false);drawBuilt();return}
+  if(b.id==='kiBtn')return askKI();
   if(b.id==='go')return answered?next():check();
  };
  const inp=document.getElementById('inp');if(inp){if(FINE)inp.focus();inp.onkeydown=e=>{if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();answered?next():check()}}}
@@ -181,6 +204,7 @@ function done(ok,val){
  if(testMode){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
  fb.innerHTML=ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why}</div></div>`;
+ if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Ist mein Satz auch richtig?','Is my sentence also right?'):L('Frag die KI','Ask the AI'))+'</button></div><div id="kiBox"></div>')}
  const go=document.getElementById('go');
  const last=!infinite&&idx===items.length-1;
  const lab=last?L('Ergebnis','Results'):L('Weiter →','Next →');

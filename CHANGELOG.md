@@ -1,5 +1,8 @@
 # Changelog
 
+## 1.8
+- Neu (Test): «💡 Frag die KI» nach einer Übungsaufgabe, nur auf Geräten sichtbar, die einmal `#ki-test` geöffnet haben
+
 ## 1.7
 - Neu: Am Ende einer Runde gibt es «🔁 Nur die Fehler nochmals üben», damit falsch gelöste Aufgaben gezielt wiederholt werden
 
