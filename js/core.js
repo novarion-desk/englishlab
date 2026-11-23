@@ -90,3 +90,23 @@ function bankTopic(o){
 }
 /* Zeitformen: nur Regeln und Folien, geübt wird im Tense Trainer */
 const tenseTopic=o=>({id:o.id,grp:'zeiten',ord:o.ord,ic:o.ic,ready:1,name:()=>L(o.de,o.en),desc:()=>o.desc,slides:o.slides});
+
+/* Drucken: Auf dem iPad passiert in einer App vom Home-Bildschirm bei window.print() nichts.
+   Dort öffnen wir die Seite als eigenes Fenster mit «Drucken»-Knopf (Teilen → Drucken / PDF). */
+function doPrint(){
+ const ios=/iPad|iPhone|iPod/.test(navigator.userAgent)||(navigator.platform==='MacIntel'&&navigator.maxTouchPoints>1);
+ const standalone=navigator.standalone===true||(window.matchMedia&&matchMedia('(display-mode: standalone)').matches);
+ if(ios&&standalone)return openPrintWindow();
+ try{window.print()}catch(e){openPrintWindow()}
+}
+function openPrintWindow(){
+ const root=document.getElementById('vpr')||document.getElementById('app')||document.body;
+ const c=root.cloneNode(true);c.querySelectorAll('.sheetbar,.vprbar,script').forEach(n=>n.remove());
+ c.removeAttribute('id');c.classList.remove('vpr');c.style.cssText='position:static;overflow:visible;padding:0;background:#fff';
+ const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('\n');
+ const w=window.open('','_blank');
+ if(!w){alert(L('Das Fenster wurde blockiert. Bitte Pop-ups erlauben und nochmals tippen.','The window was blocked. Please allow pop-ups and tap again.'));return}
+ w.document.open();
+ w.document.write('<!doctype html><html lang="'+LANG+'"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>EnglishLab</title><style>'+css+'\n.pbar{position:sticky;top:0;z-index:9;background:#eef2ff;border-bottom:1px solid #c7d2fe;padding:10px 12px;font:15px/1.4 system-ui,sans-serif;display:flex;gap:10px;align-items:center;flex-wrap:wrap}.pbar button{font:600 15px system-ui;padding:9px 14px;border-radius:10px;border:0;background:#4f46e5;color:#fff}@media print{.pbar{display:none!important}}</style></head><body><div class="pbar"><button onclick="window.print()">🖨 '+L('Drucken / PDF','Print / PDF')+'</button><span>'+L('Falls nichts passiert: im Browser auf Teilen tippen, dann «Drucken». Dort kannst du auch als PDF sichern.','If nothing happens: tap Share in the browser, then “Print”. You can also save as PDF there.')+'</span></div><div class="wrap">'+c.outerHTML+'</div></body></html>');
+ w.document.close();
+}

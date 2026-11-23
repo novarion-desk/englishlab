@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.0
+- Fix: «Drucken / PDF» tat auf dem iPad nichts, wenn die App vom Home-Bildschirm geöffnet war (dort ist der Druckbefehl des Browsers blockiert). Jetzt öffnet sich in diesem Fall das Blatt in einem eigenen Fenster mit «Drucken»-Knopf und Hinweis (Teilen → Drucken / als PDF sichern). Gilt für Unit-Test, Arbeitsblatt, Theorie, Folien-Handout und Vokabelblätter.
+
 ## 1.9
 - Englisch ist jetzt überall die Standardsprache (einmalig auch auf Geräten, die bisher Deutsch hatten; danach gilt die eigene Wahl)
 - Fix: Beim Wechsel DE ⇄ EN wurden bei vielen Themen die Übungsarten («Einsetzen», «Auswählen» …) nicht mit übersetzt. Auch die Beschreibung beim Tense Trainer ist jetzt zweisprachig.

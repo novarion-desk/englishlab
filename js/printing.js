@@ -15,7 +15,7 @@ function openTheoryPrint(){
  <div class="sheet tpr" style="--c:${grpOf(topic).c}"><h1>EnglishLab – ${L('Theorie','Theory')}: ${esc(topic.name())}</h1><p class="sub">${esc(topic.desc())}</p>
  <div class="theory2">${rulesHtml()}</div>
  <h3 class="tnotes">${L('Notizen','Notes')}</h3>${'<div class="wl"></div>'.repeat(5)}</div>`;
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='tpBack')return renderTheory();if(b.id==='tpPrint')return window.print()};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='tpBack')return renderTheory();if(b.id==='tpPrint')return doPrint()};
  window.scrollTo({top:0});
 }
 
@@ -26,7 +26,7 @@ function openHandoutPrint(){
  app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="hoBack">${L('‹ Zurück zu den Folien','‹ Back to slides')}</button><button class="primary" id="hoPrint">${L('🖨 Drucken / PDF (6 Folien pro A4)','🖨 Print / PDF (6 slides per A4)')}</button></div>
  <div class="sheet hosh">${Array.from({length:Math.ceil(V.length/6)},(_,g)=>`<div class="hogrid">${V.slice(g*6,g*6+6).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*6+j,V.length,false)}</div></div>`).join('')}</div>`).join('')}</div>`;
  cvScale(app);
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return window.print()};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return doPrint()};
  window.scrollTo({top:0});
 }
 
@@ -74,7 +74,7 @@ function renderUnitSheet(){
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;
   if(b.id==='usBack')return utBack();
   if(b.id==='usMix'){UT.secs=buildUnitItems();renderUnitSheet();window.scrollTo({top:0});return}
-  if(b.id==='usPrint')return window.print()};
+  if(b.id==='usPrint')return doPrint()};
  window.scrollTo({top:0});
 }
 

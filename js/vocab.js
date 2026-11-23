@@ -362,7 +362,7 @@ function showPrint(){
  d.addEventListener('click',e=>{const b=e.target.closest('button');if(!b)return;
   if(b.id==='vpBack')return closeVprint();
   if(b.id==='vpMix'){PR.seed++;return showPrint()}
-  if(b.id==='vpPrint')return window.print()});
+  if(b.id==='vpPrint')return doPrint()});
  d.scrollTop=0;
 }
 function closeVprint(){const d=document.getElementById('vpr');if(d)d.remove();document.body.classList.remove('vpr-open')}

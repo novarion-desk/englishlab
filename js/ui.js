@@ -268,7 +268,7 @@ function renderSheet(){
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;
   if(b.id==='shBack')return renderPractice();
   if(b.id==='shMix'){seenG.clear();sheetItems=build(sheetItems.length);renderSheet();window.scrollTo({top:0});return}
-  if(b.id==='shPrint')return window.print()};
+  if(b.id==='shPrint')return doPrint()};
  window.scrollTo({top:0});
 }
 /* ===== Regeln ===== */
