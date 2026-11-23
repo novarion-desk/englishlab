@@ -1,5 +1,10 @@
 # Changelog
 
+## 1.9
+- Englisch ist jetzt überall die Standardsprache (einmalig auch auf Geräten, die bisher Deutsch hatten; danach gilt die eigene Wahl)
+- Fix: Beim Wechsel DE ⇄ EN wurden bei vielen Themen die Übungsarten («Einsetzen», «Auswählen» …) nicht mit übersetzt. Auch die Beschreibung beim Tense Trainer ist jetzt zweisprachig.
+- Fix: Logo oben heisst «EnglishLab» (zusammen geschrieben, vorher mit Lücke)
+
 ## 1.8
 - Neu: «💡 Frag Marty» nach einer Übungsaufgabe, für alle sichtbar (`#ki-aus` im Link schaltet ihn auf dem Gerät ab)
 

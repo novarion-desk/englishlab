@@ -5,7 +5,7 @@
  const bank=[],err=[],why={_:''};
  ts.forEach(t=>{t.data.bank.forEach(b=>bank.push(Object.assign({},b,{sub:t.id,s:b.s+'  ['+t.name()+']'})));t.data.err.forEach(e=>err.push(e));why[t.id]=t._why||''});
  const names=()=>ts.map(t=>({k:t.id,n:t.name()}));
- const top=bankTopic({id:'ztt',grp:'zeiten',ord:5,ic:'⏱️',de:'Tense Trainer',en:'Tense Trainer',desc:'Alle Zeitformen mischen und gezielt üben',
+ const top=bankTopic({id:'ztt',grp:'zeiten',ord:5,ic:'⏱️',de:'Tense Trainer',en:'Tense Trainer',desc:()=>L('Alle Zeitformen mischen und gezielt üben','Mix all tenses and practise them'),
   fillInstr:()=>L('Setze das Verb in der richtigen Zeit ein.','Put the verb into the correct tense.'),fillDesc:()=>L('das Verb in der richtigen Zeit schreiben','write the verb in the correct tense'),
   lvDe:'C: einfache Sätze. B: dazu Verneinung und Fragen. A: dazu schwierigere Fälle.',lvEn:'C: simple sentences. B: plus negatives and questions. A: plus harder cases.',
   subs:names,why,bank,err,

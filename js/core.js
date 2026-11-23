@@ -1,6 +1,6 @@
 const APP_VERSION='1.5';
 const TOPICS=[];
-let LANG='de';try{const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}catch(e){}
+let LANG='en';try{if(localStorage.getItem('el-lang-v2')){const l=localStorage.getItem('el-lang');if(l==='de'||l==='en')LANG=l}else{localStorage.setItem('el-lang-v2','1');localStorage.setItem('el-lang','en')}}catch(e){}
 const L=(de,en)=>LANG==='de'?de:en;
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
@@ -75,18 +75,18 @@ function bankTopic(o){
    return base.errors();
   };
  }
- const types=[
+ const mkTypes=()=>[
   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:o.fillDesc?o.fillDesc():L('das passende Wort schreiben','write the right word')},
   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('das passende Wort wählen','pick the right word')},
   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}].filter(t=>!(o.noOrder&&t.k==='order'));
  return {id:o.id,grp:o.grp,ord:o.ord,ic:o.ic,ready:1,
-  name:()=>L(o.de,o.en),desc:()=>o.desc,
+  name:()=>L(o.de,o.en),desc:()=>typeof o.desc==='function'?o.desc():o.desc,
   fillInstr:()=>o.fillInstr?o.fillInstr():L('Setze das passende Wort ein.','Fill in the correct word.'),
   lvDesc:()=>L(o.lvDe,o.lvEn),
   subTitle:()=>L('Unterthemen','Sub-topics'),
   subs:()=>o.subs?o.subs():[],subDef:o.subs?o.subs().map(x=>x.k):[],
-  types:()=>types,typeDef:['fill','choice','errors'],gen,slides:o.slides,rules:o.rules,data:{bank:o.bank,err:o.err}};
+  types:()=>mkTypes(),typeDef:['fill','choice','errors'],gen,slides:o.slides,rules:o.rules,data:{bank:o.bank,err:o.err}};
 }
 /* Zeitformen: nur Regeln und Folien, geübt wird im Tense Trainer */
 const tenseTopic=o=>({id:o.id,grp:'zeiten',ord:o.ord,ic:o.ic,ready:1,name:()=>L(o.de,o.en),desc:()=>o.desc,slides:o.slides});
