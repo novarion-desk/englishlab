@@ -8,10 +8,10 @@ function initTopics(){
 }
 const effTypes=()=>topic.types().filter(x=>ST[topic.id].types.includes(x.k)&&(!x.A||S.lvl==='A')).map(x=>x.k);
 function typeSeq(n){const m=effTypes();let bag=[],seq=[];for(let i=0;i<n;i++){if(!bag.length)bag=shuffle(m);let j=0;if(m.length>1&&seq.length&&bag[0]===seq[seq.length-1])j=bag.findIndex(x=>x!==seq[seq.length-1])||0;if(j<0)j=0;seq.push(bag.splice(j,1)[0])}return seq}
-/* KI-Erklärung (Test: nur auf Geräten sichtbar, auf denen einmal «#ki-test» geöffnet wurde) */
+/* «Frag Marty» (KI-Erklärung): für alle sichtbar; mit «#ki-aus» im Link auf dem Gerät abschaltbar */
 const KI_URL='https://tc-ki-proxy.novarian-desk.workers.dev/ask';
-try{if(/ki-test/.test(location.hash))localStorage.setItem('el-ki','1');if(/ki-aus/.test(location.hash))localStorage.removeItem('el-ki');}catch(e){}
-const KI_ON=()=>{try{return localStorage.getItem('el-ki')==='1'}catch(e){return false}};
+try{if(/ki-test/.test(location.hash))localStorage.removeItem('el-ki');if(/ki-aus/.test(location.hash))localStorage.setItem('el-ki','0');}catch(e){}
+const KI_ON=()=>{try{return localStorage.getItem('el-ki')!=='0'}catch(e){return true}};
 function kiDevice(){try{let d=localStorage.getItem('el-dev');if(!d){d=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem('el-dev',d)}return d}catch(e){return 'x'}}
 let kiBusy=false;
 async function askKI(){

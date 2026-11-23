@@ -1,7 +1,7 @@
 # Changelog
 
 ## 1.8
-- Neu (Test): «💡 Frag Marty» nach einer Übungsaufgabe, nur auf Geräten sichtbar, die einmal `#ki-test` geöffnet haben
+- Neu: «💡 Frag Marty» nach einer Übungsaufgabe, für alle sichtbar (`#ki-aus` im Link schaltet ihn auf dem Gerät ab)
 
 ## 1.7
 - Neu: Am Ende einer Runde gibt es «🔁 Nur die Fehler nochmals üben», damit falsch gelöste Aufgaben gezielt wiederholt werden

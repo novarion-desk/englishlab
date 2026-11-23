@@ -10,7 +10,7 @@ Englisch-Grammatik üben und nachlesen (Teaching Cockpit). Eigenständige App, u
 - KI-Suche nur für die Lehrperson: API-Schlüssel wird in der Suche gespeichert (nur lokal im Browser). Für Schüler später `AI_PROXY` in `js/search.js` auf einen Server-Zwischenschritt setzen.
 - Zeiten-Themen haben Regeln und Folien; geübt wird im Tense Trainer.
 
-- **KI-Erklärung (Test, 23.11.):** Knopf «💡 Frag Marty» nach einer beantworteten Üben-Aufgabe, nur sichtbar auf Geräten, auf denen einmal `…/englishlab/#ki-test` geöffnet wurde (`#ki-aus` schaltet ab). Bei freien Sätzen nach falscher Antwort «Ist mein Satz auch richtig?». Anfrage an den Cloudflare-Worker `tc-ki-proxy` (Mistral, Key nur dort), Tageslimit pro Gerät. Nicht im Testmodus (Prüfung). Hat nichts mit der KI-Suche der Lehrperson zu tun.
+- **KI-Erklärung (23.11.):** Knopf «💡 Frag Marty» nach einer beantworteten Üben-Aufgabe, für alle sichtbar (`…/englishlab/#ki-aus` schaltet ihn auf dem Gerät ab, `#ki-test` wieder ein). Bei freien Sätzen nach falscher Antwort «Ist mein Satz auch richtig?». Anfrage an den Cloudflare-Worker `tc-ki-proxy` (Mistral, Key nur dort), Tageslimit pro Gerät. Nicht im Testmodus (Prüfung). Hat nichts mit der KI-Suche der Lehrperson zu tun.
 
 ## Struktur
 - `index.html`, `js/core.js`, `js/ui.js`, `topics/*.js` (ein Thema pro Datei), `vendor/` (Firebase)
