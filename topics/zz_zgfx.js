@@ -12,7 +12,7 @@
  SL.bub=a=>'<div class="bub">'+a.map(x=>'<div>'+x+'</div>').join('')+'</div>';
  const G={
   zbe:()=>[slide(L('Bausteine: be','Building blocks: be'),
-    SL.fm([['a','I','→'],['b','am']])+SL.fm([['a','he / she / it'],['b','is']])+SL.fm([['a','you / we / they'],['b','are']])+SL.bub(['I am Kevin.','She is 14.','We are friends.'])+SL.tip(L('Verneinung: be + <b>not</b>. Frage: be <b>vor</b> das Subjekt.','Negative: be + <b>not</b>. Question: be <b>before</b> the subject.')),
+    SL.fm([['a','I','→'],['b','am']])+SL.fm([['a','he / she / it'],['b','is']])+SL.fm([['a','you / we / they'],['b','are']])+SL.bub(['I am Tom.','She is 14.','We are friends.'])+SL.tip(L('Verneinung: be + <b>not</b>. Frage: be <b>vor</b> das Subjekt.','Negative: be + <b>not</b>. Question: be <b>before</b> the subject.')),
     L('Alle drei Formen farbig zeigen: Subjekt (blau), be (orange).','Show all three forms in colour: subject (blue), be (orange).'))],
   zps:()=>[slide(L('Zeitstrahl und Bausteine','Timeline and building blocks'),
     SL.tl({c:'#2f5bea',marks:[[10,'',],[22,''],[34,''],[46,''],[58,''],[70,''],[82,''],[94,'']]})+SL.p('<center>'+L('Immer wieder, jeden Tag, jede Woche: <b>Gewohnheit</b>','Again and again, every day, every week: a <b>habit</b>')+'</center>')+SL.fm([['a','I / you / we / they'],['b',L('Grundform','base form')]])+SL.fm([['a','he / she / it'],['b',L('Grundform','base form')],['c','+ s']]),

@@ -14,8 +14,8 @@ try{if(/ki-test/.test(location.hash))localStorage.removeItem('el-ki');if(/ki-aus
 const KI_ON=()=>{try{return localStorage.getItem('el-ki')!=='0'}catch(e){return true}};
 function kiDevice(){try{let d=localStorage.getItem('el-dev');if(!d){d=(crypto.randomUUID?crypto.randomUUID():String(Math.random()).slice(2)+Date.now());localStorage.setItem('el-dev',d)}return d}catch(e){return 'x'}}
 let kiBusy=false;
-async function askKI(){
- const r0=results[results.length-1],box=document.getElementById('kiBox'),btn=document.getElementById('kiBtn');
+async function askKI(ctx){
+ const r0=ctx||results[results.length-1],box=ctx?ctx.box:document.getElementById('kiBox'),btn=ctx?ctx.btn:document.getElementById('kiBtn');
  if(!r0||!box||kiBusy)return;
  const it=r0.it,st=v=>String(v==null?'':v).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
  const free=!['fill','choice','order'].includes(it.type);

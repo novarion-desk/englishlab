@@ -33,7 +33,7 @@ function mqDraw(el){
 function mqDone(el,ok,val){
  const m=el._m,it=m.cur;m.ans=true;m.n++;if(ok)m.ok++;
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
- el.querySelector('.mqfb').innerHTML=(ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why||''}</div></div>`)+`<button class="primary mqnext" data-mqnext>${L('Nächste Frage ›','Next question ›')}</button>`;
+ el.querySelector('.mqfb').innerHTML=(ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why||''}</div></div>`)+(KI_ON()?`<div class="kirow"><button class="btn-link" data-mqki>💡 ${L('Frag Marty','Ask Marty')}</button></div><div class="mqkibox"></div>`:'')+`<button class="primary mqnext" data-mqnext>${L('Nächste Frage ›','Next question ›')}</button>`;m.last={it,ok,val};
  el.querySelector('.mqsc').textContent='⭐ '+m.ok+' / '+m.n;
  const inp=el.querySelector('[data-mqin]');if(inp)inp.readOnly=true;
  const c=el.querySelector('[data-mqchk]');if(c)c.parentElement.hidden=true;
@@ -51,6 +51,7 @@ document.addEventListener('click',e=>{
  if(b.dataset.mqs){const st=ST[topic.id],all=topic.subs().map(y=>y.k);let a=st.subs;const x=b.dataset.mqs;if(x==='*')a=all.slice();else if(a.length===all.length)a=[x];else{a=a.includes(x)?a.filter(y=>y!==x):a.concat(x);if(!a.length)a=all.slice()}st.subs=all.filter(y=>a.includes(y));return mqNew(el)}
  if(b.dataset.mqlv){S.lvl=b.dataset.mqlv;return mqNew(el)}
  if(b.dataset.mqnext!==undefined)return mqNew(el);
+ if(b.dataset.mqki!==undefined){if(m.last)askKI({it:m.last.it,ok:m.last.ok,val:m.last.val,box:el.querySelector('.mqkibox'),btn:b});return}
  if(m.ans)return;
  if(b.dataset.mqo!==undefined){
   const i=+b.dataset.mqo,it=m.cur;

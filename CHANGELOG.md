@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.6
+- Neu: «Frag Marty» gibt es jetzt auch in der Mini-Übung auf der Theorie-Seite und in der Live-Folie, auch nach einer richtigen Antwort
+- Present simple: Folien «Adverbs of frequency» und «How often?» entfernt
+- Beispielname in «Present simple: be» neutral («I am Tom.»)
+- «Wishes and preferences»: Einstiegsfolie ergänzt; «Object pronouns»: Folientitel «to or for?» zweisprachig
+
 ## 2.5
 - Neu: Beim Unit-Test und bei der Testvorbereitung kannst du wählen, wann du die Lösung siehst: «Erst am Ende» (wie in einer echten Prüfung) oder «Nach jeder Aufgabe» (richtig oder falsch mit Erklärung und «Frag Marty»). Die Punkte und die Auswertung am Ende bleiben gleich
 - Aufgaben mit mehreren richtigen Antworten verbessert («by the end of the week», «excited about», «She didn't tell anyone», «He wouldn't like»)
