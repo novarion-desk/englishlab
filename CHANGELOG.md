@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.15
+- Gerund und Infinitiv, Fragen und Verneinung, Question Tags, so / neither: Farbbausteine und Bildkarten
+
 ## 2.14
 - used to, Adverbien, Ratschläge (should / ought to / had better): Farbbausteine und Bildkarten
 
