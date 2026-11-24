@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.14
+- used to, Adverbien, Ratschläge (should / ought to / had better): Farbbausteine und Bildkarten
+
 ## 2.13.1
 - Indirekte Rede: Zeitenfolge als Farbpfeile statt Tabelle
 
