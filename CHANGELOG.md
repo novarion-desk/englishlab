@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.12
+- Modalverben: Karten mit Figuren, Ampelfarben bei must / mustn't / don't have to
+- Antippen-Übung mit «Frag Marty» auch in Fragen, Vergleichen, Mengen, Präpositionen, Passiv, if-Sätzen (beide), Relativsätzen und den drei Themen zur indirekten Rede
+
 ## 2.11
 - Alle Themen: Beispielsätze als farbige Karten, Tabellen mit Kopfzeile und Zeilen zum Einblenden, «Typische Fehler» als Fehlerkarten mit Figur («Oops!»)
 

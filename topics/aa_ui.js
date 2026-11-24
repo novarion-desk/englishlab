@@ -74,5 +74,11 @@ window.UI=(()=>{
  SL.err=a=>'<div class="negwrap"><div class="errs">'+a.map(x=>er(x[0],x[1])).join('')+'</div><div class="negfig rv">'+OOPS[a.length%3]+'<div class="oops">Oops!</div></div></div>';
  SL.ex=a=>'<div class="exs2">'+a.map((x,i)=>'<div class="exr rv" style="--ec:'+COLS[i%COLS.length]+'">'+x+'</div>').join('')+'</div>';
  SL.tbl=(head,rows)=>'<div class="tw tw2"><table><tr>'+head.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+rows.map(r=>'<tr class="rv">'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</table></div>';
- return {ip,bf,per,card,nrow,qa,er,rule,tap,tapSlide,ico,ic,sv,ch,dog};
+
+ /* Folien eines bestehenden Themas gezielt ersetzen: map = {'Deutscher Titel|English title': ()=>html}, tap = ()=>tapSlide */
+ const patch=(id,map,tap)=>{const t=TOPICS.find(x=>x.id===id);if(!t||!t.slides)return;const o=t.slides;
+  t.slides=()=>{let a=o().map(sl=>{const tt=String(sl.t||'').replace(/<[^>]+>/g,'');const k=Object.keys(map).find(k=>k.split('|').includes(tt));
+    if(!k)return sl;const r=map[k]();return Object.assign({},sl,{h:Array.isArray(r)?r[0]:r},Array.isArray(r)&&r[1]?{note:r[1]}:{})});
+   if(tap){const fs=[].concat(tap);let n=0;a=a.map(x=>x.kind==='try'&&fs[n]?fs[n++]():x)}return a}};
+ return {patch,ip,bf,per,card,nrow,qa,er,rule,tap,tapSlide,ico,ic,sv,ch,dog};
 })();
