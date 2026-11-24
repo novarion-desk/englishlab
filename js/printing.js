@@ -26,16 +26,24 @@ function openHandoutPrint(){
  const right=HO.notes==='right',ns=right?['2','3','4']:['1','2','4','6'];
  if(!ns.includes(HO.n))HO.n=right?'3':'6';
  const per=+HO.n,pages=Math.ceil(V.length/per);
- const nopts=[['none',L('Keine','None')],['right',L('Rechts neben jeder Folie','Beside every slide')],['end',L('Am Schluss (2 Seiten)','At the end (2 pages)')]];
+ const nopts=[['none',L('Keine','None')],['right',L('Rechts neben jeder Folie','Beside every slide')],['end',L('Am Schluss (½ Seite)','At the end (½ page)')]];
  screen='tprint';setHeader();
  const cells=g=>V.slice(g*per,g*per+per).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*per+j,V.length,false)}</div>${right?'<div class="hon"><div>'+'<i></i>'.repeat(16)+'</div></div>':''}</div>`).join('');
- const endPages=HO.notes==='end'?[1,2].map(()=>`<div class="hogrid honotes"><h3 class="honh">${L('Notizen','Notes')}</h3><div class="hol"><div>${'<i></i>'.repeat(27)}</div></div></div>`).join(''):'';
+ const endBlock=`<div class="honb"><h3 class="honh">${L('Notizen','Notes')}</h3><div class="hol"><div>${'<i></i>'.repeat(12)}</div></div></div>`;
+ const endPages='';
  app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="hoBack">${L('‹ Zurück zu den Folien','‹ Back to slides')}</button></div>
  <div class="sheetbar"><button class="primary" id="hoPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" id="hoPdf">${L('📄 PDF speichern','📄 Save PDF')}</button></div>
  <div class="sheetbar hopick"><b>${L('Folien pro A4','Slides per A4')}:</b><div class="seg">${ns.map(k=>`<button data-hon="${k}" class="${HO.n===k?'on':''}">${k}</button>`).join('')}</div></div>
  <div class="sheetbar hopick"><b>${L('Notizen','Notes')}:</b><div class="seg">${nopts.map(([k,l])=>`<button data-hono="${k}" class="${HO.notes===k?'on':''}">${l}</button>`).join('')}</div></div>
  <div class="sheet hosh">${Array.from({length:pages},(_,g)=>`<div class="hogrid hn${HO.n}${right?' hnr':''}">${cells(g)}</div>`).join('')}${endPages}</div>`;
  cvScale(app);
+ /* Notizen am Schluss: halbe A4-Seite, auf der letzten Folienseite wenn Platz ist, sonst auf einer eigenen Seite */
+ if(HO.notes==='end'){
+  const mm=3.7795,gr=[...app.querySelectorAll('.hogrid')],last=gr[gr.length-1];
+  const top=last.getBoundingClientRect().top,used=Math.max(...[...last.querySelectorAll('.hocell')].map(c=>c.getBoundingClientRect().bottom))-top;
+  if(used/mm+130<=268)last.insertAdjacentHTML('beforeend',endBlock);
+  else{last.insertAdjacentHTML('afterend','<div class="hogrid honotes hn'+HO.n+'">'+endBlock+'</div>')}
+ }
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.hon){HO.n=b.dataset.hon;return openHandoutPrint()}if(b.dataset.hono){HO.notes=b.dataset.hono;return openHandoutPrint()}if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return doPrint();if(b.id==='hoPdf')return makePdf(true)};
  window.scrollTo({top:0});
 }

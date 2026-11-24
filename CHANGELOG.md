@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.9.4
+- Handout: «Notizen am Schluss» ist jetzt ein Block von etwa einer halben A4-Seite (12 Linien) direkt nach den Folien statt zwei ganzer Seiten
+
 ## 2.9.3
 - Präsentation: rechts = nächster Punkt, dann nächste Folie; links = letzter Punkt verschwindet, dann vorherige Folie komplett
 - Neue Sprung-Knöpfe ⏮ ⏭ (ganze Folie) neben ‹ › (Schritt)
