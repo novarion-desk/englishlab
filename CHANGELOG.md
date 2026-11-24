@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10.2
+- Past simple und Past continuous: Theorie-Folien im neuen Stil (Figuren, Symbole, Regel-Karten, Zeitstrahl-Grafiken für «lange + kurze Handlung», Antippen-Übung)
+
 ## 2.10.1
 - Present continuous: Theorie-Folien im neuen Stil (Figuren, Farbcode am / is / are, -ing-Regelkarten, Vergleich simple / continuous, Antippen-Übung)
 
