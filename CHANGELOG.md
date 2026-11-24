@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.12.1
+- Antippen-Übung mit «Frag Marty» jetzt in allen Themen (17 weitere: Past perfect, Gerund, Frageanhänge, so / neither, Vermutungen, Ratschläge, should have, sehen und hören, used to, would like, Bindewörter, Besitz, Pronomen, someone / anyone, reflexive Pronomen, Adverbien, -ing / -ed)
+
 ## 2.12
 - Modalverben: Karten mit Figuren, Ampelfarben bei must / mustn't / don't have to
 - Antippen-Übung mit «Frag Marty» auch in Fragen, Vergleichen, Mengen, Präpositionen, Passiv, if-Sätzen (beide), Relativsätzen und den drei Themen zur indirekten Rede
