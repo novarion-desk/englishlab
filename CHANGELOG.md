@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.10
+- Present simple: Theorie-Folien im Stil von «Present simple: be» (eigene Figuren und Symbole, Farbcode Grundform blau / -s grün, Regel-Karten für die Schreibung, Verneinung und Fragen mit Bildern, Fehlerkarten, Antippen-Übung mit «Frag Marty»)
+- Gemeinsamer Zeichen-Baukasten (topics/aa_art.js, aa_ui.js) für alle weiteren Themen
 ## 2.9.4
 - Handout: «Notizen am Schluss» ist jetzt ein Block von etwa einer halben A4-Seite (12 Linien) direkt nach den Folien statt zwei ganzer Seiten
 
