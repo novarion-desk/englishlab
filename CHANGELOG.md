@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.13.1
+- Indirekte Rede: Zeitenfolge als Farbpfeile statt Tabelle
+
 ## 2.13
 - Passiv, Vergleichen, if-Sätze (beide), Relativsätze und indirekte Rede (say / tell): einzelne Folien mit Bildkarten, Farbbausteinen und Satzteil-Chips
 

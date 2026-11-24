@@ -30,6 +30,14 @@
   'Mit oder ohne Komma|With or without commas':()=>two(col(L('ohne Komma','no commas'),'#2f5bea',ip(ic.she,L('wichtige Information (der Satz braucht sie), that möglich','essential information (the sentence needs it), that is possible'))+S('The girl <b>who</b> lives next door is my friend.')),col(L('mit Kommas','with commas'),'#16a34a',ip(ic.he,L('Zusatzinformation, nur who / which','extra information, only who / which'))+S('Anna<b>,</b> who is my best friend<b>,</b> lives in Bern.')+S('My bike<b>,</b> which is red<b>,</b> is new.')))
  });
  patch('ir',{
+   'Die Zeit rutscht einen Schritt zurück|The tense moves one step back':()=>{
+   const row=(a,b,ea,eb,c)=>'<div class="stp rv" style="--sc:'+c+'"><div class="stb"><em>'+a+'</em><span>'+ea+'</span></div><div class="sta">→</div><div class="stb"><em>'+b+'</em><span>'+eb+'</span></div></div>';
+   return '<div class="stph"><span>'+L('Direkte Rede','Direct speech')+'</span><span>'+L('Indirekte Rede','Reported speech')+'</span></div>'
+   +row('present simple','past simple','“I like it.”','he liked it.','#2f5bea')
+   +row('present continuous','past continuous','“I am working.”','he was working.','#16a34a')
+   +row('past simple · present perfect','past perfect','“I saw it.”','he had seen it.','#f97316')
+   +row('will · can · must','would · could · had to','“I will come.”','he would come.','#7c3aed')
+   +SL.tip(L('Ein Schritt zurück in die Vergangenheit.','One step back into the past.'))},
   'say oder tell?|say or tell?':()=>two(col('say','#2f5bea',S('He <b>said</b> that he was hungry.')+S('She <b>said to me</b> that …')),col('tell + '+L('Person','person'),'#16a34a',S('He <b>told me</b> that he was hungry.')+S('She <b>told us</b> a story.')))
    +SL.warn(L('Nicht: <s>He said me</s> / <s>He told that</s>.','Not: <s>He said me</s> / <s>He told that</s>.'))
  });
