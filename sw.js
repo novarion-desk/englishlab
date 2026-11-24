@@ -1,6 +1,6 @@
 // Service Worker: macht den EnglishLab installierbar und offline nutzbar.
 // Immer zuerst das Netz (damit Updates sofort ankommen), bei fehlender Verbindung die gespeicherte Kopie.
-const CACHE = 'el-v46';
+const CACHE = 'el-v47';
 self.addEventListener('install', (e) => { self.skipWaiting(); });
 self.addEventListener('activate', (e) => {
   e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));

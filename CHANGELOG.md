@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.16.1
+- Präsentation: Die Antwort von «Frag Marty» lässt sich jetzt nach unten scrollen und wird automatisch ins Bild geholt.
+
 ## 2.16
 - Restliche 12 Themen (Vermutungen, should have, Wahrnehmungsverben, would like / rather, Bindewörter, Besitz, Objektpronomen, some- / any-Wörter, Mengenwörter, Reflexivpronomen, -ed / -ing, Präpositionen): Farbbausteine und Bildkarten
 
