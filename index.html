@@ -175,10 +175,10 @@ header{flex-wrap:wrap;gap:8px}
 .theory2 .rb .sl-tip{background:#ecfdf5;border-radius:12px;padding:10px 14px}
 .theory2 .rb .sl-warn{background:#fff1f2;border-radius:12px;padding:10px 14px}
 .theory2 .rex{margin-top:8px;background:#f4f7ff;border-radius:10px;padding:8px 12px;color:#1d4ed8;font-weight:600}
-.vhead,.vmain{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.4fr;gap:6px;align-items:center}
-.vhead{font-size:12px;color:#667;padding:6px 10px;text-transform:uppercase;letter-spacing:.04em}.vhead *{font-style:normal}
-.vrow{border:2px solid var(--line);border-radius:12px;margin:5px 0;padding:8px 10px;background:#fff;cursor:pointer}
-.vrow.irr .vmain b{color:#2563eb}.vrow.open{border-color:#2563eb;background:#f4f7ff}
+.vlhead,.vmain{display:grid;grid-template-columns:1.1fr 1fr 1fr 1.4fr;gap:6px;align-items:center}
+.vlhead{font-size:12px;color:#667;padding:6px 10px;text-transform:uppercase;letter-spacing:.04em}.vlhead *{font-style:normal}
+.vlrow{border:2px solid var(--line);border-radius:12px;margin:5px 0;padding:8px 10px;background:#fff;cursor:pointer}
+.vlrow.irr .vmain b{color:#2563eb}.vlrow.open{border-color:#2563eb;background:#f4f7ff}
 .vmain em{font-style:normal;color:#556;font-size:.92em}
 .vdet{display:flex;flex-wrap:wrap;gap:8px;margin-top:8px}.vdet div{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 10px}.vdet small{display:block;color:#667;font-size:11px}.vdet p{flex-basis:100%;margin:2px 0 0;color:#b45309;font-weight:600;font-size:.9em}
 /* Reiter */
@@ -197,6 +197,19 @@ header{flex-wrap:wrap;gap:8px}
 .tile.feat{grid-column:1/-1;background:linear-gradient(135deg,#2f5bea,#6d8dff)!important;color:#fff;display:flex;flex-wrap:wrap;align-items:center;gap:6px 16px;border-top-color:transparent!important}
 .tile.feat b,.tile.feat small{color:#fff}.tile.feat .ic{background:rgba(255,255,255,.25);margin:0}.tile.feat b{font-size:22px;margin:0}
 .tile.feat .tags{margin:0 0 0 auto}.tile.feat .tg{border-color:#fff}
+.bf{display:inline-block;padding:1px 14px;border-radius:999px;color:#fff;font-weight:800}.bf.am,.gap.am,.tb.am{background:#2f5bea}.bf.is,.gap.is,.tb.is{background:#16a34a}.bf.are,.gap.are,.tb.are{background:#f97316}
+.bcols{display:grid;grid-template-columns:1fr 1.25fr 1.5fr;gap:14px;margin-top:8px}.bcol{border-radius:16px;padding:10px 12px;border:3px solid}.bcol.am{border-color:#2f5bea;background:#eef3ff}.bcol.is{border-color:#16a34a;background:#effbf3}.bcol.are{border-color:#f97316;background:#fff6ee}.bcol h3{margin:0 0 6px;text-align:center;font-size:1.3em}
+.bper{display:flex;align-items:center;gap:10px;font-size:1.15em;margin:6px 0;background:#fff;border-radius:12px;padding:5px 10px}.bper .ic{display:inline-flex;width:5.4em;flex:none;justify-content:center}.bper .ic svg{height:4.4em;width:5.4em}.bper small{margin-left:auto;color:#475569}
+.wcards{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:6px 0}.wc{border:2px solid var(--line);border-radius:14px;padding:8px 10px;background:#fff;text-align:center}.wc .ic svg{height:5.6em;width:auto;display:block;margin:0 auto 2px}.cmp svg{height:1.1em;width:auto;vertical-align:-.2em}.idh svg{height:1.8em;width:auto;vertical-align:-.3em}.fcs svg{height:2.3em;width:auto;vertical-align:-.4em;margin:0 3px}.wc .exs{margin-top:4px;color:#1e293b}
+.cmp{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:center;margin-top:10px;font-size:1.05em}.cmp span{padding:6px 12px;border-radius:12px}.cf{background:#fef3c7}.cx{background:#fee2e2}.co{background:#dcfce7}
+.nrows{margin:8px 0}.nrow{display:flex;align-items:center;gap:10px;font-size:1.25em;margin:8px 0}.nrow .who{min-width:7em;text-align:right}.nrow .not{background:#dc2626;color:#fff;border-radius:8px;padding:1px 10px;font-weight:800}.nrow i{font-style:normal;color:#64748b}
+.swp{display:flex;align-items:center;justify-content:center;gap:16px;font-size:1.3em;margin:6px 0 10px}.swp .swa{font-size:1.6em;color:#dc2626}.swp .sent{background:#fff;border:2px solid var(--line);border-radius:12px;padding:4px 14px}
+.qarow{display:flex;align-items:center;gap:10px;margin:6px 0;font-size:1.1em}.qq{min-width:9em;font-weight:700}.bb{border-radius:16px;padding:3px 14px;display:inline-block}.bb.y{background:#dcfce7;border:2px solid #16a34a}.bb.n{background:#fee2e2;border:2px solid #dc2626}
+.errs{margin-top:6px}.errc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0;font-size:1.2em}.errc .e1{background:#fee2e2;border-radius:12px;padding:6px 12px;color:#991b1b}.errc .e2{background:#dcfce7;border-radius:12px;padding:6px 12px;color:#166534}
+.tapq{display:flex;align-items:center;gap:10px;flex-wrap:wrap;padding:8px 0;border-bottom:1px solid var(--line);font-size:1.1em}.tapq .n{font-weight:800;min-width:1.4em;color:var(--accent)}.tapq .gap{display:inline-block;min-width:3.2em;border-bottom:3px solid #94a3b8;border-radius:6px;text-align:center;color:#fff;font-weight:800}.tapq .gap:empty,.tapq .gap{color:#fff}
+.tapq .tb{border:0;border-radius:999px;padding:6px 18px;color:#fff;font-weight:800;font-size:1em;cursor:pointer}.tapq .tb.bad{background:#dc2626;opacity:.5;text-decoration:line-through}.tapq .tb:disabled:not(.bad){opacity:.35}.tapq.done .tfb{font-size:.9em}.tapsc{margin-top:8px;font-size:1.1em}
+.idc{border:3px dashed #2f5bea;border-radius:18px;padding:14px 20px;background:#f8fbff;margin:6px 0}.idh{font-weight:800;font-size:1.3em;margin-bottom:6px}.idl{font-size:1.25em;margin:10px 0}.idl u{text-decoration:none;border-bottom:2px solid #1e293b}
+#pres .rv:not(.on){visibility:hidden}
 .topic-emo{font-size:54px;line-height:1.1;text-align:center;margin:2px 0 6px}.gfx{margin:10px 0;padding:8px;border:1px solid #e2e8f0;border-radius:12px;background:#fff;color:#1e293b}.gfx svg{display:block;max-height:46vh}
 .tlx{position:relative;height:190px;margin:14px 0}
 .tlx .ln{position:absolute;left:0;right:0;top:92px;height:8px;border-radius:4px;background:linear-gradient(90deg,#fda4af,#cbd5e1 45%,#cbd5e1 55%,#93c5fd)}
@@ -523,6 +536,7 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 <script src="topics/zz_zeiten_ex.js"></script>
 <script src="topics/zz_zgfx.js"></script>
 <script src="topics/zz_gfx2.js"></script>
+<script src="topics/zz_zbe2.js"></script>
 <script src="topics/zzz_tensetrainer.js"></script>
 <script src="topics/zzzz_intro.js"></script>
 <script src="topics/zzzzz_units.js"></script>

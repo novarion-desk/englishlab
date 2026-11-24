@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.8
+- Present simple: be komplett neu gestaltet: Farbcode (am blau, is grün, are orange), gezeichnete Figuren und Szenen, Bildkarten, Antippen-Übung mit «Frag Marty», Ich-Karte
+- Präsentationsmodus: Zeilen erscheinen nacheinander
+- Inhalt: Vergleich «Ich habe Hunger» korrigiert (Alter ist im Deutschen auch «sein»), Beschreibung (He is tall) und Wh-Frage ergänzt
+- Verben-Liste: Spalten stehen wieder unter ihren Überschriften (CSS-Namenskonflikt behoben)
+
 ## 2.7
 - Neu: Zeichnungen bei Präpositionen (Ort und Richtung) und Vergleichsformen
 - Linking words: Folie «who and which» entfernt, «although» nur noch auf der Folie «Gegensatz»

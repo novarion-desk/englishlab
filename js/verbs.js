@@ -163,17 +163,17 @@ function drawVerbs(){
  const list=VERBS.filter(v=>(!vIrr||v.irr)&&(!q||v.b.startsWith(q)||v.de.toLowerCase().includes(q)||v.past.startsWith(q)||v.pp.startsWith(q)));
  const rows=list.map(v=>{
   const open=vOpen===v.b;
-  return `<div class="vrow ${v.irr?'irr':''} ${open?'open':''}" data-v="${v.b}"><div class="vmain"><b>${v.b}</b><span>${v.past}</span><span>${v.pp}</span><em>${v.de}</em></div>`
+  return `<div class="vlrow ${v.irr?'irr':''} ${open?'open':''}" data-v="${v.b}"><div class="vmain"><b>${v.b}</b><span>${v.past}</span><span>${v.pp}</span><em>${v.de}</em></div>`
    +(open?`<div class="vdet"><div><small>I / you / we / they</small><b>${v.b==='be'?'am / are':v.b}</b></div><div><small>he / she / it</small><b>${v3(v.b)}</b></div><div><small>-ing</small><b>${ving(v.b)}</b></div><div><small>Past simple</small><b>${v.past}</b></div><div><small>Past participle</small><b>${v.pp}</b></div>${v.note?`<p>${v.note}</p>`:''}</div>`:'')+`</div>`}).join('');
  modalBody.innerHTML=`<div style="display:flex;justify-content:space-between;align-items:center"><h2 style="margin:0">📋 ${L('Verben','Verbs')}</h2><button class="btn-link" id="mClose">✕</button></div>
   <input class="search" id="vq" type="search" placeholder="${L('Verb oder deutsches Wort suchen …','Search a verb or German word …')}" value="${esc(vq)}" autocomplete="off" style="margin:10px 0">
   <div class="seg" style="margin-bottom:8px"><button data-vf="all" class="${vIrr?'':'on'}">${L('Alle','All')}</button><button data-vf="irr" class="${vIrr?'on':''}">${L('Unregelmässige','Irregular')}</button></div>
-  <div class="vhead"><b>${L('Grundform','Base form')}</b><span>Past simple</span><span>Past participle</span><em>${L('Deutsch','German')}</em></div>
+  <div class="vlhead"><b>${L('Grundform','Base form')}</b><span>Past simple</span><span>Past participle</span><em>${L('Deutsch','German')}</em></div>
   <div class="vlist">${rows||`<p class="muted center">${L('Nichts gefunden.','Nothing found.')}</p>`}</div>
   <p class="muted" style="font-size:13px">${L('Tippe auf ein Verb, um alle Formen zu sehen.','Tap a verb to see all forms.')}</p>`;
  modalBody.onclick=e=>{
   const f=e.target.closest('[data-vf]');if(f){vIrr=f.dataset.vf==='irr';return drawVerbs()}
-  const r=e.target.closest('.vrow');if(r){vOpen=vOpen===r.dataset.v?'':r.dataset.v;const y=modal.scrollTop;drawVerbs();modal.scrollTop=y}
+  const r=e.target.closest('.vlrow');if(r){vOpen=vOpen===r.dataset.v?'':r.dataset.v;const y=modal.scrollTop;drawVerbs();modal.scrollTop=y}
  };
  const qi=document.getElementById('vq');qi.oninput=()=>{vq=qi.value;const p=qi.value.length;drawVerbs();const n=document.getElementById('vq');n.focus();n.setSelectionRange(p,p)};
 }

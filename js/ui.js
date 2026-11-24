@@ -374,7 +374,7 @@ function fitPres(){
  w.style.width=(1280*k)+'px';
  cvScale(pres);
 }
-function pgo(d){const V=slidesList();T.cur=Math.max(0,Math.min(V.length-1,T.cur+d));drawPres()}
+function pgo(d){if(d>0&&T.pres){const h=pres.querySelector('.rv:not(.on)');if(h){h.classList.add('on');return}}const V=slidesList();T.cur=Math.max(0,Math.min(V.length-1,T.cur+d));drawPres()}
 pres.addEventListener('click',e=>{
  const b=e.target.closest('button');
  if(b){
