@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.5
+- Neu: Beim Unit-Test und bei der Testvorbereitung kannst du wählen, wann du die Lösung siehst: «Erst am Ende» (wie in einer echten Prüfung) oder «Nach jeder Aufgabe» (richtig oder falsch mit Erklärung und «Frag Marty»). Die Punkte und die Auswertung am Ende bleiben gleich
+- Aufgaben mit mehreren richtigen Antworten verbessert («by the end of the week», «excited about», «She didn't tell anyone», «He wouldn't like»)
+
 ## 2.4
 - Der KI-Knopf heisst jetzt überall «Frag Marty» / «Ask Marty». Bei einer falschen freien Antwort steht «Frag Marty: Ist mein Satz auch richtig?»
 

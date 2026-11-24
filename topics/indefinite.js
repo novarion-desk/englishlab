@@ -20,7 +20,7 @@ TOPICS.push((()=>{
   B('Everyone ___ happy today. (be)',['is'],['are','be'],3),
   B('Nobody ___ here. (live)',['lives'],['live','living'],3),
   B("There isn't ___ in the fridge. It is empty.",['anything'],['nothing','something'],3),
-  B('Did ___ call me? My phone was off.',['anyone','anybody'],['someone','everyone'],3)
+  B('She didn\'t tell ___ about the party.',['anyone','anybody'],['someone','everyone'],3)
  ];
  return bankTopic({id:'ip',grp:'nomen',ord:40,ic:'❔',de:'Indefinitpronomen',en:'Indefinite pronouns',desc:'someone · anything · nobody · everywhere',
   fillInstr:()=>L('Setze das passende Wort ein.','Fill in the correct word.'),

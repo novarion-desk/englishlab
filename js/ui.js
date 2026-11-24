@@ -23,7 +23,7 @@ async function askKI(){
  kiBusy=true;if(btn)btn.disabled=true;
  box.innerHTML='<div class="ki wait">'+L('Marty überlegt …','Marty is thinking …')+'</div>';
  try{
-  const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:(free&&!r0.ok)?'check':'explain',device:kiDevice(),topic:st(topic.name()),task,right:st(it.sol),mine:r0.ok?'':st(r0.val)})});
+  const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:(free&&!r0.ok)?'check':'explain',device:kiDevice(),topic:st(topic?topic.name():(it.tname||'')),task,right:st(it.sol),mine:r0.ok?'':st(r0.val)})});
   const j=await r.json().catch(()=>({}));
   if(!r.ok||!j.answer){box.innerHTML='<div class="ki err">'+esc(j.error||'Marty ist gerade nicht erreichbar.')+'</div>';if(btn)btn.disabled=(r.status===429)}
   else{box.innerHTML='<div class="ki"><b>💡 '+L('Marty erklärt','Marty explains')+'</b><div class="kit">'+esc(String(j.answer).replace(/\*\*|__|^#+\s*/gm,''))+'</div><div class="kin">'+L('Marty ist eine KI und kann sich irren. Gib nie Namen oder persönliche Daten ein.','Marty is an AI and can be wrong. Never enter names or personal data.')+(typeof j.remaining==='number'?' '+L('Noch '+j.remaining+' Fragen heute.',j.remaining+' questions left today.'):'')+'</div></div>';if(btn)btn.disabled=true}
@@ -201,7 +201,7 @@ function done(ok,val){
  const it=items[idx];answered=true;if(ok)score++;
  results.push({it,ok,val});
  const fb=document.getElementById('fb');
- if(testMode){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
+ if(testMode&&!UT.fb){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
  fb.innerHTML=ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why}</div></div>`;
  if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Frag Marty: Ist mein Satz auch richtig?','Ask Marty: Is my sentence also right?'):L('Frag Marty','Ask Marty'))+'</button></div><div id="kiBox"></div>')}
@@ -219,7 +219,7 @@ function check(){
 }
 function answerChoice(i){
  const it=items[idx];
- app.querySelectorAll('[data-o]').forEach((b,j)=>{b.disabled=true;if(testMode){if(j===i)b.classList.add('chosen')}else if(j===it.correct)b.classList.add('right');else if(j===i)b.classList.add('wrong')});
+ app.querySelectorAll('[data-o]').forEach((b,j)=>{b.disabled=true;if(testMode&&!UT.fb){if(j===i)b.classList.add('chosen')}else if(j===it.correct)b.classList.add('right');else if(j===i)b.classList.add('wrong')});
  done(i===it.correct,it.opts[i]);
 }
 function next(){idx++;if(!infinite&&idx>=items.length)return renderResults();if(infinite&&idx>=items.length)items.push(...build(5));renderTask()}

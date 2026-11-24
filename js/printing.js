@@ -1,5 +1,5 @@
 /* ===== Drucken: Theorie (A4) und Unit-Test (nur Grammatik) ===== */
-const UT={s:2,u:1,per:5,off:{},key:'',free:false,sel:new Set(),total:20,custom:20,timer:false};
+const UT={s:2,u:1,per:5,off:{},key:'',free:false,sel:new Set(),total:20,custom:20,timer:false,fb:false};
 const ptsOf=it=>(it.type==='order'||it.type==='text')?2:1;
 const utBack=()=>UT.free?renderTprep():renderUnitTest(UT.s,UT.u);
 const THK='el-tests';
@@ -40,6 +40,7 @@ function renderUnitTest(s,u){
  <div class="card"><h2>1 · ${L('Themen','Topics')}</h2><div class="chips">${ts.map(t=>`<button class="chip ${UT.off[t.id]?'':'on'}" data-ut="${t.id}">${t.ic} ${esc(t.name())}${hist[t.id]?`<span class="hist">${hist[t.id][0]} %</span>`:''}</button>`).join('')}</div></div>
  <div class="card"><h2>2 · ${L('Niveau','Level')}</h2><div class="seg">${[['C',L('C (einfach)','C (easy)')],['B','B'],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-ulv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
  <div class="card"><h2>3 · ${L('Aufgaben pro Thema','Tasks per topic')}</h2><div class="seg">${[3,5,8,10].map(n=>`<button data-uper="${n}" class="${UT.per===n?'on':''}">${n}</button>`).join('')}</div></div>
+ <div class="card"><h2>4 · ${L('Rückmeldung am Bildschirm','Feedback on screen')}</h2><div class="seg">${[[0,L('Erst am Ende','At the end')],[1,L('Nach jeder Aufgabe','After each task')]].map(([k,l])=>`<button data-ufb="${k}" class="${(UT.fb?1:0)===k?'on':''}">${l}</button>`).join('')}</div><p class="muted" style="margin:6px 0 0;font-size:.9em">${UT.fb?L('Nach jeder Antwort siehst du sofort, ob sie stimmt, mit Erklärung und «Frag Marty».','After each answer you see at once whether it is right, with an explanation and «Ask Marty».'):L('Wie in einer echten Prüfung: Du siehst die Lösungen erst in der Auswertung.','Like a real test: you see the solutions only in the results.')}</p></div>
  <button class="primary" id="utDigi">${L('▶️ Test am Bildschirm lösen','▶️ Take the test on screen')}</button>
  <button class="secondary" id="utMake" style="margin-top:10px">${L('🖨 Arbeitsblatt zum Drucken','🖨 Printable worksheet')}</button><p class="err" id="utErr"></p>
  ${Object.keys(hist).length?`<p class="muted" style="margin-top:12px">${L('Die Prozentzahl bei den Themen ist dein letztes Testergebnis.','The percentage on each topic is your last test result.')}</p>`:''}`;
@@ -48,6 +49,7 @@ function renderUnitTest(s,u){
   if(b.dataset.ut){UT.off[b.dataset.ut]=!UT.off[b.dataset.ut];return renderUnitTest(s,u)}
   if(b.dataset.ulv){S.lvl=b.dataset.ulv;return renderUnitTest(s,u)}
   if(b.dataset.uper){UT.per=+b.dataset.uper;return renderUnitTest(s,u)}
+  if(b.dataset.ufb!==undefined){UT.fb=b.dataset.ufb==='1';return renderUnitTest(s,u)}
   if(b.id==='utDigi'){if(!ts.some(t=>!UT.off[t.id])){document.getElementById('utErr').textContent=L('Wähle mindestens ein Thema.','Choose at least one topic.');return}startDigital();return}
   if(b.id==='utMake'){if(!ts.some(t=>!UT.off[t.id])){document.getElementById('utErr').textContent=L('Wähle mindestens ein Thema.','Choose at least one topic.');return}UT.secs=buildUnitItems();renderUnitSheet()}};
  window.scrollTo({top:0});
@@ -97,7 +99,7 @@ function renderTprep(){
  <div class="card"><h2>2 · ${L('Niveau','Level')}</h2><div class="seg">${[['C',L('C (einfach)','C (easy)')],['B','B'],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-plv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
  <div class="card"><h2>3 · ${L('Anzahl Aufgaben','Number of tasks')}</h2><div class="seg">${['10','20','30','custom'].map(v=>`<button data-ptot="${v}" class="${String(UT.total)===v?'on':''}">${v==='custom'?L('eigene','custom'):v}</button>`).join('')}</div>
   <label class="cntown" id="tpCw" ${UT.total==='custom'?'':'hidden'}>${L('Anzahl:','Number:')} <input id="tpCust" type="number" inputmode="numeric" min="1" max="60" value="${UT.custom}"></label></div>
- <div class="card"><h2>4 · ${L('Weiteres','More')}</h2><div class="chips"><button class="chip ${UT.timer?'on':''}" data-ptimer="1">⏱ ${L('Stoppuhr anzeigen','Show stopwatch')}</button></div></div>
+ <div class="card"><h2>4 · ${L('Weiteres','More')}</h2><div class="chips"><button class="chip ${UT.timer?'on':''}" data-ptimer="1">⏱ ${L('Stoppuhr anzeigen','Show stopwatch')}</button><button class="chip ${UT.fb?'on':''}" data-pfb="1">💡 ${L('Lösung nach jeder Aufgabe zeigen','Show the solution after each task')}</button></div></div>
  <p class="muted" id="tpInfo"></p>
  <button class="primary" id="tpGo">${L('▶️ Test starten','▶️ Start test')}</button>
  <button class="secondary" id="tpSheet" style="margin-top:10px">${L('🖨 Übungsprüfung zum Drucken (mit Lösungen)','🖨 Printable practice test (with answers)')}</button>`;
@@ -109,6 +111,7 @@ function renderTprep(){
   if(b.dataset.plv){S.lvl=b.dataset.plv;app.querySelectorAll('[data-plv]').forEach(x=>x.classList.toggle('on',x.dataset.plv===S.lvl));return tprepInfo()}
   if(b.dataset.ptot){UT.total=b.dataset.ptot;app.querySelectorAll('[data-ptot]').forEach(x=>x.classList.toggle('on',x.dataset.ptot===UT.total));document.getElementById('tpCw').hidden=UT.total!=='custom';return tprepInfo()}
   if(b.dataset.ptimer){UT.timer=!UT.timer;b.classList.toggle('on',UT.timer);return}
+  if(b.dataset.pfb){UT.fb=!UT.fb;b.classList.toggle('on',UT.fb);return}
   if(b.id==='tpGo'&&UT.sel.size)return startDigital();
   if(b.id==='tpSheet'&&UT.sel.size){UT.secs=buildUnitItems();return renderUnitSheet()}};
  const ci=document.getElementById('tpCust');if(ci)ci.oninput=()=>{UT.custom=ci.value;tprepInfo()};

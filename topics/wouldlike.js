@@ -11,7 +11,7 @@ TOPICS.push((()=>{
   B("She'd like ___ a doctor when she grows up.",['to be'],['be','being'],2,'wl','(be)'),
   B("We'd like ___ a table for four, please.",['to book'],['book','booking'],2,'wl','(book)'),
   B("I ___ like to speak to the manager, please.",['would'],['will','am'],2,'wl'),
-  B("He ___ like to play football with us.",["wouldn't"],["doesn't","isn't"],3,'wl'),
+  B("He ___ like to play football with us.",["wouldn't"],["don't","isn't"],3,'wl'),
   B("I want ___ a new phone.",['to buy'],['buy','buying'],1,'pf','(buy)'),
   B("He wants ___ a pilot.",['to be'],['be','being'],1,'pf','(be)'),
   B("Do you ___ to come with us?",['want'],['wants','wanting'],1,'pf'),
