@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.13
+- Passiv, Vergleichen, if-Sätze (beide), Relativsätze und indirekte Rede (say / tell): einzelne Folien mit Bildkarten, Farbbausteinen und Satzteil-Chips
+
 ## 2.12.1
 - Antippen-Übung mit «Frag Marty» jetzt in allen Themen (17 weitere: Past perfect, Gerund, Frageanhänge, so / neither, Vermutungen, Ratschläge, should have, sehen und hören, used to, would like, Bindewörter, Besitz, Pronomen, someone / anyone, reflexive Pronomen, Adverbien, -ing / -ed)
 
