@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.16
+- Restliche 12 Themen (Vermutungen, should have, Wahrnehmungsverben, would like / rather, Bindewörter, Besitz, Objektpronomen, some- / any-Wörter, Mengenwörter, Reflexivpronomen, -ed / -ing, Präpositionen): Farbbausteine und Bildkarten
+
 ## 2.15
 - Gerund und Infinitiv, Fragen und Verneinung, Question Tags, so / neither: Farbbausteine und Bildkarten
 
