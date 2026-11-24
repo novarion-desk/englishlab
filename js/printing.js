@@ -11,7 +11,7 @@ const utTopics=()=>UT.free?TOPICS.filter(t=>hasEx(t)&&UT.sel.has(t.id)):[...new 
 /* --- Theorie drucken --- */
 function openTheoryPrint(){
  screen='tprint';setHeader();
- app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="tpBack">${L('‹ Zurück','‹ Back')}</button><button class="primary" id="tpPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button></div>
+ app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="tpBack">${L('‹ Zurück','‹ Back')}</button><button class="primary" id="tpPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern','📄 Save PDF')}</button></div>
  <div class="sheet tpr" style="--c:${grpOf(topic).c}"><h1>EnglishLab – ${L('Theorie','Theory')}: ${esc(topic.name())}</h1><p class="sub">${esc(topic.desc())}</p>
  <div class="theory2">${rulesHtml()}</div>
  <h3 class="tnotes">${L('Notizen','Notes')}</h3>${'<div class="wl"></div>'.repeat(5)}</div>`;
@@ -19,20 +19,24 @@ function openTheoryPrint(){
  window.scrollTo({top:0});
 }
 
-/* --- Handout: Folien, wählbar pro A4 --- */
-const HO={n:'6'};
-const HO_PER={'1':1,'2':2,'4':4,'6':6,'n':3};
+/* --- Handout: Folien wählbar pro A4, Notizen: keine / rechts neben jeder Folie / am Schluss --- */
+const HO={n:'6',notes:'none'};
 function openHandoutPrint(){
  const V=slidesList().filter(x=>x.kind!=='live'&&x.kind!=='try');
- const per=HO_PER[HO.n]||6,pages=Math.ceil(V.length/per);
- const opts=[['1','1'],['2','2'],['4','4'],['6','6'],['n',L('3 + Notizen','3 + notes')]];
+ const right=HO.notes==='right',ns=right?['2','3','4']:['1','2','4','6'];
+ if(!ns.includes(HO.n))HO.n=right?'3':'6';
+ const per=+HO.n,pages=Math.ceil(V.length/per);
+ const nopts=[['none',L('Keine','None')],['right',L('Rechts neben jeder Folie','Beside every slide')],['end',L('Am Schluss (2 Seiten)','At the end (2 pages)')]];
  screen='tprint';setHeader();
+ const cells=g=>V.slice(g*per,g*per+per).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*per+j,V.length,false)}</div>${right?'<div class="hon"><div>'+'<i></i>'.repeat(16)+'</div></div>':''}</div>`).join('');
+ const endPages=HO.notes==='end'?[1,2].map(()=>`<div class="hogrid honotes"><h3 class="honh">${L('Notizen','Notes')}</h3><div class="hol"><div>${'<i></i>'.repeat(27)}</div></div></div>`).join(''):'';
  app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="hoBack">${L('‹ Zurück zu den Folien','‹ Back to slides')}</button></div>
- <div class="sheetbar hopick"><b>${L('Folien pro A4','Slides per A4')}:</b><div class="seg">${opts.map(([k,l])=>`<button data-hon="${k}" class="${HO.n===k?'on':''}">${l}</button>`).join('')}</div></div>
- <div class="sheetbar"><button class="primary" id="hoPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" id="hoPdf">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button></div>
- <div class="sheet hosh">${Array.from({length:pages},(_,g)=>`<div class="hogrid hn${HO.n}">${V.slice(g*per,g*per+per).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*per+j,V.length,false)}</div>${HO.n==='n'?'<div class="hon"></div>':''}</div>`).join('')}</div>`).join('')}</div>`;
+ <div class="sheetbar"><button class="primary" id="hoPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" id="hoPdf">${L('📄 PDF speichern','📄 Save PDF')}</button></div>
+ <div class="sheetbar hopick"><b>${L('Folien pro A4','Slides per A4')}:</b><div class="seg">${ns.map(k=>`<button data-hon="${k}" class="${HO.n===k?'on':''}">${k}</button>`).join('')}</div></div>
+ <div class="sheetbar hopick"><b>${L('Notizen','Notes')}:</b><div class="seg">${nopts.map(([k,l])=>`<button data-hono="${k}" class="${HO.notes===k?'on':''}">${l}</button>`).join('')}</div></div>
+ <div class="sheet hosh">${Array.from({length:pages},(_,g)=>`<div class="hogrid hn${HO.n}${right?' hnr':''}">${cells(g)}</div>`).join('')}${endPages}</div>`;
  cvScale(app);
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.hon){HO.n=b.dataset.hon;return openHandoutPrint()}if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return doPrint();if(b.id==='hoPdf')return makePdf(true)};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.hon){HO.n=b.dataset.hon;return openHandoutPrint()}if(b.dataset.hono){HO.notes=b.dataset.hono;return openHandoutPrint()}if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return doPrint();if(b.id==='hoPdf')return makePdf(true)};
  window.scrollTo({top:0});
 }
 
@@ -75,7 +79,7 @@ function renderUnitSheet(){
  const body=UT.secs.map(sc=>`<h2 class="tsec">${sc.ic} ${esc(sc.name)}</h2>`+sc.its.map(it=>sheetTask(it,++n,ptsOf(it))).join('')).join('');
  let m=0;
  const sol=UT.secs.map(sc=>`<h2 class="tsec">${sc.ic} ${esc(sc.name)}</h2><div class="sol-list">${sc.its.map(it=>`<div><b>${++m}.</b> ${esc(it.sol)} <span class="pt">${ptsOf(it)} ${L('P.','pts')}</span></div>`).join('')}</div>`).join('');
- app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="usBack">${L('‹ Zurück','‹ Back')}</button><button class="secondary" id="usMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button><button class="primary" id="usPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button></div>
+ app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="usBack">${L('‹ Zurück','‹ Back')}</button><button class="secondary" id="usMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button><button class="primary" id="usPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern','📄 Save PDF')}</button></div>
  <div class="sheet"><h1>${esc(title)}</h1><p class="sub">${L('Niveau','Level')} ${S.lvl} · ${nt} ${L('Aufgaben','tasks')} · ${total} ${L('Punkte','points')}</p>
  <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span><span class="pts">${L('Punkte:','Points:')} &nbsp;&nbsp;&nbsp;/ ${total}</span></div>${body}</div>
  <div class="sheet sol"><h1>${L('Lösungen','Answers')}</h1><p class="sub">${esc(title)}</p>${sol}</div>`;

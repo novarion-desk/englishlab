@@ -106,7 +106,7 @@ function renderTheory(){
  const prac=hasEx(topic)?`<button class="primary" id="pracOpen" style="margin-top:14px">✏️ ${L('Jetzt üben →','Practise now →')}</button>`:`<a class="primary" style="display:block;text-align:center;text-decoration:none;margin-top:14px" href="${TENSE_URL}">${L('Zum Tense Trainer →','Go to the Tense Trainer →')}</a>`;
  app.innerHTML=`<button class="btn-link" id="homeBtn">‹ ${topic.name()}</button>
  <div class="thead" style="--c:${grpOf(topic).c}"><span class="ic">${topic.ic}</span><div><h1>${L('Theorie','Theory')}: ${topic.name()}</h1><p>${topic.desc()}</p></div></div>${tabsBar('theory')}
- <div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div><div class="rowbtn" style="margin-top:12px"><button class="secondary" id="thPrint">🖨 ${L('Theorie drucken (A4)','Print theory (A4)')}</button></div>${hasEx(topic)?`<div class="card mqcard"><h3>✏️ ${L('Kurz üben','Quick practice')}</h3><div class="mq" data-mq></div></div>`:''}${prac}`;
+ <div class="rowbtn" style="margin:0 0 12px"><button class="secondary" id="thPrint">🖨 ${L('Theorie drucken (A4)','Print theory (A4)')}</button></div><div class="theory2" style="--c:${grpOf(topic).c}">${rulesHtml()}</div>${hasEx(topic)?`<div class="card mqcard"><h3>✏️ ${L('Kurz üben','Quick practice')}</h3><div class="mq" data-mq></div></div>`:''}${prac}`;
  mqInit(app);
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='homeBtn')return renderSetup();if(b.id==='thPrint')return openTheoryPrint();if(b.id==='pracOpen')return renderPractice()};
  window.scrollTo({top:0});
@@ -258,7 +258,7 @@ function renderSheet(){
  <div class="sheetbar">
   <button class="btn-link" id="shBack">${L('‹ Zurück','‹ Back')}</button>
   <button class="secondary" id="shMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button>
-  <button class="primary" id="shPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button>
+  <button class="primary" id="shPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern','📄 Save PDF')}</button>
  </div>
  <div class="sheet"><h1>${esc(title)}</h1><p class="sub">${esc(subLine())}</p>
   <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span></div>

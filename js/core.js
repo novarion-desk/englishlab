@@ -131,21 +131,28 @@ async function makePdf(dl){
   stage.appendChild(clone);document.body.appendChild(stage);
   const hasHand=!!stage.querySelector('.hosh');
   if(hasHand&&typeof cvScale==='function'){try{cvScale(stage)}catch(e){}}
-  const css=document.createElement('style');css.textContent='.sheet{border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;max-width:none!important;width:794px!important;padding:38px 42px!important;box-sizing:border-box;background:#fff}.sheet.sol{break-before:auto}#xpdfstage *{font-family:Helvetica,Arial,sans-serif!important;text-rendering:auto!important;font-kerning:none!important;letter-spacing:0.02px!important;font-feature-settings:normal!important;font-variant-ligatures:none!important}#xpdfstage .rsec h3{display:block!important}#xpdfstage .hogrid{width:794px!important;height:1123px!important;box-sizing:border-box!important;padding:53px!important;margin:0!important;background:#fff}#xpdfstage .rsec h3 .rn{display:inline-flex!important;vertical-align:middle;margin-right:10px}';
+  const css=document.createElement('style');css.textContent='.sheet{border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;max-width:none!important;width:794px!important;padding:38px 42px!important;box-sizing:border-box;background:#fff}.sheet.sol{break-before:auto}#xpdfstage *{font-family:Helvetica,Arial,sans-serif!important;text-rendering:auto!important;font-kerning:none!important;letter-spacing:0.02px!important;font-feature-settings:normal!important;font-variant-ligatures:none!important}#xpdfstage .rsec h3{display:block!important}#xpdfstage .hogrid{align-content:start!important;width:794px!important;height:1123px!important;box-sizing:border-box!important;padding:53px!important;margin:0!important;background:#fff}#xpdfstage .rsec h3 .rn{display:inline-flex!important;vertical-align:middle;margin-right:10px}';
   stage.appendChild(css);
   let blocks=hasHand?[...stage.querySelectorAll('.hogrid')]:[...stage.querySelectorAll('.sheet')];if(!blocks.length)blocks=[stage];
   const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'pt',format:'a4',compress:true});
   const PW=pdf.internal.pageSize.getWidth(),PH=pdf.internal.pageSize.getHeight();
   let first=true;
+  const mY=hasHand?0:34;
   for(const b of blocks){
+   /* Umbruchstellen: Unterkanten ganzer Aufgaben und Karten, nie mitten im Text oder direkt nach einer Überschrift */
+   const bt=b.getBoundingClientRect(),cand=[];
+   if(!hasHand)b.querySelectorAll(':scope > *, .theory2 > *, .sol-list > *').forEach(e=>{if(/^H[1-6]$/.test(e.tagName)||e.matches('.sub,.meta,.tsec,.tnotes'))return;const r=e.getBoundingClientRect();if(r.height>0)cand.push(r.bottom-bt.top)});
    const cv=await html2canvas(b,{scale:2,backgroundColor:'#fff',useCORS:true,logging:false,onclone:fixColors});
-   const pxPerPage=Math.floor(cv.width*PH/PW);
-   for(let y=0;y<cv.height;y+=pxPerPage){
-    const h=Math.min(pxPerPage,cv.height-y);
+   const k=cv.width/bt.width,usable=Math.floor(cv.width*(PH-2*mY)/PW);
+   for(let y=0;y<cv.height;){
+    let cut=Math.min(y+usable,cv.height);
+    if(cut<cv.height){let best=0;for(const q of cand){const cy=Math.round(q*k);if(cy>y+usable*.35&&cy<=y+usable&&cy>best)best=cy}if(best)cut=Math.min(best+3,cv.height)}
+    const h=cut-y;
     const part=document.createElement('canvas');part.width=cv.width;part.height=h;
     const g=part.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,part.width,h);g.drawImage(cv,0,y,cv.width,h,0,0,cv.width,h);
     if(!first)pdf.addPage();first=false;
-    pdf.addImage(part.toDataURL('image/jpeg',0.92),'JPEG',0,0,PW,h*PW/cv.width);
+    pdf.addImage(part.toDataURL('image/jpeg',0.92),'JPEG',0,mY,PW,h*PW/cv.width);
+    y=cut;
    }
   }
   const blob=pdf.output('blob');

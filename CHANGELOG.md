@@ -1,5 +1,12 @@
 # Changelog
 
+## 2.9.2
+- Button «Theorie drucken» steht jetzt ganz oben in der Theorie-Ansicht
+- Button heisst nur noch «PDF speichern»
+- PDF: Inhalt wird nicht mehr mitten in Aufgaben oder Karten abgeschnitten, mit Rand oben und unten
+- Handout: Notizen wählbar (keine, rechts neben jeder Folie, am Schluss auf 2 Seiten); Folien pro Seite 1, 2, 4, 6 (mit Notizen rechts 2, 3, 4)
+- Handout-PDF: Bildkarten werden vollständig dargestellt
+
 ## 2.9.1
 - Theorie- und Testblätter: sauberer Druck ohne Webadresse, Datum und Seitenzahl (Seitenrand im Inhalt, auf jeder Seite wiederholt)
 - Neuer Button «PDF speichern (ohne Webadresse)» bei Theorie, Unit-Test und Übungsblatt
