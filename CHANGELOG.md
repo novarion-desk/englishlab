@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9.3
+- Präsentation: rechts = nächster Punkt, dann nächste Folie; links = letzter Punkt verschwindet, dann vorherige Folie komplett
+- Neue Sprung-Knöpfe ⏮ ⏭ (ganze Folie) neben ‹ › (Schritt)
+- Leiste unten gut sichtbar mit grösseren Knöpfen, blendet sich nach 3 Sekunden ab
+- Hinweis «Tippen für den nächsten Punkt», bis der erste Punkt aufgedeckt ist
+
 ## 2.9.2
 - Button «Theorie drucken» steht jetzt ganz oben in der Theorie-Ansicht
 - Button heisst nur noch «PDF speichern»

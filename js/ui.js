@@ -363,10 +363,11 @@ function drawPres(){
  pres.classList.remove('hidden');
  pres.innerHTML=`<div class="pst" id="pst"><div class="cvw pstage" id="pstage">${cvHtml(s,T.cur,V.length)}</div></div>
   ${T.notes&&s.note?`<div class="pnote"><b>${L('Hinweis für dich','Note for you')}:</b> ${s.note}</div>`:''}
-  <div class="pbar"><button data-pg="-1" ${T.cur===0?'disabled':''}>‹</button><span>${T.cur+1} / ${V.length}</span><button data-pg="1" ${T.cur===V.length-1?'disabled':''}>›</button><i></i>
+  <div class="pbar"><button data-pj="-1" title="${L('Vorherige Folie','Previous slide')}" ${T.cur===0?'disabled':''}>⏮</button><button data-pg="-1" title="${L('Ein Schritt zurück','One step back')}">‹</button><span>${T.cur+1} / ${V.length}</span><button data-pg="1" title="${L('Nächster Punkt','Next point')}" ${T.cur===V.length-1?'disabled':''}>›</button><button data-pj="1" title="${L('Nächste Folie','Next slide')}" ${T.cur===V.length-1?'disabled':''}>⏭</button><i></i>
    <button data-pl>${LANG.toUpperCase()}</button><button data-pn>${L('Hinweise','Notes')}: ${T.notes?L('an','on'):L('aus','off')}</button><button data-ps>${L('Schrift','Size')}</button><button data-px>✕</button></div>
   <div class="pprog"><i style="width:${(T.cur+1)/V.length*100}%"></i></div>`;
- fitPres();mqInit(pres);
+ if(!T.hinted&&pres.querySelector('.rv')){const h=document.createElement('div');h.className='phint';h.textContent=L('Tippen oder Pfeil → : nächster Punkt','Tap or press → for the next point');pres.appendChild(h)}
+ fitPres();mqInit(pres);presWake();
 }
 function fitPres(){
  const w=document.getElementById('pstage');if(!w)return;
@@ -374,10 +375,27 @@ function fitPres(){
  w.style.width=(1280*k)+'px';
  cvScale(pres);
 }
-function pgo(d){if(d>0&&T.pres){const h=pres.querySelector('.rv:not(.on)');if(h){h.classList.add('on');return}}const V=slidesList();T.cur=Math.max(0,Math.min(V.length-1,T.cur+d));drawPres()}
+/* Schritt für Schritt: rechts = nächster Punkt, dann nächste Folie. Links = letzter Punkt verschwindet, dann vorherige Folie (komplett sichtbar). */
+function pgo(d){
+ if(T.pres){
+  if(d>0){const h=pres.querySelector('.rv:not(.on)');if(h){h.classList.add('on');T.hinted=true;const ph=pres.querySelector('.phint');if(ph)ph.remove();return}}
+  else{const on=pres.querySelectorAll('.rv.on');if(on.length){on[on.length-1].classList.remove('on');return}}
+ }
+ pjump(d);
+}
+/* Ganze Folie springen: nach vorn startet die Folie leer, zurück erscheint sie komplett */
+function pjump(d){
+ const V=slidesList(),n=Math.max(0,Math.min(V.length-1,T.cur+d));if(n===T.cur&&T.pres)return;
+ T.cur=n;drawPres();
+ if(T.pres&&d<0)pres.querySelectorAll('.rv').forEach(x=>x.classList.add('on'));
+}
+let pIdle=null;
+function presWake(){const b=pres.querySelector('.pbar');if(!b)return;b.classList.remove('idle');clearTimeout(pIdle);pIdle=setTimeout(()=>{const x=pres.querySelector('.pbar');if(x)x.classList.add('idle')},3000)}
+['pointermove','pointerdown','touchstart'].forEach(ev=>pres.addEventListener(ev,presWake,{passive:true}));
 pres.addEventListener('click',e=>{
  const b=e.target.closest('button');
  if(b){
+  if(b.dataset.pj)return pjump(+b.dataset.pj);
   if(b.dataset.pg)return pgo(+b.dataset.pg);
   if(b.dataset.px!==undefined)return presOff();
   if(b.dataset.pl!==undefined){LANG=LANG==='de'?'en':'de';try{localStorage.setItem('el-lang',LANG)}catch(x){}return drawPres()}
