@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.11
+- Alle Themen: Beispielsätze als farbige Karten, Tabellen mit Kopfzeile und Zeilen zum Einblenden, «Typische Fehler» als Fehlerkarten mit Figur («Oops!»)
+
 ## 2.10.3
 - Present perfect und Zukunft (going to, will, present continuous, shall): Theorie-Folien im neuen Stil. Damit sind alle sieben Zeiten umgestellt
 

@@ -64,5 +64,15 @@ window.UI=(()=>{
   we:sv('-56 0 112 122',ch({x:-22,top:BL,hair:'short',hc:'#5b3a1e',pose:'wave'})+ch({x:22,top:OR,hair:'pony',hc:'#8a4b1c',dress:true,pose:'wave'})),
   they:sv('-78 0 156 122',ch({x:-40,top:OR,hair:'pony',hc:'#2b1d12',dress:true})+ch({x:0,top:'#fb923c',hair:'short',hc:'#8a4b1c'})+ch({x:40,top:OR,pants:'#1e293b',hair:'curly',hc:'#2b1d12'}))
  };
+
+ /* ===== Allgemeine Bausteine im neuen Stil (gelten für alle Themen) ===== */
+ const COLS=['#2f5bea','#16a34a','#f97316','#7c3aed','#0d9488','#db2777'];
+ const OOPS=[
+  sv('-34 0 68 122',ch({x:0,top:'#f59e0b',hair:'pony',hc:'#8a4b1c',dress:true,face:'oops',pose:'stand'})),
+  sv('-34 0 68 122',ch({x:0,top:'#0ea5e9',hair:'short',hc:'#5b3a1e',face:'oops',pose:'stand'})),
+  sv('-34 0 68 122',ch({x:0,top:'#a855f7',hair:'curly',hc:'#2b1d12',face:'oops',pose:'stand'}))];
+ SL.err=a=>'<div class="negwrap"><div class="errs">'+a.map(x=>er(x[0],x[1])).join('')+'</div><div class="negfig rv">'+OOPS[a.length%3]+'<div class="oops">Oops!</div></div></div>';
+ SL.ex=a=>'<div class="exs2">'+a.map((x,i)=>'<div class="exr rv" style="--ec:'+COLS[i%COLS.length]+'">'+x+'</div>').join('')+'</div>';
+ SL.tbl=(head,rows)=>'<div class="tw tw2"><table><tr>'+head.map(h=>'<th>'+h+'</th>').join('')+'</tr>'+rows.map(r=>'<tr class="rv">'+r.map(c=>'<td>'+c+'</td>').join('')+'</tr>').join('')+'</table></div>';
  return {ip,bf,per,card,nrow,qa,er,rule,tap,tapSlide,ico,ic,sv,ch,dog};
 })();
