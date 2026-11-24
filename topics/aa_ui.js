@@ -3,6 +3,7 @@ window.UI=(()=>{
  const {sv,ch,dog,INK,BL,GR,OR}=ART;
  const bf=(w,c)=>'<span class="bf '+(c||'am')+'">'+w+'</span>';
  const per=(em,who,b,sh)=>'<div class="bper rv"><span class="ic">'+em+'</span><b>'+who+'</b>'+b+(sh?'<small>'+sh+'</small>':'')+'</div>';
+ const ip=(em,txt)=>'<div class="bper rv"><span class="ic">'+em+'</span><span>'+txt+'</span></div>';
  const card=(em,tt,ex)=>'<div class="wc rv"><div class="ic">'+em+'</div><b>'+tt+'</b><div class="exs">'+ex+'</div></div>';
  const nrow=(who,b,c,rest,sh)=>'<div class="nrow rv"><span class="who">'+who+'</span>'+bf(b,c)+'<span class="not">not</span>'+(rest?'<span>'+rest+'</span>':'')+(sh?'<i>→</i><b>'+sh+'</b>':'')+'</div>';
  const qa=(q,y,n)=>'<div class="qarow rv"><span class="qq">'+q+'</span><span class="bb y">'+y+'</span>'+(n?'<span class="bb n">'+n+'</span>':'')+'</div>';
@@ -50,7 +51,9 @@ window.UI=(()=>{
   globe:I('<circle cx="50" cy="46" r="28" fill="#38bdf8"/><path d="M34 32 Q42 26 48 34 Q44 44 36 42 Q30 40 34 32Z M56 44 Q68 40 72 52 Q66 66 58 60 Q54 52 56 44Z" fill="#4ade80"/><circle cx="50" cy="46" r="28" fill="none" stroke="#0369a1" stroke-width="3"/>'),
   plane:I('<path d="M16 52 L84 30 Q88 29 87 33 L64 58 L62 74 L54 62 L40 66 L38 58Z" fill="#e2e8f0" stroke="#475569" stroke-width="3" stroke-linejoin="round"/><path d="M38 58 L64 58" stroke="#475569" stroke-width="3"/>'),
   calendar:I('<rect x="22" y="24" width="56" height="50" rx="7" fill="#fff" stroke="#334155" stroke-width="4"/><rect x="22" y="24" width="56" height="14" rx="6" fill="#ef4444"/><g fill="#94a3b8"><rect x="30" y="46" width="8" height="7" rx="1.5"/><rect x="46" y="46" width="8" height="7" rx="1.5"/><rect x="62" y="46" width="8" height="7" rx="1.5"/><rect x="30" y="58" width="8" height="7" rx="1.5"/></g><rect x="46" y="58" width="8" height="7" rx="1.5" fill="#ef4444"/>'),
-  cloud:I('<path d="M30 62 Q18 62 18 50 Q18 38 32 38 Q36 22 54 24 Q72 24 74 42 Q86 42 86 52 Q86 62 74 62Z" fill="#cbd5e1"/><path d="M52 62 l-6 12 h8 l-5 10 12 -16 h-8 l5 -6Z" fill="#fbbf24"/>')
+  cloud:I('<path d="M30 62 Q18 62 18 50 Q18 38 32 38 Q36 22 54 24 Q72 24 74 42 Q86 42 86 52 Q86 62 74 62Z" fill="#cbd5e1"/><path d="M52 62 l-6 12 h8 l-5 10 12 -16 h-8 l5 -6Z" fill="#fbbf24"/>'),
+  bulb:I('<path d="M50 18 Q72 18 72 40 Q72 52 62 60 V68 H38 V60 Q28 52 28 40 Q28 18 50 18Z" fill="#fde047" stroke="#eab308" stroke-width="3"/><rect x="39" y="70" width="22" height="6" rx="3" fill="#94a3b8"/><path d="M40 40 q4 -8 10 -6" stroke="#fff" stroke-width="3.5" fill="none" stroke-linecap="round"/>'),
+  sushi:I('<rect x="22" y="40" width="56" height="26" rx="12" fill="#fff" stroke="#cbd5e1" stroke-width="3"/><rect x="26" y="30" width="48" height="16" rx="8" fill="#fb923c"/><path d="M34 32 l-4 12 M46 30 l-4 14 M58 30 l-4 14 M68 32 l-4 12" stroke="#fdba74" stroke-width="2.5"/><rect x="44" y="38" width="12" height="32" fill="#14532d" opacity=".9"/>')
  };
  const ic={
   I:sv('-32 0 64 122',ch({top:BL,hair:'short',hc:'#5b3a1e',pose:'self'})),
@@ -61,5 +64,5 @@ window.UI=(()=>{
   we:sv('-56 0 112 122',ch({x:-22,top:BL,hair:'short',hc:'#5b3a1e',pose:'wave'})+ch({x:22,top:OR,hair:'pony',hc:'#8a4b1c',dress:true,pose:'wave'})),
   they:sv('-78 0 156 122',ch({x:-40,top:OR,hair:'pony',hc:'#2b1d12',dress:true})+ch({x:0,top:'#fb923c',hair:'short',hc:'#8a4b1c'})+ch({x:40,top:OR,pants:'#1e293b',hair:'curly',hc:'#2b1d12'}))
  };
- return {bf,per,card,nrow,qa,er,rule,tap,tapSlide,ico,ic,sv,ch,dog};
+ return {ip,bf,per,card,nrow,qa,er,rule,tap,tapSlide,ico,ic,sv,ch,dog};
 })();
