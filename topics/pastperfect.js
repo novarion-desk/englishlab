@@ -3,7 +3,7 @@ TOPICS.push((()=>{
  const W={_:'Past perfect: had + 3. Form. Es zeigt, was in der Vergangenheit schon passiert war, bevor etwas anderes geschah.|Past perfect: had + past participle. It shows what had already happened in the past before something else happened.'};
  const B=(s,ok,bad,lv,sb,h)=>BK(s,ok,bad,lv,sb||'',h||'');
  const bank=[
-  B("Louis ___ been blind since the age of three.",['had'],['has','was'],3),
+  B("Tom ___ been ill since Monday.",['had'],['has','was'],3),
   B("Ryan ___ won awards by the time he was 16.",['had'],['has','was'],3),
   B("When I arrived, the film ___ started.",['had'],['has','was'],1),
   B("She was sad because she ___ lost her phone.",['had'],['has','was'],1),
@@ -41,7 +41,7 @@ TOPICS.push((()=>{
    slide(L('Wann braucht man es?','When do you use it?'),
     SL.p(L('Wenn zwei Dinge in der Vergangenheit passieren und man zeigen will, was <b>zuerst</b> war:','When two things happened in the past and you want to show which came <b>first</b>:'))+SL.ex(["When I arrived, the film <b>had</b> already <b>started</b>.","She was sad because she <b>had lost</b> her phone.","After he <b>had eaten</b>, he went out."])+SL.tip(L('Der Satzteil im <b>past perfect</b> war <b>früher</b>. Der andere steht im <b>past simple</b>.','The part in the <b>past perfect</b> happened <b>earlier</b>. The other part is in the <b>past simple</b>.'))),
    slide(L('Signalwörter','Signal words'),
-    SL.tbl([L('Wort','Word'),L('Beispiel','Example')],[['<b>before</b>','He had lived in Bern <b>before</b> he moved to Zurich.'],['<b>after</b>','<b>After</b> she had eaten, she watched TV.'],['<b>when</b>','<b>When</b> we got there, the train had gone.'],['<b>by the time</b>','<b>By the time</b> I called, she had gone to bed.'],['<b>since</b>','Louis <b>had been</b> blind <b>since</b> the age of three.'],['<b>already / never / just</b>','He had <b>already</b> left. · I had <b>never</b> seen it.'],['<b>because</b>','We were late <b>because</b> the bus <b>had broken</b> down.']])),
+    SL.tbl([L('Wort','Word'),L('Beispiel','Example')],[['<b>before</b>','He had lived in Bern <b>before</b> he moved to Zurich.'],['<b>after</b>','<b>After</b> she had eaten, she watched TV.'],['<b>when</b>','<b>When</b> we got there, the train had gone.'],['<b>by the time</b>','<b>By the time</b> I called, she had gone to bed.'],['<b>since</b>','Tom <b>had been</b> ill <b>since</b> Monday.'],['<b>already / never / just</b>','He had <b>already</b> left. · I had <b>never</b> seen it.'],['<b>because</b>','We were late <b>because</b> the bus <b>had broken</b> down.']])),
    slide(L('Verneinung und Frage','Negatives and questions'),
     SL.tbl([L('Satzart','Type'),L('Beispiel','Example')],[[L('Verneinung','negative'),'I <b>hadn\'t</b> seen it before.'],[L('Frage','question'),'<b>Had</b> you seen it before?'],[L('Frage mit Fragewort','wh-question'),'Why <b>had</b> he left so early?']])),
    slide(L('Past perfect oder past simple?','Past perfect or past simple?'),

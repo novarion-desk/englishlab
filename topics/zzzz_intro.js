@@ -39,10 +39,11 @@
  wl:['Mit <b>would like</b> und <b>would rather</b> sagst du höflich, was du <b>möchtest oder lieber hättest</b>. Mit <b>prefer</b> sagst du, was du <b>bevorzugst</b>.','With <b>would like</b> and <b>would rather</b> you say politely what you <b>would like</b> or <b>prefer</b>. With <b>prefer</b> you say what you like <b>better</b>.',['I would like to order a pizza.','I\'d rather stay at home.','I prefer tea to coffee.'],'Du brauchst es für Wünsche, Angebote und Vorlieben.','You need it for wishes, offers and preferences.'],
  lw:['<b>Verbindungswörter</b> (so, because, although, however, first, then …) verknüpfen Sätze und zeigen, wie sie zusammenhängen.','<b>Linking words</b> (so, because, although, however, first, then …) join sentences and show how they are connected.',['We stayed in because it was raining.','Although it was cold, we swam.','First, mix the eggs. Then add the milk.'],'Du brauchst sie, damit deine Texte nicht aus lauter kurzen Sätzen bestehen.','You need them so that your texts are not just a list of short sentences.'],
  };
+ const TE={ztt:'⏳',zbe:'🙋',zps:'🔁',zpc:'📱',zpas:'🕰️',zpast:'🎬',zpf:'🌍',zpp:'⏪',zfut:'🚀',g:'🎮',k:'🌧️',c2:'💭',q:'❓',m:'🚦',t:'🤔',pv:'🏰',sn:'🤝',dd:'🕵️',hb:'💡',sh:'😬',wp:'👀',us:'🧸',wl:'🍕',lw:'🔗',ir:'💬',ia:'📢',iq:'🗣️',o:'🎒',ob:'👉',ip:'🔍',n:'🛒',r:'🧩',rf:'🪞',ad:'🐢',pa:'😴',c:'📏',p:'📍'};
  for(const id in I){
   const t=TOPICS.find(x=>x.id===id);if(!t||!t.slides)continue;const o=t.slides,d=I[id];
   t.slides=()=>[slide(L('Worum geht\'s?','What is it about?'),
-    SL.p(L(d[0],d[1]))+SL.ex(d[2])+SL.tip(L(d[3],d[4])),
+    (TE[id]?'<div class="topic-emo" aria-hidden="true">'+TE[id]+'</div>':'')+SL.p(L(d[0],d[1]))+SL.ex(d[2])+SL.tip(L(d[3],d[4])),
     L('Zum Einstieg: Beispiele laut vorlesen lassen und fragen, was auffällt.','Warm-up: have the examples read aloud and ask what students notice.'))].concat(o());
  }
 })();

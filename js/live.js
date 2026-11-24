@@ -26,7 +26,7 @@ function mqDraw(el){
   const short=!!it.stem;
   body=`<p class="instr">${it.instr||''}</p>${short?`<div class="sentence">${stemHtml(it.stem)}</div>`:''}<div class="opts" style="grid-template-columns:${short?'repeat(auto-fit,minmax(110px,1fr))':'1fr'}">${it.opts.map((o,i)=>`<button data-mqo="${i}" style="${short?'':'text-align:left'}">${esc(o)}</button>`).join('')}</div>`;
  }
- el.innerHTML=`${mqCfg()}<div class="mqtop"><span>${L('Niveau','Level')}</span><div class="seg mqlv">${['C','B','A'].map(l=>`<button data-mqlv="${l}" class="${S.lvl===l?'on':''}">${l}</button>`).join('')}</div><span class="mqsc">⭐ ${m.ok} / ${m.n}</span></div>${body}<div class="mqfb"></div>`;
+ el.innerHTML=`${mqCfg()}<div class="mqtop"><span>${L('Niveau','Level')}</span><div class="seg mqlv">${[['C',L('C · einfach','C · easy')],['B',L('B · mittel','B · medium')],['A',L('A · anspruchsvoll','A · demanding')]].map(([l,t])=>`<button data-mqlv="${l}" class="${S.lvl===l?'on':''}">${t}</button>`).join('')}</div><span class="mqsc">⭐ ${m.ok} / ${m.n}</span></div>${body}<div class="mqfb"></div>`;
  const inp=el.querySelector('[data-mqin]');
  if(inp){inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();m.ans?mqNew(el):mqCheck(el)}};if(!T.pres&&FINE)setTimeout(()=>{try{inp.focus({preventScroll:true})}catch(x){}},0)}
 }

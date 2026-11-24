@@ -26,7 +26,7 @@ TOPICS.push((()=>{
   B('Maybe it will rain. ___ it rains, we will stay at home.',['If'],['When','Because'],3,'(if / when)'),
   B('If I ___ enough money, I will buy a new bike.',['have'],['will have','had'],3,'(have)')
  ];
- return bankTopic({id:'k',grp:'verben',ord:40,ic:'🔀',de:'If-Sätze (open conditional)',en:'If-sentences (open conditional)',desc:'If it rains, we will stay at home.',
+ return bankTopic({id:'k',grp:'verben',ord:40,ic:'🔀',de:'If-Sätze (first conditional)',en:'If-sentences (first conditional)',desc:'If it rains, we will stay at home.',
   fillInstr:()=>L('Setze die richtige Form des Verbs ein.','Fill in the correct form of the verb.'),
   fillDesc:()=>L('die richtige Verbform schreiben','write the correct verb form'),
   lvDe:'C: einfache if- und when-Sätze. B: mehr Verben und Fragen. A: dazu Naturgesetze (if + present, present) und if / when unterscheiden.',
@@ -36,7 +36,7 @@ TOPICS.push((()=>{
   errWhy:W._,
   slides:()=>[
    slide(L('Die Idee','The idea'),
-    SL.p(L('Ein <b>open conditional</b> spricht über etwas, das in der Zukunft wirklich passieren kann: <b>Wenn A passiert, dann passiert B.</b>','An <b>open conditional</b> talks about something that can really happen in the future: <b>if A happens, then B happens.</b>'))+SL.ex(['If it rains, we <b>will stay</b> at home.','When I get home, I <b>will call</b> you.'])+SL.p(L('Der Satz hat zwei Teile: den <b>if-Satz</b> (Bedingung) und den <b>Hauptsatz</b> (Folge).','The sentence has two parts: the <b>if-clause</b> (condition) and the <b>main clause</b> (result).')),
+    SL.p(L('Ein <b>first conditional</b> spricht über etwas, das in der Zukunft wirklich passieren kann: <b>Wenn A passiert, dann passiert B.</b>','An <b>open conditional</b> talks about something that can really happen in the future: <b>if A happens, then B happens.</b>'))+SL.ex(['If it rains, we <b>will stay</b> at home.','When I get home, I <b>will call</b> you.'])+SL.p(L('Der Satz hat zwei Teile: den <b>if-Satz</b> (Bedingung) und den <b>Hauptsatz</b> (Folge).','The sentence has two parts: the <b>if-clause</b> (condition) and the <b>main clause</b> (result).')),
     L('Mit einem Beispiel aus der Klasse einsteigen: «Wenn ihr heute alle aufpasst, …».','Start with a class example: “If everyone pays attention today, …”.')),
    slide(L('Die Form','The form'),
     SL.tbl([L('if-Satz','if-clause'),L('Hauptsatz','Main clause')],[['If + <b>present simple</b>','<b>will</b> + base form'],['If it rains,','we will stay at home.'],['If you study,','you will pass the test.']])+SL.warn(L('Im if-Satz steht <b>kein will</b>: <s>If it will rain</s> → <b>If it rains</b>.','There is <b>no will</b> in the if-clause: <s>If it will rain</s> → <b>If it rains</b>.'))),
@@ -44,8 +44,8 @@ TOPICS.push((()=>{
     SL.p(L('Beide Teile können die Reihenfolge tauschen. Steht der if-Satz <b>vorne</b>, kommt ein <b>Komma</b>.','The two parts can swap places. When the if-clause comes <b>first</b>, use a <b>comma</b>.'))+SL.ex(['<b>If it rains,</b> we will stay at home.','We will stay at home <b>if it rains</b>.'])),
    slide('if / when',
     SL.tbl(['','Bedeutung / Meaning','Beispiel / Example'],[['<b>if</b>',L('vielleicht, nicht sicher','maybe, not sure'),'<b>If</b> it rains, we will stay at home.'],['<b>when</b>',L('sicher, das passiert','sure, it will happen'),'<b>When</b> I am 14, I will have a party.']])),
-   slide(L('Allgemeine Wahrheiten','General truths'),
-    SL.p(L('Für Dinge, die <b>immer</b> stimmen, steht in beiden Teilen das <b>present simple</b>.','For things that are <b>always</b> true, use the <b>present simple</b> in both parts.'))+SL.ex(['If you heat ice, it <b>melts</b>.','If you mix red and blue, you <b>get</b> purple.'])),
+   slide(L('Open conditional: allgemeine Wahrheiten','Open conditional: general truths'),
+    SL.p(L('Für Dinge, die <b>immer</b> stimmen, steht in beiden Teilen das <b>present simple</b>. Im Lehrmittel heisst das «open conditional».','For things that are <b>always</b> true, use the <b>present simple</b> in both parts. Some textbooks call this the «open conditional».'))+SL.ex(['If you heat ice, it <b>melts</b>.','If you mix red and blue, you <b>get</b> purple.'])),
    slide(L('Typische Fehler','Typical mistakes'),SL.err([['If it will rain, we stay at home.','If it rains, we will stay at home.'],['When I will arrive, I call you.','When I arrive, I will call you.'],['If I would have time, I will help.','If I have time, I will help.']])),
    tryS(L('Übung: if-Sätze','Exercise: if-sentences'),()=>[['If it rains, we ___ at home. (stay)','will stay'],['If you ___ hard, you will pass the test. (study)','study'],['I will call you when I ___ home. (arrive)','arrive'],['If we miss the bus, we ___ late. (be)','will be'],['What will you do if you ___ the match? (lose)','lose']])
   ]});

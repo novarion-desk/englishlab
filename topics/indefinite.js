@@ -38,7 +38,7 @@ TOPICS.push((()=>{
     SL.p(L('Auch <b>everyone</b> und <b>everybody</b> sind <b>Singular</b>: das Verb bekommt -s.','<b>everyone</b> and <b>everybody</b> are <b>singular</b>: the verb takes -s.'))+SL.ex(['<b>Everyone is</b> happy today.','<b>Nobody lives</b> here.','<b>Everything was</b> fine.'])),
    slide(L('else','else'),
     SL.p(L('Mit <b>else</b> fragt man nach «noch etwas anderem».','Use <b>else</b> to mean “other”.'))+SL.ex(['Do you want <b>anything else</b>?','Let\'s go <b>somewhere else</b>.','Who <b>else</b> is coming?'])),
-   slide(L('Typische Fehler','Typical mistakes'),SL.err([["I didn't see nothing.","I didn't see anything."],['Everybody are here.','Everybody is here.'],['Is there something in the box?','Is there anything in the box?'],['I know anything about it. (= nothing)','I know nothing about it.']])),
-   tryS(L('Übung','Exercise'),()=>[["I can hear a knock. There is ___ at the door.",'someone'],["I don't know ___ in this town.",'anyone'],['Is there ___ in the box?','anything'],['We looked ___, but we could not find the key.','everywhere'],['Everyone ___ happy today. (be)','is'],['The room is empty. There is ___ in it.','nobody']])
+   slide(L('Typische Fehler','Typical mistakes'),SL.err([["I didn't see nothing.","I didn't see anything."],['Everybody are here.','Everybody is here.'],["I don't know someone here.","I don't know anyone here."],['I know anything about it. (= nothing)','I know nothing about it.']])),
+   tryS(L('Übung','Exercise'),()=>[["I can hear a knock. There is ___ at the door.",'someone'],["I don't know ___ in this town.",'anyone'],['Is there ___ in the box?','anything / something'],['We looked ___, but we could not find the key.','everywhere'],['Everyone ___ happy today. (be)','is'],['The room is empty. There is ___ in it.','nobody']])
   ]});
 })());

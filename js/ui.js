@@ -122,7 +122,7 @@ function renderPractice(){
  const subOn=k=>st.subs.includes(k)&&!(topic.id==='q'&&C0&&k==='PaS');
  app.innerHTML=head+`
  <div class="card"><h2>${L('1 · Niveau','1 · Level')}</h2>
-  <div class="opt-row"><div class="seg" id="lvlSeg">${[['C',L('C (einfach)','C (easy)')],['B','B'],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-lv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
+  <div class="opt-row"><div class="seg" id="lvlSeg">${[['C',L('C (einfach)','C (easy)')],['B',L('B (mittel)','B (medium)')],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-lv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
   <p class="muted" style="margin:6px 0 0;font-size:.9em">${topic.lvDesc()}</p></div>
  ${subs.length?`<div class="card"><h2>2 · ${topic.subTitle()}</h2><div class="chips">${subs.map(s=>`<button class="chip ${subOn(s.k)?'on':''}" data-t="${s.k}" ${topic.id==='q'&&C0&&s.noC?'disabled style="opacity:.4"':''}>${s.n}</button>`).join('')}</div></div>`:''}
  <div class="card"><h2>${subs.length?3:2} · ${L('Übungsart','Exercise type')}</h2>

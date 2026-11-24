@@ -1,5 +1,18 @@
 # Changelog
 
+## 2.7
+- Neu: Zeichnungen bei Präpositionen (Ort und Richtung) und Vergleichsformen
+- Linking words: Folie «who and which» entfernt, «although» nur noch auf der Folie «Gegensatz»
+- Gerund & infinitive: Zeile mit Modalverben aus der Tabelle «Verb + to» entfernt
+- Comparatives: neue Folie «Zwei Silben»
+- Thema «If-Sätze» heisst jetzt «first conditional»; Folie «Open conditional» für Gegenwart + Gegenwart
+- Prepositions of direction: up, down, past, round ergänzt
+- Indefinite pronouns und Quantifiers: zwei missverständliche Fehlerbeispiele ersetzt
+- Niveau: «B (mittel)» überall angezeigt, auch in der Mini-Übung
+- Neu: Themen-Emoji auf jeder Einstiegsfolie und ein passendes Emoji bei vielen Beispielsätzen
+- Neu: Zeichnungen bei Reported speech, Conditionals, Countable / uncountable, Quantifiers, Passive und Modal verbs
+- Einige Übungs- und Beispielsätze durch eigene ersetzt
+
 ## 2.6
 - Neu: «Frag Marty» gibt es jetzt auch in der Mini-Übung auf der Theorie-Seite und in der Live-Folie, auch nach einer richtigen Antwort
 - Present simple: Folien «Adverbs of frequency» und «How often?» entfernt
