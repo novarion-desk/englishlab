@@ -116,7 +116,7 @@ function fixColors(doc){
   const bi=cs.backgroundImage;if(bi&&bad.test(bi))el.style.setProperty('background-image','none','important');
  });
 }
-async function makePdf(){
+async function makePdf(dl){
  if(pdfBusy)return;pdfBusy=true;
  const msg=document.createElement('div');msg.style.cssText='position:fixed;left:50%;top:18px;transform:translateX(-50%);z-index:99999;background:#1e1b4b;color:#fff;padding:12px 18px;border-radius:12px;font:600 15px system-ui,sans-serif;box-shadow:0 6px 24px rgba(0,0,0,.3)';
  msg.textContent=L('PDF wird erstellt …','Creating PDF …');document.body.appendChild(msg);
@@ -131,9 +131,9 @@ async function makePdf(){
   stage.appendChild(clone);document.body.appendChild(stage);
   const hasHand=!!stage.querySelector('.hosh');
   if(hasHand&&typeof cvScale==='function'){try{cvScale(stage)}catch(e){}}
-  const css=document.createElement('style');css.textContent='.sheet{border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;max-width:none!important;width:794px!important;padding:38px 42px!important;box-sizing:border-box;background:#fff}.sheet.sol{break-before:auto}#xpdfstage *{font-family:Helvetica,Arial,sans-serif!important;text-rendering:auto!important;font-kerning:none!important;letter-spacing:0.02px!important;font-feature-settings:normal!important;font-variant-ligatures:none!important}#xpdfstage .rsec h3{display:block!important}#xpdfstage .rsec h3 .rn{display:inline-flex!important;vertical-align:middle;margin-right:10px}';
+  const css=document.createElement('style');css.textContent='.sheet{border:0!important;border-radius:0!important;box-shadow:none!important;margin:0!important;max-width:none!important;width:794px!important;padding:38px 42px!important;box-sizing:border-box;background:#fff}.sheet.sol{break-before:auto}#xpdfstage *{font-family:Helvetica,Arial,sans-serif!important;text-rendering:auto!important;font-kerning:none!important;letter-spacing:0.02px!important;font-feature-settings:normal!important;font-variant-ligatures:none!important}#xpdfstage .rsec h3{display:block!important}#xpdfstage .hogrid{width:794px!important;height:1123px!important;box-sizing:border-box!important;padding:53px!important;margin:0!important;background:#fff}#xpdfstage .rsec h3 .rn{display:inline-flex!important;vertical-align:middle;margin-right:10px}';
   stage.appendChild(css);
-  let blocks=[...stage.querySelectorAll('.sheet')];if(!blocks.length)blocks=[stage];
+  let blocks=hasHand?[...stage.querySelectorAll('.hogrid')]:[...stage.querySelectorAll('.sheet')];if(!blocks.length)blocks=[stage];
   const {jsPDF}=window.jspdf;const pdf=new jsPDF({unit:'pt',format:'a4',compress:true});
   const PW=pdf.internal.pageSize.getWidth(),PH=pdf.internal.pageSize.getHeight();
   let first=true;
@@ -151,7 +151,7 @@ async function makePdf(){
   const blob=pdf.output('blob');
   const file=new File([blob],'EnglishLab.pdf',{type:'application/pdf'});
   msg.remove();
-  if(navigator.canShare&&navigator.canShare({files:[file]})){
+  if(!dl&&navigator.canShare&&navigator.canShare({files:[file]})){
    try{await navigator.share({files:[file],title:'EnglishLab'})}catch(e){if(e&&e.name!=='AbortError')throw e}
   }else{
    const u=URL.createObjectURL(blob);const a=document.createElement('a');a.href=u;a.download='EnglishLab.pdf';document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),60000);
@@ -160,3 +160,9 @@ async function makePdf(){
   console.error('PDFERR',e&&e.message,e&&e.stack);msg.remove();alert(L('Das PDF konnte nicht erstellt werden. Bitte nochmals versuchen.','The PDF could not be created. Please try again.'));
  }finally{stage.remove();pdfBusy=false}
 }
+
+/* Saubere Druckseite: Beim Handout steht der Seitenrand im Inhalt (Rand 0), dann blendet der Browser Webadresse, Datum und Seitenzahl nicht ein. */
+(()=>{let st=null;
+ addEventListener('beforeprint',()=>{if(!document.querySelector('.hosh'))return;st=document.createElement('style');st.textContent='@page{size:A4;margin:0}';document.head.appendChild(st)});
+ addEventListener('afterprint',()=>{if(st){st.remove();st=null}});
+})();

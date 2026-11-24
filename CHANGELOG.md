@@ -1,5 +1,11 @@
 # Changelog
 
+## 2.9
+- Present simple: be: Figuren mit Händen, Szene «I am Tom» in der Spalte «am», Figuren bei Verneinung und Fehlern, Kinder-Köpfe auf der Ich-Karte
+- Theorie-Ansicht und Handy-Breite: nichts ragt mehr rechts über
+- Handout: Folien pro A4 wählbar (1, 2, 4, 6 oder 3 mit Notizzeilen)
+- Handout: sauberer Druck ohne Webadresse (Seitenrand im Inhalt) und Button «PDF speichern»
+
 ## 2.8
 - Present simple: be komplett neu gestaltet: Farbcode (am blau, is grün, are orange), gezeichnete Figuren und Szenen, Bildkarten, Antippen-Übung mit «Frag Marty», Ich-Karte
 - Präsentationsmodus: Zeilen erscheinen nacheinander

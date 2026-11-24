@@ -19,14 +19,20 @@ function openTheoryPrint(){
  window.scrollTo({top:0});
 }
 
-/* --- Handout: Folien, 6 pro A4 --- */
+/* --- Handout: Folien, wählbar pro A4 --- */
+const HO={n:'6'};
+const HO_PER={'1':1,'2':2,'4':4,'6':6,'n':3};
 function openHandoutPrint(){
  const V=slidesList().filter(x=>x.kind!=='live'&&x.kind!=='try');
+ const per=HO_PER[HO.n]||6,pages=Math.ceil(V.length/per);
+ const opts=[['1','1'],['2','2'],['4','4'],['6','6'],['n',L('3 + Notizen','3 + notes')]];
  screen='tprint';setHeader();
- app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="hoBack">${L('‹ Zurück zu den Folien','‹ Back to slides')}</button><button class="primary" id="hoPrint">${L('🖨 Drucken / PDF (6 Folien pro A4)','🖨 Print / PDF (6 slides per A4)')}</button></div>
- <div class="sheet hosh">${Array.from({length:Math.ceil(V.length/6)},(_,g)=>`<div class="hogrid">${V.slice(g*6,g*6+6).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*6+j,V.length,false)}</div></div>`).join('')}</div>`).join('')}</div>`;
+ app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="hoBack">${L('‹ Zurück zu den Folien','‹ Back to slides')}</button></div>
+ <div class="sheetbar hopick"><b>${L('Folien pro A4','Slides per A4')}:</b><div class="seg">${opts.map(([k,l])=>`<button data-hon="${k}" class="${HO.n===k?'on':''}">${l}</button>`).join('')}</div></div>
+ <div class="sheetbar"><button class="primary" id="hoPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" id="hoPdf">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button></div>
+ <div class="sheet hosh">${Array.from({length:pages},(_,g)=>`<div class="hogrid hn${HO.n}">${V.slice(g*per,g*per+per).map((x,j)=>`<div class="hocell"><div class="cvw">${cvHtml(x,g*per+j,V.length,false)}</div>${HO.n==='n'?'<div class="hon"></div>':''}</div>`).join('')}</div>`).join('')}</div>`;
  cvScale(app);
- app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return doPrint()};
+ app.onclick=e=>{const b=e.target.closest('button');if(!b)return;if(b.dataset.hon){HO.n=b.dataset.hon;return openHandoutPrint()}if(b.id==='hoBack')return renderSlides();if(b.id==='hoPrint')return doPrint();if(b.id==='hoPdf')return makePdf(true)};
  window.scrollTo({top:0});
 }
 
