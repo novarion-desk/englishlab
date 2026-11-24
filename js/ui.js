@@ -258,7 +258,7 @@ function renderSheet(){
  <div class="sheetbar">
   <button class="btn-link" id="shBack">${L('‹ Zurück','‹ Back')}</button>
   <button class="secondary" id="shMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button>
-  <button class="primary" id="shPrint">${L('🖨 Drucken / PDF','🖨 Print / PDF')}</button>
+  <button class="primary" id="shPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button>
  </div>
  <div class="sheet"><h1>${esc(title)}</h1><p class="sub">${esc(subLine())}</p>
   <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span></div>

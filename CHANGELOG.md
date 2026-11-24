@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.9.1
+- Theorie- und Testblätter: sauberer Druck ohne Webadresse, Datum und Seitenzahl (Seitenrand im Inhalt, auf jeder Seite wiederholt)
+- Neuer Button «PDF speichern (ohne Webadresse)» bei Theorie, Unit-Test und Übungsblatt
+
 ## 2.9
 - Present simple: be: Figuren mit Händen, Szene «I am Tom» in der Spalte «am», Figuren bei Verneinung und Fehlern, Kinder-Köpfe auf der Ich-Karte
 - Theorie-Ansicht und Handy-Breite: nichts ragt mehr rechts über

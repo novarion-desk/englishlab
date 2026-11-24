@@ -11,7 +11,7 @@ const utTopics=()=>UT.free?TOPICS.filter(t=>hasEx(t)&&UT.sel.has(t.id)):[...new 
 /* --- Theorie drucken --- */
 function openTheoryPrint(){
  screen='tprint';setHeader();
- app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="tpBack">${L('‹ Zurück','‹ Back')}</button><button class="primary" id="tpPrint">${L('🖨 Drucken / PDF','🖨 Print / PDF')}</button></div>
+ app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="tpBack">${L('‹ Zurück','‹ Back')}</button><button class="primary" id="tpPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button></div>
  <div class="sheet tpr" style="--c:${grpOf(topic).c}"><h1>EnglishLab – ${L('Theorie','Theory')}: ${esc(topic.name())}</h1><p class="sub">${esc(topic.desc())}</p>
  <div class="theory2">${rulesHtml()}</div>
  <h3 class="tnotes">${L('Notizen','Notes')}</h3>${'<div class="wl"></div>'.repeat(5)}</div>`;
@@ -75,7 +75,7 @@ function renderUnitSheet(){
  const body=UT.secs.map(sc=>`<h2 class="tsec">${sc.ic} ${esc(sc.name)}</h2>`+sc.its.map(it=>sheetTask(it,++n,ptsOf(it))).join('')).join('');
  let m=0;
  const sol=UT.secs.map(sc=>`<h2 class="tsec">${sc.ic} ${esc(sc.name)}</h2><div class="sol-list">${sc.its.map(it=>`<div><b>${++m}.</b> ${esc(it.sol)} <span class="pt">${ptsOf(it)} ${L('P.','pts')}</span></div>`).join('')}</div>`).join('');
- app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="usBack">${L('‹ Zurück','‹ Back')}</button><button class="secondary" id="usMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button><button class="primary" id="usPrint">${L('🖨 Drucken / PDF','🖨 Print / PDF')}</button></div>
+ app.innerHTML=`<div class="sheetbar"><button class="btn-link" id="usBack">${L('‹ Zurück','‹ Back')}</button><button class="secondary" id="usMix">${L('🔀 Neu mischen','🔀 Shuffle again')}</button><button class="primary" id="usPrint">${L('🖨 Drucken','🖨 Print')}</button><button class="secondary" data-pdf="1">${L('📄 PDF speichern (ohne Webadresse)','📄 Save PDF (no web address)')}</button></div>
  <div class="sheet"><h1>${esc(title)}</h1><p class="sub">${L('Niveau','Level')} ${S.lvl} · ${nt} ${L('Aufgaben','tasks')} · ${total} ${L('Punkte','points')}</p>
  <div class="meta"><span>${L('Name:','Name:')}</span><span>${L('Datum:','Date:')}</span><span class="pts">${L('Punkte:','Points:')} &nbsp;&nbsp;&nbsp;/ ${total}</span></div>${body}</div>
  <div class="sheet sol"><h1>${L('Lösungen','Answers')}</h1><p class="sub">${esc(title)}</p>${sol}</div>`;

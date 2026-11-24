@@ -161,8 +161,17 @@ async function makePdf(dl){
  }finally{stage.remove();pdfBusy=false}
 }
 
-/* Saubere Druckseite: Beim Handout steht der Seitenrand im Inhalt (Rand 0), dann blendet der Browser Webadresse, Datum und Seitenzahl nicht ein. */
-(()=>{let st=null;
- addEventListener('beforeprint',()=>{if(!document.querySelector('.hosh'))return;st=document.createElement('style');st.textContent='@page{size:A4;margin:0}';document.head.appendChild(st)});
- addEventListener('afterprint',()=>{if(st){st.remove();st=null}});
+/* Saubere Druckseite: Der Seitenrand steht im Inhalt (@page-Rand 0). Dann blendet der Browser Webadresse, Datum und Seitenzahl nicht ein.
+   Bei Blättern über mehrere Seiten sorgt eine Tabelle mit Kopf- und Fusszeile dafür, dass der Abstand auf jeder Seite wiederkehrt. */
+(()=>{let st=null,tb=null;
+ const undo=()=>{if(tb){const td=tb.querySelector('td.pgb'),a=document.getElementById('app');while(td&&td.firstChild)a.insertBefore(td.firstChild,tb);tb.remove();tb=null}if(st){st.remove();st=null}};
+ addEventListener('beforeprint',()=>{
+  if(st)return;const a=document.getElementById('app');if(!a)return;
+  const ho=a.querySelector('.hosh'),sh=a.querySelector('.sheet');if(!ho&&!sh)return;
+  st=document.createElement('style');st.textContent='@page{size:A4;margin:0}'+(ho?'':'#pgpad{width:100%;border-collapse:collapse}#pgpad td{padding:0}#pgpad td.pgb{padding:0 14mm}#pgpad .pgs{height:14mm}');document.head.appendChild(st);
+  if(!ho){tb=document.createElement('table');tb.id='pgpad';tb.innerHTML='<thead><tr><td><div class="pgs"></div></td></tr></thead><tbody><tr><td class="pgb"></td></tr></tbody><tfoot><tr><td><div class="pgs"></div></td></tr></tfoot>';
+   const td=tb.querySelector('td.pgb');while(a.firstChild)td.appendChild(a.firstChild);a.appendChild(tb)}
+ });
+ addEventListener('afterprint',undo);
+ document.addEventListener('click',e=>{const b=e.target.closest('[data-pdf]');if(b)makePdf(true)});
 })();
