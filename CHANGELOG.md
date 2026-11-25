@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.18
+- Vokabeln · Sätze übersetzen: Jetzt für **alle Units** von Year 2 (New Inspiration 2, Units 1–8) und Year 3 (New Inspiration 3, Units 1–8). Insgesamt 655 Sätze (Year 3: 349, Year 2: 306), pro Lesson passend zum Wortschatz, dazu die in der jeweiligen Unit bereits bekannten Zeiten. Mehrere akzeptierte Alternativen pro Satz (britisch/amerikanisch, Kurzformen werden automatisch erkannt). Die Welcome-Unit (Year 3) hat keine Sätze.
+
 ## 2.17
 - Vokabeln: Neue Übungsart **«💬 Sätze übersetzen»** (DE → EN). Die Sätze nutzen den Wortschatz der gewählten Lessons, dazu bekannte Zeiten, Verben und Präpositionen. Bei mehreren Lessons werden die Sätze gemischt. Die Prüfung ignoriert Gross-/Kleinschreibung und Satzzeichen, versteht Kurzformen (I'm / I am, isn't / is not), akzeptiert gespeicherte Alternativen und markiert kleine Tippfehler. Bei Fehlern: Musterlösung, falsche Wörter markiert und «Ist mein Satz auch richtig? (Marty)». Falsche Sätze kommen später wieder. Fortschritt wie bei den Wörtern (Fächer).
 - Pilot: Year 3 Unit 1 mit 56 Sätzen (`js/sentences.js`). Weitere Units folgen.
