@@ -11,6 +11,7 @@ Englisch-Grammatik üben und nachlesen (Teaching Cockpit). Eigenständige App, u
 - Zeiten-Themen haben Regeln und Folien; geübt wird im Tense Trainer.
 
 - **KI-Erklärung (23.11.):** Knopf «💡 Frag Marty» nach einer beantworteten Üben-Aufgabe, für alle sichtbar (`…/englishlab/#ki-aus` schaltet ihn auf dem Gerät ab, `#ki-test` wieder ein). Bei freien Sätzen nach falscher Antwort «Ist mein Satz auch richtig?». Anfrage an den Cloudflare-Worker `tc-ki-proxy` (Mistral, Key nur dort), Tageslimit pro Gerät. Nicht im Testmodus (Prüfung). Hat nichts mit der KI-Suche der Lehrperson zu tun.
+- **Vokabeln · Sätze übersetzen (2.17):** Übungsart DE → EN mit Sätzen pro Lesson aus `js/sentences.js` (`[Jahr, Unit, Lesson, Deutsch, Englisch, «Alt|Alt»]`). Aktuell Pilot Year 3 Unit 1; weitere Units folgen.
 
 ## Struktur
 - `index.html`, `js/core.js`, `js/ui.js`, `topics/*.js` (ein Thema pro Datei), `vendor/` (Firebase)

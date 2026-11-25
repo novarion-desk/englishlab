@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.17
+- Vokabeln: Neue Übungsart **«💬 Sätze übersetzen»** (DE → EN). Die Sätze nutzen den Wortschatz der gewählten Lessons, dazu bekannte Zeiten, Verben und Präpositionen. Bei mehreren Lessons werden die Sätze gemischt. Die Prüfung ignoriert Gross-/Kleinschreibung und Satzzeichen, versteht Kurzformen (I'm / I am, isn't / is not), akzeptiert gespeicherte Alternativen und markiert kleine Tippfehler. Bei Fehlern: Musterlösung, falsche Wörter markiert und «Ist mein Satz auch richtig? (Marty)». Falsche Sätze kommen später wieder. Fortschritt wie bei den Wörtern (Fächer).
+- Pilot: Year 3 Unit 1 mit 56 Sätzen (`js/sentences.js`). Weitere Units folgen.
+- Verbenliste: Die Spalten standen nicht untereinander (bei «Unregelmässige» zog eine fremde Stil-Klasse die Zeilen zusammen). Jetzt stehen Grundform, Past simple, Past participle und Deutsch sauber in Spalten, auch auf dem Handy.
+
 ## 2.16.1
 - Präsentation: Die Antwort von «Frag Marty» lässt sich jetzt nach unten scrollen und wird automatisch ins Bild geholt.
 

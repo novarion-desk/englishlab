@@ -6,7 +6,7 @@ const esc=s=>String(s).replace(/[&<>"]/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;',
 const rnd=a=>a[Math.floor(Math.random()*a.length)];
 const shuf=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
 const canSpeak=()=>'speechSynthesis' in window&&typeof SpeechSynthesisUtterance!=='undefined';
-let W=null,loading=false,P={},SET={y:2,sel:{},dir:'both',type:'mix',count:10,mode:'smart',les:[]};
+let W=null,SENTS=[],loading=false,P={},SET={y:2,sel:{},dir:'both',type:'mix',count:10,mode:'smart',les:[]};
 try{P=JSON.parse(localStorage.getItem(KEY))||{}}catch(e){P={}}
 try{Object.assign(SET,JSON.parse(localStorage.getItem(KS))||{})}catch(e){}
 if(!SET.sel||typeof SET.sel!=='object')SET.sel={};
@@ -14,6 +14,7 @@ const saveP=()=>{try{localStorage.setItem(KEY,JSON.stringify(P))}catch(e){}};
 const saveS=()=>{try{localStorage.setItem(KS,JSON.stringify(SET))}catch(e){}};
 
 /* ---------- Daten ---------- */
+const hash=t=>{let h=5381;for(let i=0;i<t.length;i++)h=((h<<5)+h+t.charCodeAt(i))>>>0;return h.toString(36)};
 const cleanEn=s=>s.replace(/\([^)]*$/,'').replace(/\s+/g,' ').trim();
 function ensureVoc(cb){
  if(W)return cb();
@@ -21,7 +22,12 @@ function ensureVoc(cb){
  const s=document.createElement('script');s.src='js/vocabdata.js';
  s.onload=()=>{W=VOC_DATA.map((r,i)=>({id:r[0]+'.'+r[1]+'.'+i,y:r[0],u:r[1],l:r[2],en:cleanEn(r[3]),p:r[4],de:r[5],ex:r[6]}));
   // stabile IDs: Jahr.Unit.Wort.Wortart (damit Fortschritt auch bei Datenänderungen hält)
-  W.forEach(w=>{w.id=w.y+'.'+w.u+'.'+w.en.toLowerCase()+'.'+w.p});loading=false;window.VOCW=W;cb()};
+  W.forEach(w=>{w.id=w.y+'.'+w.u+'.'+w.en.toLowerCase()+'.'+w.p});
+  const fin=()=>{loading=false;window.VOCW=W;cb()};
+  // Übersetzungssätze (optional): fehlt die Datei, funktioniert der Rest trotzdem
+  const s2=document.createElement('script');s2.src='js/sentences.js';
+  s2.onload=()=>{try{SENTS=SENT_DATA.map(r=>({id:'s.'+r[0]+'.'+r[1]+'.'+hash(r[3]),y:r[0],u:r[1],l:r[2],de:r[3],en:r[4],alts:r[5]?r[5].split('|'):[],p:'',ex:'',sent:1}))}catch(e){SENTS=[]}fin()};
+  s2.onerror=()=>{SENTS=[];fin()};document.head.appendChild(s2)};
  s.onerror=()=>{loading=false;const b=document.getElementById('vocBody');if(b)b.innerHTML='<p class="muted">'+L('Die Vokabeln konnten nicht geladen werden.','The vocabulary could not be loaded.')+'</p>'};
  document.head.appendChild(s);
 }
@@ -85,7 +91,12 @@ const dirsOf=()=>SET.dir==='both'?['e','d']:[SET.dir];
 const stOf=(w,d)=>P[w.id+'|'+d];
 function setSel(y){if(y===0)return {all:[0],sel:[0]};const all=[...new Set(W.filter(w=>w.y===y).map(w=>w.u))].sort((a,b)=>a-b);let s=SET.sel[y];if(!Array.isArray(s)||!s.length)s=all.slice();SET.sel[y]=s.filter(u=>all.includes(u));if(!SET.sel[y].length)SET.sel[y]=all;return {all,sel:SET.sel[y]}}
 function poolWords(){if(SET.y===0)return window.MYLIST?MYLIST.all():[];const {sel}=setSel(SET.y);let p=W.filter(w=>w.y===SET.y&&sel.includes(w.u));if(sel.length===1&&SET.les.length){const f=p.filter(w=>SET.les.includes(w.l));if(f.length)p=f}return p}
+function poolSents(){const {sel}=setSel(SET.y);let p=SENTS.filter(w=>w.y===SET.y&&sel.includes(w.u));if(sel.length===1&&SET.les.length){const f=p.filter(w=>SET.les.includes(w.l));if(f.length)p=f}return p}
+const isSent=()=>SET.type==='sent';
+function sentStats(y,u){const ws=SENTS.filter(w=>w.y===y&&w.u===u),now=Date.now();let learned=0,due=0,started=0;
+ ws.forEach(w=>{const s=stOf(w,'d');if(s){started++;if(s[1]<=now)due++;if(s[0]>=4)learned++}});return {n:ws.length,learned,due,fresh:ws.length-started}}
 function unitStats(y,u){
+ if(isSent())return sentStats(y,u);
  const ws=W.filter(w=>w.y===y&&w.u===u),ds=dirsOf(),now=Date.now();let learned=0,due=0,started=0;
  ws.forEach(w=>{let all=true,any=false;ds.forEach(d=>{const s=stOf(w,d);if(s){any=true;if(s[1]<=now)due++;if(s[0]<4)all=false}else all=false});if(all)learned++;if(any)started++});
  return {n:ws.length,learned,due,fresh:ws.length-started};
@@ -100,7 +111,7 @@ function learnWord(w,d,ok){
 /* ---------- Auswahl der Wörter für eine Runde ---------- */
 let recent=new Set();
 function pick(n,exclude){
- const ds=dirsOf(),now=Date.now(),pool=poolWords();let pairs=[];
+ const sent=isSent(),ds=sent?['d']:dirsOf(),now=Date.now(),pool=sent?shuf(poolSents()):poolWords();let pairs=[];
  const dpick=()=>ds.length===1?ds[0]:rnd(ds);
  if(SET.mode==='all'){
   pairs=shuf(pool).map(w=>({w,d:dpick()}));
@@ -128,6 +139,7 @@ function distract(w,d,k){
 }
 function makeTask(p){
  const {w,d}=p;let k=SET.type;
+ if(k==='sent')return {k:'sent',w,d:'d'};
  const spk=canSpeak();
  if(k==='mix'){const o=d==='d'?['choice','type','cloze','choice','type']:['choice','choice','type'];if(d==='d'&&spk)o.push('listen');k=rnd(o)}
  if(k==='cloze'&&!cloze(w))k=d==='d'?'type':'choice';
@@ -174,26 +186,27 @@ function myCard(pool,due,fresh){
  return `<div class="card"><h2>1 · ${L('Meine Liste','My list')} (${pool.length})</h2>${pool.length?rows+`<p class="muted" style="margin:10px 0 0">${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p>`:`<p class="muted">${L('Noch leer. Öffne das Wörterbuch (📖) und tippe bei einem Wort auf ☆.','Still empty. Open the dictionary (📖) and tap ☆ next to a word.')}</p>`}</div>`;
 }
 function drawHome(msg){
- const {all,sel}=setSel(SET.y),pool=poolWords();
- const ds=dirsOf(),now=Date.now();
+ if(SET.y===0&&SET.type==='sent'){SET.type='mix';saveS()}
+ const sent=isSent(),{all,sel}=setSel(SET.y),pool=sent?poolSents():poolWords();
+ const ds=sent?['d']:dirsOf(),now=Date.now(),unitW=sent?L('Sätze','sentences'):L('Wörter','words');
  let due=0,fresh=0;pool.forEach(w=>{let any=false;ds.forEach(d=>{const s=stOf(w,d);if(s){any=true;if(s[1]<=now)due++}});if(!any)fresh++});
  const tiles=all.map(u=>{const s=unitStats(SET.y,u),on=sel.includes(u),pr=s.n?s.learned/s.n:0;
-  return `<button class="vtile ${on?'on':''}" data-vu="${u}">${ring(pr,Math.round(pr*100)+'%')}<span class="vtn"><b>${unitName(u)}</b><small>${s.n} ${L('Wörter','words')}${s.due?' · '+s.due+' '+L('fällig','due'):''}</small></span></button>`}).join('');
- const lessons=sel.length===1?[...new Set(W.filter(w=>w.y===SET.y&&w.u===sel[0]).map(w=>w.l))]:[];
+  return `<button class="vtile ${on?'on':''}" data-vu="${u}">${ring(pr,Math.round(pr*100)+'%')}<span class="vtn"><b>${unitName(u)}</b><small>${s.n} ${unitW}${s.due?' · '+s.due+' '+L('fällig','due'):''}</small></span></button>`}).join('');
+ const lessons=sel.length===1?[...new Set((sent?SENTS:W).filter(w=>w.y===SET.y&&w.u===sel[0]).map(w=>w.l))]:[];
  const lchips=lessons.length>1?`<div class="card"><h2>${L('Lesson','Lesson')} <small class="muted">(${L('optional','optional')})</small></h2><div class="chips">${lessons.map(l=>`<button class="chip ${SET.les.includes(l)?'on':''}" data-vl="${l}">${lessonName(l)}</button>`).join('')}</div></div>`:'';
- const types=[['mix',L('🎲 Mix','🎲 Mix')],['cards',L('🃏 Karteikarten','🃏 Flashcards')],['choice',L('✔️ Auswählen','✔️ Choose')],['type',L('⌨️ Eintippen','⌨️ Type it')],['cloze',L('📝 Lückensatz','📝 Gap sentence')],['listen',L('🔊 Hören','🔊 Listen')],['match',L('🧩 Paare','🧩 Pairs')]].filter(t=>t[0]!=='listen'||canSpeak());
+ const types=[['mix',L('🎲 Mix','🎲 Mix')],['cards',L('🃏 Karteikarten','🃏 Flashcards')],['choice',L('✔️ Auswählen','✔️ Choose')],['type',L('⌨️ Eintippen','⌨️ Type it')],['cloze',L('📝 Lückensatz','📝 Gap sentence')],['listen',L('🔊 Hören','🔊 Listen')],['match',L('🧩 Paare','🧩 Pairs')],...(SET.y===0?[]:[['sent',L('💬 Sätze übersetzen','💬 Translate sentences')]])].filter(t=>t[0]!=='listen'||canSpeak());
  const c=SET.count,custom=[5,10,20,0].includes(c)?'':c;
  body().innerHTML=`
  ${msg?`<div class="vmsg">${msg}</div>`:''}
  <div class="vrow"><div class="seg viewseg">${[2,3,0].map(y=>`<button data-vy="${y}" class="${SET.y===y?'on':''}">${yearName(y)}</button>`).join('')}</div></div>
  ${SET.y===0?myCard(pool,due,fresh):`<div class="card"><h2>1 · ${L('Units wählen','Choose units')} ${sel.length===all.length?'':`<button class="vlink" data-vall="1">${L('alle auswählen','select all')}</button>`}</h2><div class="vtiles">${tiles}</div>
-  <p class="muted" style="margin:10px 0 0">${pool.length} ${L('Wörter','words')} · ${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p></div>`}
+  <p class="muted" style="margin:10px 0 0">${pool.length} ${unitW} · ${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p>${sent&&!pool.length?`<p class="vmsg" style="margin:8px 0 0">${L('Für diese Auswahl gibt es noch keine Sätze. Wähle eine andere Unit.','No sentences for this selection yet. Choose another unit.')}</p>`:''}${sent?`<p class="muted" style="margin:6px 0 0;font-size:.85em">${L('Mehrere Lessons: Die Sätze werden gemischt.','Several lessons: the sentences are mixed.')}</p>`:''}</div>`}
  ${SET.y===0?'':lchips}
- <div class="card"><h2>2 · ${L('Richtung','Direction')}</h2><div class="seg">${[['e','EN → DE'],['d','DE → EN'],['both',L('beides','both')]].map(([k,l])=>`<button data-vd="${k}" class="${SET.dir===k?'on':''}">${l}</button>`).join('')}</div></div>
- <div class="card"><h2>3 · ${L('Übungsart','Exercise type')}</h2><div class="chips">${types.map(([k,l])=>`<button class="chip ${SET.type===k?'on':''}" data-vt="${k}">${l}</button>`).join('')}</div></div>
- <div class="card"><h2>4 · ${L('Welche Wörter?','Which words?')}</h2><div class="seg">${[['smart',L('Lernen + Wiederholen','Learn + review')],['hard',L('Schwierige','Difficult')],['all',L('Alle (Zufall)','All (random)')]].map(([k,l])=>`<button data-vm="${k}" class="${SET.mode===k?'on':''}">${l}</button>`).join('')}</div>
-  <p class="muted" style="margin:8px 0 0;font-size:.85em">${SET.mode==='smart'?L('Zuerst fällige Wörter, dann neue.','Due words first, then new ones.'):SET.mode==='hard'?L('Nur Wörter, die noch nicht sitzen (Fach 1–2).','Only words you still struggle with (box 1–2).'):L('Alle Wörter der Auswahl, gemischt.','All selected words, shuffled.')}</p></div>
- <div class="card"><h2>5 · ${L('Anzahl','Number')}</h2><div class="seg">${[5,10,20,0].map(n=>`<button data-vn="${n}" class="${SET.count===n?'on':''}">${n||'∞'}</button>`).join('')}</div>
+ ${sent?'':`<div class="card"><h2>2 · ${L('Richtung','Direction')}</h2><div class="seg">${[['e','EN → DE'],['d','DE → EN'],['both',L('beides','both')]].map(([k,l])=>`<button data-vd="${k}" class="${SET.dir===k?'on':''}">${l}</button>`).join('')}</div></div>`}
+ <div class="card"><h2>${sent?2:3} · ${L('Übungsart','Exercise type')}</h2><div class="chips">${types.map(([k,l])=>`<button class="chip ${SET.type===k?'on':''}" data-vt="${k}">${l}</button>`).join('')}</div></div>
+ <div class="card"><h2>${sent?3:4} · ${sent?L('Welche Sätze?','Which sentences?'):L('Welche Wörter?','Which words?')}</h2><div class="seg">${[['smart',L('Lernen + Wiederholen','Learn + review')],['hard',L('Schwierige','Difficult')],['all',L('Alle (Zufall)','All (random)')]].map(([k,l])=>`<button data-vm="${k}" class="${SET.mode===k?'on':''}">${l}</button>`).join('')}</div>
+  <p class="muted" style="margin:8px 0 0;font-size:.85em">${sent&&SET.mode==='hard'?L('Nur Sätze, die noch nicht sitzen.','Only sentences you still struggle with.'):SET.mode==='smart'?(sent?L('Zuerst fällige Sätze, dann neue.','Due sentences first, then new ones.'):L('Zuerst fällige Wörter, dann neue.','Due words first, then new ones.')):SET.mode==='hard'?L('Nur Wörter, die noch nicht sitzen (Fach 1–2).','Only words you still struggle with (box 1–2).'):L('Alle Wörter der Auswahl, gemischt.','All selected words, shuffled.')}</p></div>
+ <div class="card"><h2>${sent?4:5} · ${L('Anzahl','Number')}</h2><div class="seg">${[5,10,20,0].map(n=>`<button data-vn="${n}" class="${SET.count===n?'on':''}">${n||'∞'}</button>`).join('')}</div>
   <label class="cntown">${L('oder eigene Zahl:','or your own number:')} <input id="vcnt" type="number" inputmode="numeric" min="1" max="200" placeholder="z. B. 12" value="${custom}"></label></div>
  <button class="primary" id="vgo">${L("Los geht's →","Let's go →")}</button>
  <button class="vsecond" id="vprintBtn">🖨 ${L('Drucken: Wortliste, Test, Karteikarten','Print: word list, test, flashcards')}</button>
@@ -226,6 +239,8 @@ function drawTask(){
   h+=`<div class="card vq"><p class="muted vq0">${L('Welches Wort fehlt?','Which word is missing?')}</p><div class="vsent">${esc(c.pre)}<span class="vgap">${'_'.repeat(Math.max(4,c.ans.length))}</span>${esc(c.post)}</div><p class="muted">${esc(shownDe(t.w))} ${posTag(t.w)} · ${L('Anfangsbuchstabe','starts with')}: <b>${esc(c.ans[0])}</b></p><input id="vin" class="vin" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="…"><div id="vact"><button class="primary" id="vchk">${L('Prüfen','Check')}</button></div><div id="vfb"></div></div>`;
  }else if(t.k==='listen'){
   h+=`<div class="card vq"><p class="muted vq0">${L('Hör zu und schreibe das Wort.','Listen and write the word.')}</p><div class="vword"><button class="vspk big" data-vspk="${esc(t.w.en)}" aria-label="Vorlesen">🔊</button></div><p class="muted">${esc(shownDe(t.w))}</p><input id="vin" class="vin" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="…"><div id="vact"><button class="primary" id="vchk">${L('Prüfen','Check')}</button></div><div id="vfb"></div></div>`;
+ }else if(t.k==='sent'){
+  h+=`<div class="card vq"><p class="muted vq0">${L('Übersetze ins Englische.','Translate into English.')}${t.retry?' · '+L('nochmal','again'):''}</p><div class="vsent">${esc(t.w.de)}</div><textarea id="vin" class="vin vta" rows="2" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" placeholder="…"></textarea><div id="vact"><button class="primary" id="vchk">${L('Prüfen','Check')}</button></div><div id="vfb"></div></div>`;
  }else if(t.k==='match'){
   h+=`<div class="card vq"><p class="muted vq0">${L('Tippe zuerst ein englisches Wort, dann die passende Übersetzung.','Tap an English word, then its translation.')}</p><div class="vmatch"><div>${t.left.map(w=>`<button class="vm" data-vml="${esc(w.id)}">${esc(w.en)}</button>`).join('')}</div><div>${t.right.map(w=>`<button class="vm" data-vmr="${esc(w.id)}">${esc(shownDe(w))}</button>`).join('')}</div></div><div id="vfb"></div></div>`;
  }
@@ -254,8 +269,56 @@ function answerChoice(i){
  document.querySelectorAll('.vopt').forEach((b,j)=>{b.disabled=true;if(t.opts[j]===t.ans)b.classList.add('ok');else if(j===i)b.classList.add('bad')});
  record(t,ok);document.getElementById('vfb').innerHTML=feedback(t,ok?'ok':'bad');
 }
-function answerType(){
+/* ---------- Sätze übersetzen ---------- */
+const CONTR=[[/\bcan't\b/g,'can not'],[/\bcannot\b/g,'can not'],[/\bwon't\b/g,'will not'],[/\bshan't\b/g,'shall not'],[/n't\b/g,' not'],[/\bi'm\b/g,'i am'],[/\b(he|she|it|that|there|what|here|who|where)'s\b/g,'$1 is'],[/\b(you|we|they)'re\b/g,'$1 are'],[/'ve\b/g,' have'],[/'ll\b/g,' will']];
+function normSent(x){let t=normEn(x);CONTR.forEach(([a,b])=>{t=t.replace(a,b)});return t.replace(/\s+/g,' ').trim()}
+function acceptSent(w){return [...new Set([w.en].concat(w.alts||[]).map(normSent))]}
+function judgeSent(input,w){
+ const x=normSent(input);if(!x)return {res:'empty'};
+ const acc=acceptSent(w);if(acc.includes(x))return {res:'ok'};
+ let best=acc[0],bd=1e9;acc.forEach(a=>{const d=lev(x,a);if(d<bd){bd=d;best=a}});
+ if(bd<=Math.max(1,Math.floor(best.length/25)))return {res:'near',best};
+ return {res:'bad',best};
+}
+function markMine(val,best){
+ const bw=new Set(normSent(best).split(' '));
+ return String(val).trim().split(/\s+/).map(tok=>{const n=normSent(tok);return !n||bw.has(n)||n.split(' ').every(z=>bw.has(z))?esc(tok):`<span class="vw-bad">${esc(tok)}</span>`}).join(' ');
+}
+function answerSent(){
  if(S.answered)return;const t=S.q[S.i],inp=document.getElementById('vin');if(!inp)return;
+ const j=judgeSent(inp.value,t.w);if(j.res==='empty'){inp.focus();return}
+ inp.disabled=true;t.mine=inp.value;
+ const ok=j.res==='ok'||j.res==='near';
+ record(t,ok);
+ document.getElementById('vact').innerHTML='';
+ const head=j.res==='ok'?L('Richtig!','Correct!'):j.res==='near'?L('Fast richtig, achte auf die Schreibweise:','Almost, watch the spelling:'):L('Nicht ganz.','Not quite.');
+ const model=t.w.en,others=(t.w.alts||[]).filter(a=>normSent(a)!==normSent(model)).slice(0,2);
+ document.getElementById('vfb').innerHTML=`<div class="vfb ${j.res==='ok'?'ok':j.res==='near'?'near':'bad'}"><b>${head}</b>`+
+  (j.res==='bad'?`<div class="vmine">${L('Deine Antwort','Your answer')}: ${markMine(inp.value,j.best)}</div>`:'')+
+  (j.res==='ok'?'':`<div class="vans">${esc(model)}</div>`)+
+  (others.length&&j.res!=='ok'?`<div class="muted" style="font-size:.85em">${L('Auch möglich','Also possible')}: ${others.map(esc).join(' · ')}</div>`:'')+
+  `<div class="vex"><span class="muted">${esc(t.w.de)}</span> ${spkBtn(model)}</div></div>`+
+  (j.res==='bad'?`<div id="vmartybox"></div><button class="vsecond" id="vmarty">💡 ${L('Ist mein Satz auch richtig? (Marty)','Is my sentence also correct? (Marty)')}</button>`:'')+
+  `<button class="primary" id="vnext">${L('Weiter →','Next →')}</button>`;
+ inp.classList.add(ok?'ok':'bad');
+}
+let martyBusy=false;
+async function askMartySent(){
+ const t=S.q[S.i],box=document.getElementById('vmartybox'),btn=document.getElementById('vmarty');
+ if(!t||!box||martyBusy||typeof KI_URL==='undefined')return;
+ martyBusy=true;if(btn)btn.disabled=true;
+ box.innerHTML='<div class="ki wait">'+L('Marty überlegt …','Marty is thinking …')+'</div>';
+ try{
+  const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:'check',device:typeof kiDevice==='function'?kiDevice():'x',topic:'Vocabulary: translate the sentence',task:'Übersetze ins Englische: '+t.w.de,right:t.w.en,mine:String(t.mine||'')})});
+  const j=await r.json().catch(()=>({}));
+  if(!r.ok||!j.answer){box.innerHTML='<div class="ki err">'+esc(j.error||L('Marty ist gerade nicht erreichbar.','Marty is not available right now.'))+'</div>';if(btn)btn.disabled=(r.status===429)}
+  else box.innerHTML='<div class="ki"><b>💡 Marty</b><div class="kit">'+esc(String(j.answer).replace(/\*\*|__|^#+\s*/gm,''))+'</div><div class="kin">'+L('Marty ist eine KI und kann sich irren. Gib nie Namen oder persönliche Daten ein.','Marty is an AI and can be wrong. Never enter names or personal data.')+'</div></div>';
+ }catch(e){box.innerHTML='<div class="ki err">'+L('Keine Verbindung. Versuche es später.','No connection. Try again later.')+'</div>';if(btn)btn.disabled=false}
+ martyBusy=false;
+}
+function answerType(){
+ if(S.answered)return;const t=S.q[S.i];if(t&&t.k==='sent')return answerSent();
+ const inp=document.getElementById('vin');if(!inp)return;
  let res;
  if(t.k==='cloze'){const c=cloze(t.w);res=judge(inp.value,[normEn(c.ans)],normEn,true,'')}
  else if(t.d==='e')res=judge(inp.value,acceptDe(t.w),normDe,false,'');
@@ -406,8 +469,9 @@ function onClick(e){
  if(dset.pd){PR.dir=dset.pd;PR.seed++;return drawPrintSetup()}
  if(dset.pn){PR.n=+dset.pn;PR.seed++;return drawPrintSetup()}
  if(b.id==='vprGo'){PR.seed++;return showPrint()}
- if(b.id==='vreset'){if(confirm(L('Den Lernfortschritt für die gewählten Units zurücksetzen?','Reset progress for the selected units?'))){const ids=new Set(poolWords().map(w=>w.id));Object.keys(P).forEach(k=>{if(ids.has(k.split('|')[0]))delete P[k]});saveP();drawHome()}return}
+ if(b.id==='vreset'){if(confirm(L('Den Lernfortschritt für die gewählten Units zurücksetzen?','Reset progress for the selected units?'))){const ids=new Set((isSent()?poolSents():poolWords()).map(w=>w.id));Object.keys(P).forEach(k=>{if(ids.has(k.split('|')[0]))delete P[k]});saveP();drawHome()}return}
  if(dset.vo!==undefined)return answerChoice(+dset.vo);
+ if(b.id==='vmarty')return askMartySent();
  if(b.id==='vchk')return answerType();
  if(b.id==='vflip')return flip();
  if(b.id==='vcyes')return answerCard(true);
