@@ -89,12 +89,12 @@ const hi=w=>{const c=cloze(w);return c?esc(c.pre)+'<b>'+esc(c.ans)+'</b>'+esc(c.
 /* ---------- Fortschritt ---------- */
 const dirsOf=()=>SET.dir==='both'?['e','d']:[SET.dir];
 const stOf=(w,d)=>P[w.id+'|'+d];
-function setSel(y){if(y===0)return {all:[0],sel:[0]};const all=[...new Set(W.filter(w=>w.y===y).map(w=>w.u))].sort((a,b)=>a-b);let s=SET.sel[y];if(!Array.isArray(s)||!s.length)s=all.slice();SET.sel[y]=s.filter(u=>all.includes(u));if(!SET.sel[y].length)SET.sel[y]=all;return {all,sel:SET.sel[y]}}
+function setSel(y){if(y===0)return {all:[0],sel:[0]};const all=[...new Set(W.filter(w=>w.y===y).map(w=>w.u))].sort((a,b)=>a-b);let s=SET.sel[y];if(!Array.isArray(s))s=all.slice();SET.sel[y]=s.filter(u=>all.includes(u));return {all,sel:SET.sel[y]}}
 function poolWords(){if(SET.y===0)return window.MYLIST?MYLIST.all():[];const {sel}=setSel(SET.y);let p=W.filter(w=>w.y===SET.y&&sel.includes(w.u));if(sel.length===1&&SET.les.length){const f=p.filter(w=>SET.les.includes(w.l));if(f.length)p=f}return p}
 function poolSents(){const {sel}=setSel(SET.y);let p=SENTS.filter(w=>w.y===SET.y&&sel.includes(w.u));if(sel.length===1&&SET.les.length){const f=p.filter(w=>SET.les.includes(w.l));if(f.length)p=f}return p}
 const isSent=()=>SET.type==='sent';
-function sentStats(y,u){const ws=SENTS.filter(w=>w.y===y&&w.u===u),now=Date.now();let learned=0,due=0,started=0;
- ws.forEach(w=>{const s=stOf(w,'d');if(s){started++;if(s[1]<=now)due++;if(s[0]>=4)learned++}});return {n:ws.length,learned,due,fresh:ws.length-started}}
+function sentStats(y,u){const ws=SENTS.filter(w=>w.y===y&&w.u===u),now=Date.now(),ds=dirsOf();let learned=0,due=0,started=0;
+ ws.forEach(w=>{const ss=ds.map(d=>stOf(w,d));if(ss.some(Boolean)){started++;if(ss.some(s=>s&&s[1]<=now))due++}if(ss.every(s=>s&&s[0]>=4))learned++});return {n:ws.length,learned,due,fresh:ws.length-started}}
 function unitStats(y,u){
  if(isSent())return sentStats(y,u);
  const ws=W.filter(w=>w.y===y&&w.u===u),ds=dirsOf(),now=Date.now();let learned=0,due=0,started=0;
@@ -111,7 +111,7 @@ function learnWord(w,d,ok){
 /* ---------- Auswahl der Wörter für eine Runde ---------- */
 let recent=new Set();
 function pick(n,exclude){
- const sent=isSent(),ds=sent?['d']:dirsOf(),now=Date.now(),pool=sent?shuf(poolSents()):poolWords();let pairs=[];
+ const sent=isSent(),ds=dirsOf(),now=Date.now(),pool=sent?shuf(poolSents()):poolWords();let pairs=[];
  const dpick=()=>ds.length===1?ds[0]:rnd(ds);
  if(SET.mode==='all'){
   pairs=shuf(pool).map(w=>({w,d:dpick()}));
@@ -139,7 +139,7 @@ function distract(w,d,k){
 }
 function makeTask(p){
  const {w,d}=p;let k=SET.type;
- if(k==='sent')return {k:'sent',w,d:'d'};
+ if(k==='sent')return {k:'sent',w,d};
  const spk=canSpeak();
  if(k==='mix'){const o=d==='d'?['choice','type','cloze','choice','type']:['choice','choice','type'];if(d==='d'&&spk)o.push('listen');k=rnd(o)}
  if(k==='cloze'&&!cloze(w))k=d==='d'?'type':'choice';
@@ -188,7 +188,7 @@ function myCard(pool,due,fresh){
 function drawHome(msg){
  if(SET.y===0&&SET.type==='sent'){SET.type='mix';saveS()}
  const sent=isSent(),{all,sel}=setSel(SET.y),pool=sent?poolSents():poolWords();
- const ds=sent?['d']:dirsOf(),now=Date.now(),unitW=sent?L('Sätze','sentences'):L('Wörter','words');
+ const ds=dirsOf(),now=Date.now(),unitW=sent?L('Sätze','sentences'):L('Wörter','words');
  let due=0,fresh=0;pool.forEach(w=>{let any=false;ds.forEach(d=>{const s=stOf(w,d);if(s){any=true;if(s[1]<=now)due++}});if(!any)fresh++});
  const tiles=all.map(u=>{const s=unitStats(SET.y,u),on=sel.includes(u),pr=s.n?s.learned/s.n:0;
   return `<button class="vtile ${on?'on':''}" data-vu="${u}">${ring(pr,Math.round(pr*100)+'%')}<span class="vtn"><b>${unitName(u)}</b><small>${s.n} ${unitW}${s.due?' · '+s.due+' '+L('fällig','due'):''}</small></span></button>`}).join('');
@@ -199,14 +199,14 @@ function drawHome(msg){
  body().innerHTML=`
  ${msg?`<div class="vmsg">${msg}</div>`:''}
  <div class="vrow"><div class="seg viewseg">${[2,3,0].map(y=>`<button data-vy="${y}" class="${SET.y===y?'on':''}">${yearName(y)}</button>`).join('')}</div></div>
- ${SET.y===0?myCard(pool,due,fresh):`<div class="card"><h2>1 · ${L('Units wählen','Choose units')} ${sel.length===all.length?'':`<button class="vlink" data-vall="1">${L('alle auswählen','select all')}</button>`}</h2><div class="vtiles">${tiles}</div>
+ ${SET.y===0?myCard(pool,due,fresh):`<div class="card"><h2>1 · ${L('Units wählen','Choose units')} <span class="vallnone"><button class="vlink" data-vall="all"${sel.length===all.length?' disabled':''}>${L('Alle','All')}</button><button class="vlink" data-vall="none"${sel.length?'':' disabled'}>${L('Keine','None')}</button></span></h2><div class="vtiles">${tiles}</div>
   <p class="muted" style="margin:10px 0 0">${pool.length} ${unitW} · ${due} ${L('fällig','due')} · ${fresh} ${L('neu','new')}</p>${sent&&!pool.length?`<p class="vmsg" style="margin:8px 0 0">${L('Für diese Auswahl gibt es noch keine Sätze. Wähle eine andere Unit.','No sentences for this selection yet. Choose another unit.')}</p>`:''}${sent?`<p class="muted" style="margin:6px 0 0;font-size:.85em">${L('Mehrere Lessons: Die Sätze werden gemischt.','Several lessons: the sentences are mixed.')}</p>`:''}</div>`}
  ${SET.y===0?'':lchips}
- ${sent?'':`<div class="card"><h2>2 · ${L('Richtung','Direction')}</h2><div class="seg">${[['e','EN → DE'],['d','DE → EN'],['both',L('beides','both')]].map(([k,l])=>`<button data-vd="${k}" class="${SET.dir===k?'on':''}">${l}</button>`).join('')}</div></div>`}
- <div class="card"><h2>${sent?2:3} · ${L('Übungsart','Exercise type')}</h2><div class="chips">${types.map(([k,l])=>`<button class="chip ${SET.type===k?'on':''}" data-vt="${k}">${l}</button>`).join('')}</div></div>
- <div class="card"><h2>${sent?3:4} · ${sent?L('Welche Sätze?','Which sentences?'):L('Welche Wörter?','Which words?')}</h2><div class="seg">${[['smart',L('Lernen + Wiederholen','Learn + review')],['hard',L('Schwierige','Difficult')],['all',L('Alle (Zufall)','All (random)')]].map(([k,l])=>`<button data-vm="${k}" class="${SET.mode===k?'on':''}">${l}</button>`).join('')}</div>
+ ${`<div class="card"><h2>2 · ${L('Richtung','Direction')}</h2><div class="seg">${[['e','EN → DE'],['d','DE → EN'],['both',L('beides','both')]].map(([k,l])=>`<button data-vd="${k}" class="${SET.dir===k?'on':''}">${l}</button>`).join('')}</div>${sent&&SET.dir!=='d'?`<p class="muted" style="margin:8px 0 0;font-size:.85em">${L('EN → DE: Deutsche Sätze lassen sich oft verschieden formulieren. Weicht deine Antwort ab, kannst du Marty fragen.','EN → DE: German sentences can often be worded differently. If yours differs, you can ask Marty.')}</p>`:''}</div>`}
+ <div class="card"><h2>3 · ${L('Übungsart','Exercise type')}</h2><div class="chips">${types.map(([k,l])=>`<button class="chip ${SET.type===k?'on':''}" data-vt="${k}">${l}</button>`).join('')}</div></div>
+ <div class="card"><h2>4 · ${sent?L('Welche Sätze?','Which sentences?'):L('Welche Wörter?','Which words?')}</h2><div class="seg">${[['smart',L('Lernen + Wiederholen','Learn + review')],['hard',L('Schwierige','Difficult')],['all',L('Alle (Zufall)','All (random)')]].map(([k,l])=>`<button data-vm="${k}" class="${SET.mode===k?'on':''}">${l}</button>`).join('')}</div>
   <p class="muted" style="margin:8px 0 0;font-size:.85em">${sent&&SET.mode==='hard'?L('Nur Sätze, die noch nicht sitzen.','Only sentences you still struggle with.'):SET.mode==='smart'?(sent?L('Zuerst fällige Sätze, dann neue.','Due sentences first, then new ones.'):L('Zuerst fällige Wörter, dann neue.','Due words first, then new ones.')):SET.mode==='hard'?L('Nur Wörter, die noch nicht sitzen (Fach 1–2).','Only words you still struggle with (box 1–2).'):L('Alle Wörter der Auswahl, gemischt.','All selected words, shuffled.')}</p></div>
- <div class="card"><h2>${sent?4:5} · ${L('Anzahl','Number')}</h2><div class="seg">${[5,10,20,0].map(n=>`<button data-vn="${n}" class="${SET.count===n?'on':''}">${n||'∞'}</button>`).join('')}</div>
+ <div class="card"><h2>5 · ${L('Anzahl','Number')}</h2><div class="seg">${[5,10,20,0].map(n=>`<button data-vn="${n}" class="${SET.count===n?'on':''}">${n||'∞'}</button>`).join('')}</div>
   <label class="cntown">${L('oder eigene Zahl:','or your own number:')} <input id="vcnt" type="number" inputmode="numeric" min="1" max="200" placeholder="z. B. 12" value="${custom}"></label></div>
  <button class="primary" id="vgo">${L("Los geht's →","Let's go →")}</button>
  <button class="vsecond" id="vprintBtn">🖨 ${L('Drucken: Wortliste, Test, Karteikarten','Print: word list, test, flashcards')}</button>
@@ -240,7 +240,7 @@ function drawTask(){
  }else if(t.k==='listen'){
   h+=`<div class="card vq"><p class="muted vq0">${L('Hör zu und schreibe das Wort.','Listen and write the word.')}</p><div class="vword"><button class="vspk big" data-vspk="${esc(t.w.en)}" aria-label="Vorlesen">🔊</button></div><p class="muted">${esc(shownDe(t.w))}</p><input id="vin" class="vin" type="text" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="…"><div id="vact"><button class="primary" id="vchk">${L('Prüfen','Check')}</button></div><div id="vfb"></div></div>`;
  }else if(t.k==='sent'){
-  h+=`<div class="card vq"><p class="muted vq0">${L('Übersetze ins Englische.','Translate into English.')}${t.retry?' · '+L('nochmal','again'):''}</p><div class="vsent">${esc(t.w.de)}</div><textarea id="vin" class="vin vta" rows="2" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" placeholder="…"></textarea><div id="vact"><button class="primary" id="vchk">${L('Prüfen','Check')}</button></div><div id="vfb"></div></div>`;
+  h+=`<div class="card vq"><p class="muted vq0">${t.d==='e'?L('Übersetze ins Deutsche.','Translate into German.'):L('Übersetze ins Englische.','Translate into English.')}${t.retry?' · '+L('nochmal','again'):''}</p><div class="vsent">${esc(t.d==='e'?t.w.en:t.w.de)}</div>${t.d==='e'?spkBtn(t.w.en):''}<textarea id="vin" class="vin vta" rows="2" autocomplete="off" autocapitalize="sentences" autocorrect="off" spellcheck="false" placeholder="…"></textarea><div id="vact"><button class="primary" id="vchk">${L('Prüfen','Check')}</button></div><div id="vfb"></div></div>`;
  }else if(t.k==='match'){
   h+=`<div class="card vq"><p class="muted vq0">${L('Tippe zuerst ein englisches Wort, dann die passende Übersetzung.','Tap an English word, then its translation.')}</p><div class="vmatch"><div>${t.left.map(w=>`<button class="vm" data-vml="${esc(w.id)}">${esc(w.en)}</button>`).join('')}</div><div>${t.right.map(w=>`<button class="vm" data-vmr="${esc(w.id)}">${esc(shownDe(w))}</button>`).join('')}</div></div><div id="vfb"></div></div>`;
  }
@@ -272,32 +272,33 @@ function answerChoice(i){
 /* ---------- Sätze übersetzen ---------- */
 const CONTR=[[/\bcan't\b/g,'can not'],[/\bcannot\b/g,'can not'],[/\bwon't\b/g,'will not'],[/\bshan't\b/g,'shall not'],[/n't\b/g,' not'],[/\bi'm\b/g,'i am'],[/\b(he|she|it|that|there|what|here|who|where)'s\b/g,'$1 is'],[/\b(you|we|they)'re\b/g,'$1 are'],[/'ve\b/g,' have'],[/'ll\b/g,' will']];
 function normSent(x){let t=normEn(x);CONTR.forEach(([a,b])=>{t=t.replace(a,b)});return t.replace(/\s+/g,' ').trim()}
-function acceptSent(w){return [...new Set([w.en].concat(w.alts||[]).map(normSent))]}
-function judgeSent(input,w){
- const x=normSent(input);if(!x)return {res:'empty'};
- const acc=acceptSent(w);if(acc.includes(x))return {res:'ok'};
+function normDeS(x){return normDe(normEn(String(x)).replace(/[«»„“”‚]/g,' '))}
+function acceptSent(w,d){return d==='e'?[normDeS(w.de)]:[...new Set([w.en].concat(w.alts||[]).map(normSent))]}
+function judgeSent(input,w,d){
+ const x=d==='e'?normDeS(input):normSent(input);if(!x)return {res:'empty'};
+ const acc=acceptSent(w,d);if(acc.includes(x))return {res:'ok'};
  let best=acc[0],bd=1e9;acc.forEach(a=>{const d=lev(x,a);if(d<bd){bd=d;best=a}});
  if(bd<=Math.max(1,Math.floor(best.length/25)))return {res:'near',best};
  return {res:'bad',best};
 }
-function markMine(val,best){
- const bw=new Set(normSent(best).split(' '));
- return String(val).trim().split(/\s+/).map(tok=>{const n=normSent(tok);return !n||bw.has(n)||n.split(' ').every(z=>bw.has(z))?esc(tok):`<span class="vw-bad">${esc(tok)}</span>`}).join(' ');
+function markMine(val,best,d){
+ const nf=d==='e'?normDeS:normSent,bw=new Set(nf(best).split(' '));
+ return String(val).trim().split(/\s+/).map(tok=>{const n=nf(tok);return !n||bw.has(n)||n.split(' ').every(z=>bw.has(z))?esc(tok):`<span class="vw-bad">${esc(tok)}</span>`}).join(' ');
 }
 function answerSent(){
  if(S.answered)return;const t=S.q[S.i],inp=document.getElementById('vin');if(!inp)return;
- const j=judgeSent(inp.value,t.w);if(j.res==='empty'){inp.focus();return}
+ const j=judgeSent(inp.value,t.w,t.d);if(j.res==='empty'){inp.focus();return}
  inp.disabled=true;t.mine=inp.value;
  const ok=j.res==='ok'||j.res==='near';
  record(t,ok);
  document.getElementById('vact').innerHTML='';
  const head=j.res==='ok'?L('Richtig!','Correct!'):j.res==='near'?L('Fast richtig, achte auf die Schreibweise:','Almost, watch the spelling:'):L('Nicht ganz.','Not quite.');
- const model=t.w.en,others=(t.w.alts||[]).filter(a=>normSent(a)!==normSent(model)).slice(0,2);
+ const de=t.d==='e',model=de?t.w.de:t.w.en,others=de?[]:(t.w.alts||[]).filter(a=>normSent(a)!==normSent(model)).slice(0,2);
  document.getElementById('vfb').innerHTML=`<div class="vfb ${j.res==='ok'?'ok':j.res==='near'?'near':'bad'}"><b>${head}</b>`+
-  (j.res==='bad'?`<div class="vmine">${L('Deine Antwort','Your answer')}: ${markMine(inp.value,j.best)}</div>`:'')+
+  (j.res==='bad'?`<div class="vmine">${L('Deine Antwort','Your answer')}: ${markMine(inp.value,j.best,t.d)}</div>`:'')+
   (j.res==='ok'?'':`<div class="vans">${esc(model)}</div>`)+
   (others.length&&j.res!=='ok'?`<div class="muted" style="font-size:.85em">${L('Auch möglich','Also possible')}: ${others.map(esc).join(' · ')}</div>`:'')+
-  `<div class="vex"><span class="muted">${esc(t.w.de)}</span> ${spkBtn(model)}</div></div>`+
+  `<div class="vex"><span class="muted">${esc(de?t.w.en:t.w.de)}</span> ${spkBtn(t.w.en)}</div></div>`+
   (j.res==='bad'?`<div id="vmartybox"></div><button class="vsecond" id="vmarty">💡 ${L('Ist mein Satz auch richtig? (Marty)','Is my sentence also correct? (Marty)')}</button>`:'')+
   `<button class="primary" id="vnext">${L('Weiter →','Next →')}</button>`;
  inp.classList.add(ok?'ok':'bad');
@@ -309,7 +310,7 @@ async function askMartySent(){
  martyBusy=true;if(btn)btn.disabled=true;
  box.innerHTML='<div class="ki wait">'+L('Marty überlegt …','Marty is thinking …')+'</div>';
  try{
-  const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:'check',device:typeof kiDevice==='function'?kiDevice():'x',topic:'Vocabulary: translate the sentence',task:'Übersetze ins Englische: '+t.w.de,right:t.w.en,mine:String(t.mine||'')})});
+  const r=await fetch(KI_URL,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({app:'englishlab',mode:'check',device:typeof kiDevice==='function'?kiDevice():'x',topic:'Vocabulary: translate the sentence',task:t.d==='e'?'Übersetze ins Deutsche: '+t.w.en:'Übersetze ins Englische: '+t.w.de,right:t.d==='e'?t.w.de:t.w.en,mine:String(t.mine||'')})});
   const j=await r.json().catch(()=>({}));
   if(!r.ok||!j.answer){box.innerHTML='<div class="ki err">'+esc(j.error||L('Marty ist gerade nicht erreichbar.','Marty is not available right now.'))+'</div>';if(btn)btn.disabled=(r.status===429)}
   else box.innerHTML='<div class="ki"><b>💡 Marty</b><div class="kit">'+esc(String(j.answer).replace(/\*\*|__|^#+\s*/gm,''))+'</div><div class="kin">'+L('Marty ist eine KI und kann sich irren. Gib nie Namen oder persönliche Daten ein.','Marty is an AI and can be wrong. Never enter names or personal data.')+'</div></div>';
@@ -455,8 +456,8 @@ function onClick(e){
  if(dset.vy!==undefined){SET.y=+dset.vy;saveS();return drawHome()}
  if(dset.vu!==undefined){const {all,sel}=setSel(SET.y),u=+dset.vu;let n;
   if(sel.length===all.length&&all.length>2)n=[u];else n=sel.includes(u)?sel.filter(x=>x!==u):sel.concat(u);
-  if(!n.length)n=all.slice();SET.sel[SET.y]=n.sort((a,b)=>a-b);SET.les=[];saveS();return drawHome()}
- if(dset.vall){const {all}=setSel(SET.y);SET.sel[SET.y]=all.slice();SET.les=[];saveS();return drawHome()}
+  SET.sel[SET.y]=n.sort((a,b)=>a-b);SET.les=[];saveS();return drawHome()}
+ if(dset.vall){const {all}=setSel(SET.y);SET.sel[SET.y]=dset.vall==='none'?[]:all.slice();SET.les=[];saveS();return drawHome()}
  if(dset.vl!==undefined){const l=dset.vl;SET.les=SET.les.includes(l)?SET.les.filter(x=>x!==l):SET.les.concat(l);saveS();return drawHome()}
  if(dset.vd){SET.dir=dset.vd;saveS();return drawHome()}
  if(dset.vt){SET.type=dset.vt;saveS();return drawHome()}

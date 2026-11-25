@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.19
+- Vokabeln · Units wählen: Zwei Knöpfe **«Alle»** und **«Keine»**. Die Auswahl darf jetzt leer sein (dann gibt es nichts zu üben, bis man eine Unit antippt).
+- Sätze übersetzen: Richtung wählbar, **EN → DE, DE → EN oder beides** (wie bei den Wörtern). Bei EN → DE wird der deutsche Satz geprüft (Gross-/Kleinschreibung, Satzzeichen und ß/ss egal, kleine Tippfehler als «fast richtig»). Weicht die Antwort ab, kann man Marty fragen. Fortschritt wird pro Richtung gespeichert.
+
 ## 2.18
 - Vokabeln · Sätze übersetzen: Jetzt für **alle Units** von Year 2 (New Inspiration 2, Units 1–8) und Year 3 (New Inspiration 3, Units 1–8). Insgesamt 655 Sätze (Year 3: 349, Year 2: 306), pro Lesson passend zum Wortschatz, dazu die in der jeweiligen Unit bereits bekannten Zeiten. Mehrere akzeptierte Alternativen pro Satz (britisch/amerikanisch, Kurzformen werden automatisch erkannt). Die Welcome-Unit (Year 3) hat keine Sätze.
 
