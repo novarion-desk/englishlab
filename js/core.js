@@ -25,7 +25,10 @@ function bankGens(pool,whyDefault,fillInstr){
   fill(){const b=rnd(pool());const o=b.s.indexOf('___');return mkFill(b.s.slice(0,o),b.s.slice(o+3),b.ok,b.h||'',wy(b))},
   choice(){const b=rnd(pool());const p=pickOpts(b.ok[0],[b.ok[0],...b.bad],2);return mkChoice(b.s,p.opts,p.idx,L('Welches Wort passt?','Which word fits?'),wy(b))},
   errors(){const b=rnd(pool());return mkWords(fillStem(b.s,b.ok[0]),b.bad.map(x=>fillStem(b.s,x)),L('Welcher Satz ist richtig?','Which sentence is correct?'),wy(b))},
-  order(){const b=rnd(pool());return mkOrder(fillStem(b.s,b.ok[0]),wy(b))}
+  order(){const b=rnd(pool());return mkOrder(fillStem(b.s,b.ok[0]),wy(b))},
+  fix(){const b=rnd(pool());const raw=fillStem(b.s,rnd(b.bad)),tg=(raw.match(/\[([^\]]*)\]\s*$/)||[])[1];
+   const cl=x=>x.replace(/\s*\[[^\]]*\]\s*$/,'').replace(/\s+([.,!?;:])/g,'$1').replace(/\s+/g,' ').trim();
+   return mkText(cl(raw),L('In diesem Satz steckt ein Fehler. Schreibe den ganzen Satz richtig.','There is a mistake in this sentence. Write the whole sentence correctly.')+(tg?' ['+tg+']':''),b.ok.map(o=>cl(fillStem(b.s,o))),wy(b))}
  };
 }
 const TENSE_URL='https://novarion-desk.github.io/tensetrainer/';
@@ -67,7 +70,7 @@ function bankTopic(o){
  };
  const whyOf=b=>{const w=o.why[b.sub||'_']||o.why._||'';return w.split('|')[LANG==='de'?0:1]};
  const base=bankGens(pool,whyOf);
- const gen={fill:base.fill,choice:base.choice,order:base.order,errors:base.errors};
+ const gen={fill:base.fill,choice:base.choice,order:base.order,errors:base.errors,fix:base.fix};
  if(o.err){
   const ep=()=>{const l=o.err.filter(e=>e[2]<=lvl());return l.length?l:o.err};
   gen.errors=()=>{
@@ -79,7 +82,8 @@ function bankTopic(o){
   {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:o.fillDesc?o.fillDesc():L('das passende Wort schreiben','write the right word')},
   {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('das passende Wort wählen','pick the right word')},
   {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
-  {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}].filter(t=>!(o.noOrder&&t.k==='order'));
+  {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')},
+  {k:'fix',icon:'🛠️',label:L('Fehler korrigieren','Correct the mistake'),desc:L('den falschen Satz richtig schreiben','rewrite the wrong sentence correctly')}].filter(t=>!(o.noOrder&&t.k==='order'));
  return {id:o.id,grp:o.grp,ord:o.ord,ic:o.ic,ready:1,
   name:()=>L(o.de,o.en),desc:()=>typeof o.desc==='function'?o.desc():o.desc,
   fillInstr:()=>o.fillInstr?o.fillInstr():L('Setze das passende Wort ein.','Fill in the correct word.'),

@@ -77,7 +77,7 @@ TOPICS.push((()=>{
   E("I don't have much work today.",["I don't have many works today.","I don't have much works today."],2)
  ];
  const errPool=()=>{const l=ERR.filter(e=>e.lv<=lvl());return l.length?l:ERR};
- const gen={fill:base.fill,choice:base.choice,order:base.order,
+ const gen={fill:base.fill,choice:base.choice,order:base.order,fix:base.fix,
   errors(){
    if(Math.random()<.55){const e=rnd(errPool());return mkWords(e.ok,e.bad,L('Welcher Satz ist richtig?','Which sentence is correct?'),CW)}
    return base.errors();
@@ -93,7 +93,8 @@ TOPICS.push((()=>{
    {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('das passende Mengenwort schreiben','write the right quantifier')},
    {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('das passende Wort wählen','pick the right word')},
    {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
-   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}],
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')},
+   {k:'fix',icon:'🛠️',label:L('Fehler korrigieren','Correct the mistake'),desc:L('den falschen Satz richtig schreiben','rewrite the wrong sentence correctly')}],
   typeDef:['fill','choice','errors'],gen,
   rules:()=>[
    [L('Zählbar und unzählbar','Countable and uncountable'),L('Zählbare Nomen haben einen Plural (apple – apples). Unzählbare haben keinen Plural und kein a / an: water, milk, bread, money, time, information, advice, homework, news, traffic.','Countable nouns have a plural (apple – apples). Uncountable nouns have no plural and no a / an: water, milk, bread, money, time, information, advice, homework, news, traffic.'),'an apple – some apples · some water (not: a water / waters)'],

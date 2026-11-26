@@ -110,7 +110,8 @@ TOPICS.push((()=>{
    {k:'fill',icon:'✏️',label:L('Einsetzen','Fill in'),desc:L('die Präposition schreiben','write the preposition')},
    {k:'choice',icon:'✔️',label:L('Auswählen','Choose'),desc:L('die richtige Präposition wählen','pick the right preposition')},
    {k:'errors',icon:'🔍',label:L('Fehler finden','Spot the mistake'),desc:L('den richtigen Satz erkennen','find the correct sentence')},
-   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')}],
+   {k:'order',icon:'🔀',label:L('Satz ordnen','Word order'),desc:L('Wörter in die richtige Reihenfolge','put the words in order')},
+   {k:'fix',icon:'🛠️',label:L('Fehler korrigieren','Correct the mistake'),desc:L('den falschen Satz richtig schreiben','rewrite the wrong sentence correctly')}],
   typeDef:['fill','choice','errors'],gen:base,
   rules:()=>[
    [L('Zeit: at / on / in','Time: at / on / in'),'',L('at + Uhrzeit, Zeitpunkt: at 8 o\'clock, at noon, at night, at the weekend (BrE)<br>on + Tag, Datum: on Monday, on 5 May, on Friday evening<br>in + Monat, Jahr, Jahreszeit, Tageszeit: in May, in 2024, in summer, in the morning','at + clock time: at 8 o\'clock, at noon, at night, at the weekend (BrE)<br>on + days, dates: on Monday, on 5 May, on Friday evening<br>in + months, years, seasons, parts of the day: in May, in 2024, in summer, in the morning')],

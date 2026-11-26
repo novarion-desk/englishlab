@@ -1,5 +1,9 @@
 # Changelog
 
+## 2.22
+- **Neue Aufgabenform «Umformen»** (🔄): Ein Satz wird nach Vorgabe umgeschrieben (2 Punkte, mehrere richtige Schreibweisen erlaubt). Themen: Present simple: be, Present simple, Present continuous, Past simple, Present perfect, Future, If-Sätze Typ 1 und 2, Passiv, Indirekte Rede (Aussagen, Aufforderungen, Fragen), Vergleiche. 76 Sätze in drei Niveaustufen. Zum Üben im Thema zuschaltbar, im Test über «Aufgabenformen» wählbar.
+- **Neue Aufgabenform «Fehler korrigieren»** (🛠️): Ein Satz mit einem Fehler wird angezeigt, man schreibt den ganzen Satz richtig (2 Punkte, mehrere richtige Schreibweisen erlaubt). Sie ist in allen Themen mit Aufgaben-Bank dabei (Zeiten, Konditionalsätze, Passiv, Indirekte Rede, Pronomen, Adjektive, Präpositionen, Mengenwörter usw.) und nutzt die vorhandenen, bereits geprüften Sätze. Zeit-Hinweise in eckigen Klammern erscheinen in der Aufgabe. Im Test über «Aufgabenformen» wählbar, im normalen Üben optional zuschaltbar.
+
 ## 2.21
 - **Testvorbereitung und Unit-Test: Aufgabenformen wählen.** Neuer Schritt nach dem Niveau. Alle Formen sind vorausgewählt (Einsetzen, Auswählen, Fehler finden, Satz ordnen, Frage bilden, Verneinen, Kurzantwort, Fragewort, Formen bilden). Formen, die die gewählten Themen nicht haben, sind ausgegraut; die Zahl zeigt, in wie vielen Themen eine Form vorkommt. Hat ein Thema keine der gewählten Formen, bekommt es seine Standardformen. Gilt auch fürs Druckblatt. Das Üben (ausserhalb der Tests) bleibt unverändert.
 
