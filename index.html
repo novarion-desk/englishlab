@@ -411,11 +411,11 @@ a.primary{box-sizing:border-box}
 .pbar button{border:2px solid var(--line);background:#fff;border-radius:10px;padding:5px 12px;font-weight:700}
 .pbar button:disabled{opacity:.3}
 .pprog{position:absolute;left:0;right:0;bottom:0;height:5px;background:#e5e7eb}.pprog i{display:block;height:100%;background:var(--accent)}
-dialog#login{border:0;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:380px;width:92%}
-dialog#login::backdrop{background:rgba(20,24,35,.5)}
-#lform{display:grid;gap:10px}#lform label{font-size:13px;font-weight:700;color:var(--muted)}
+dialog#login,dialog#tset{border:0;border-radius:18px;padding:22px;box-shadow:0 20px 60px rgba(0,0,0,.3);max-width:380px;width:92%}
+dialog#login::backdrop,dialog#tset::backdrop{background:rgba(20,24,35,.5)}
+#lform,#tsform{display:grid;gap:10px}#lform label{font-size:13px;font-weight:700;color:var(--muted)}
 #lform input{width:100%;font:inherit;border:2px solid var(--line);border-radius:10px;padding:9px 12px}
-.lerr{color:var(--bad);font-weight:600}
+.lerr{color:var(--bad);font-weight:600}.linfo{color:#0a7a3d;font-weight:600}.lreset{justify-self:start;font-size:13px}.tsmail{font-weight:700;word-break:break-all}.tsout{border:2px solid var(--line);background:#fff;color:var(--ink,#222);font-weight:700;font-size:16px;padding:11px;border-radius:12px;width:100%}
 @media(max-width:600px){header{top:0!important;margin-left:-6px;margin-right:-6px;padding:8px 8px!important;flex-wrap:nowrap!important;gap:4px!important;border-radius:0 0 16px 16px!important}header .logo{font-size:0!important}header .logo img{width:30px;height:30px}header .logo span{display:none}.lbl{display:none}#fsMinus{display:none}.hdr-r{gap:2px!important;flex-wrap:nowrap!important;flex:1;justify-content:flex-end}header .btn-link,header button{white-space:nowrap;font-size:15px!important;padding-left:7px!important;padding-right:7px!important}.thead h1{font-size:23px}.thead .ic{width:54px;height:54px;font-size:30px}}
 @media print{.pres,dialog{display:none!important}}
 
@@ -510,13 +510,21 @@ dialog#login::backdrop{background:rgba(20,24,35,.5)}
 </div>
 <div class="modal hidden" id="modal"><div class="card" id="modalBody"></div></div>
 <div class="pres hidden" id="pres"></div>
-<dialog id="login"><form id="lform" autocomplete="on"><b style="font-size:1.15rem">Lehrer-Anmeldung</b>
-<p class="muted" style="margin:0;font-size:.9rem">Gleiches Konto wie beim Sek Planer. Schüler brauchen keine Anmeldung.</p>
-<div><label for="lmail">E-Mail</label><input id="lmail" type="email" autocomplete="email" required autocapitalize="off"></div>
-<div><label for="lpass">Passwort</label><input id="lpass" type="password" autocomplete="current-password" required></div>
+<dialog id="login"><form id="lform" autocomplete="on"><b style="font-size:1.15rem" id="ltitle">Lehrer-Anmeldung</b>
+<p class="muted" style="margin:0;font-size:.9rem" id="lintro">Gleiches Konto wie beim Sek Planer. Schüler brauchen keine Anmeldung.</p>
+<div><label for="lmail" id="lmailL">E-Mail</label><input id="lmail" type="email" autocomplete="email" required autocapitalize="off"></div>
+<div><label for="lpass" id="lpassL">Passwort</label><input id="lpass" type="password" autocomplete="current-password" required></div>
+<button class="btn-link lreset" type="button" id="lreset">Passwort vergessen?</button>
 <div class="lerr" id="lerr" hidden></div>
+<div class="linfo" id="linfo" hidden></div>
 <button class="primary" id="lbtn" type="submit">Anmelden</button>
+<p class="muted" style="margin:0;font-size:.85rem" id="lhint">Zugang auf Anfrage bei Kevin: Du bekommst ein Konto per E-Mail. Danach tippst du hier auf «Passwort vergessen?» und legst dein Passwort selber fest.</p>
 <button class="btn-link" type="button" id="lclose">Schliessen</button></form></dialog>
+<dialog id="tset"><div id="tsform"><b style="font-size:1.15rem" id="tstitle">Lehrer-Einstellungen</b>
+<div class="muted" style="font-size:.9rem" id="tsas">Angemeldet als</div>
+<div class="tsmail" id="tsmail"></div>
+<button class="tsout" type="button" id="tslogout">Abmelden</button>
+<button class="btn-link" type="button" id="tsclose">Schliessen</button></div></dialog>
 <script src="vendor/firebase-app-compat.js"></script>
 <script src="vendor/firebase-auth-compat.js"></script>
 <script src="js/core.js"></script>

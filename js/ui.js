@@ -48,7 +48,7 @@ function setTheme(t){document.documentElement.style.setProperty('--accent',t?tco
 function setHeader(){
  const rb=document.getElementById('rulesBtn');rb.style.display='none';rb.textContent='📘 '+L('Regeln','Rules');const vcl=document.getElementById('vocabLbl');if(vcl)vcl.textContent=L('Vokabeln','Vocabulary');const vl=document.getElementById('verbsLbl');if(vl)vl.textContent=L('Verben','Verbs');const dl=document.getElementById('dictLbl');if(dl)dl.textContent=L('Wörterbuch','Dictionary');const sl=document.getElementById('searchLbl');if(sl)sl.textContent=L('Suche','Search');
  document.querySelectorAll('#langSeg button').forEach(b=>b.classList.toggle('on',b.dataset.l===LANG));
- const lb=document.getElementById('loginBtn');lb.textContent=T.user?L('Lehrer ✓','Teacher ✓'):T.demo?'Demo':L('Lehrer','Teacher');lb.title=T.user?L('Abmelden','Log out'):'';
+ const lb=document.getElementById('loginBtn');lb.textContent=T.user?L('Lehrer ✓','Teacher ✓'):T.demo?'Demo':L('Lehrer','Teacher');lb.title=T.user?L('Lehrer-Einstellungen','Teacher settings'):'';
  document.body.classList.toggle('home',screen==='home');
  setTheme(screen==='home'?null:topic);
 }
@@ -451,12 +451,39 @@ function initAuth(){
  }catch(e){auth=null}
 }
 const loginD=document.getElementById('login');
-function openLogin(){try{loginD.showModal()}catch(e){loginD.setAttribute('open','')}}
 function closeLogin(){try{loginD.close()}catch(e){loginD.removeAttribute('open')}}
+const setD=document.getElementById('tset');
+function loginTexts(){
+ const q=(i,de,en)=>{const e=document.getElementById(i);if(e)e.textContent=L(de,en)};
+ q('ltitle','Lehrer-Anmeldung','Teacher login');
+ q('lintro','Gleiches Konto wie beim Sek Planer. Schüler brauchen keine Anmeldung.','Same account as the Sek Planer. Students do not need to log in.');
+ q('lmailL','E-Mail','E-mail');q('lpassL','Passwort','Password');
+ q('lreset','Passwort vergessen?','Forgot password?');q('lbtn','Anmelden','Log in');
+ q('lhint','Zugang auf Anfrage bei Kevin: Du bekommst ein Konto per E-Mail. Danach tippst du hier auf «Passwort vergessen?» und legst dein Passwort selber fest.','Access on request from Kevin: you get an account by e-mail. Then tap «Forgot password?» here and set your own password.');
+ q('lclose','Schliessen','Close');
+}
+function openLogin(){loginTexts();document.getElementById('lerr').hidden=true;document.getElementById('linfo').hidden=true;try{loginD.showModal()}catch(e){loginD.setAttribute('open','')}}
+function closeSet(){try{setD.close()}catch(e){setD.removeAttribute('open')}}
+function openSet(){
+ const q=(i,de,en)=>{const e=document.getElementById(i);if(e)e.textContent=L(de,en)};
+ q('tstitle','Lehrer-Einstellungen','Teacher settings');q('tsas','Angemeldet als','Logged in as');q('tslogout','Abmelden','Log out');q('tsclose','Schliessen','Close');
+ document.getElementById('tsmail').textContent=(T.user&&T.user.email)||'';
+ try{setD.showModal()}catch(e){setD.setAttribute('open','')}
+}
 document.getElementById('loginBtn').onclick=()=>{
  if(T.demo)return;
- if(T.user){if(confirm(L('Abmelden?','Log out?'))){try{auth.signOut()}catch(e){}T.user=null;if(screen==='slides')topic?renderSetup():renderHome();else redraw()}return}
+ if(T.user){openSet();return}
  openLogin();
+};
+document.getElementById('tsclose').onclick=closeSet;
+document.getElementById('tslogout').onclick=()=>{closeSet();try{auth.signOut()}catch(e){}T.user=null;if(screen==='slides')topic?renderSetup():renderHome();else redraw()};
+document.getElementById('lreset').onclick=async()=>{
+ const err=document.getElementById('lerr'),inf=document.getElementById('linfo'),mail=document.getElementById('lmail').value.trim();
+ err.hidden=true;inf.hidden=true;
+ if(!auth){err.textContent=L('Nicht verfügbar (keine Verbindung).','Not available (no connection).');err.hidden=false;return}
+ if(!mail){err.textContent=L('Bitte zuerst oben deine E-Mail-Adresse eingeben und dann auf «Passwort vergessen?» tippen.','Please enter your e-mail address above first, then tap «Forgot password?».');err.hidden=false;return}
+ try{await auth.sendPasswordResetEmail(mail);inf.textContent=L('Ein Link zum Festlegen des Passworts wurde an '+mail+' gesendet. Schau auch im Spam-Ordner nach.','A link to set your password was sent to '+mail+'. Please also check your spam folder.');inf.hidden=false}
+ catch(x){err.textContent=L('Konnte keine E-Mail senden: Bitte E-Mail-Adresse prüfen.','Could not send an e-mail: please check the address.');err.hidden=false}
 };
 document.getElementById('lclose').onclick=closeLogin;
 document.getElementById('lform').addEventListener('submit',async e=>{

@@ -4,7 +4,7 @@ Englisch-Grammatik üben und nachlesen (Teaching Cockpit). Eigenständige App, u
 
 - 36 Themen in 6 Gruppen (Zeiten, Verben & Satzbau, Indirekte Rede, Nomen, Adjektive, Präpositionen); Ansicht «Themen» oder «Units» (`topics/zzzzz_units.js`)
 - Übungen mit Niveau A/B/C, Regeln (📘), Arbeitsblatt mit Lösungen, Feedback, DE/EN
-- Lehrerbereich: Lehrer-Login (Firebase, gleiches Projekt wie Grammatik Trainer), Folien mit Präsentationsmodus (DE/EN, Übungsfolien, Hinweise). Ohne Anmeldung nur mit `?demo`.
+- Lehrerbereich: Lehrer-Login (Firebase, gleiches Projekt wie Grammatik Trainer; Konto legt Kevin in der Firebase-Konsole an, das Passwort setzt man selber über «Passwort vergessen?»; angemeldet öffnet «Lehrer ✓» die Lehrer-Einstellungen mit Abmelden), Folien mit Präsentationsmodus (DE/EN, Übungsfolien, Hinweise). Ohne Anmeldung nur mit `?demo`.
 - Pro Thema die Buttons Theorie / Üben (/ Folien für Lehrpersonen)
 - Suche (Themen, Regeln, Beispielsätze, Folien) und Wörterbuch (über 3'000 Einträge in `js/dict.js`, gebaut aus `tools/dict/*.txt` mit `python3 tools/build_dict.py`; Glossar `js/glossary.js`; Links zu dict.cc / Linguee)
 - KI-Suche nur für die Lehrperson: API-Schlüssel wird in der Suche gespeichert (nur lokal im Browser). Für Schüler später `AI_PROXY` in `js/search.js` auf einen Server-Zwischenschritt setzen.

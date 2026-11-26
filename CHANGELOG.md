@@ -1,5 +1,10 @@
 # Changelog
 
+## 2.20
+- Lehrer-Anmeldung: Neu **«Passwort vergessen?»** (Link zum Festlegen des Passworts per E-Mail) und ein Hinweis «Zugang auf Anfrage bei Kevin». So kann eine Kollegin oder ein Kollege, dessen Konto in Firebase angelegt wurde, sein Passwort selber setzen. Texte in Deutsch und Englisch.
+- Knopf **«Lehrer ✓»** (angemeldet) öffnet jetzt das Fenster **«Lehrer-Einstellungen»** mit der angemeldeten E-Mail-Adresse und dem Knopf **«Abmelden»** (statt der bisherigen Rückfrage). Das Fenster ist für weitere Einstellungen vorbereitet.
+- Die KI-Antworten laufen weiterhin über den gemeinsamen Zwischenserver (Marty); ein eigener API-Schlüssel pro Lehrperson ist vorerst nicht vorgesehen.
+
 ## 2.19
 - Vokabeln · Units wählen: Zwei Knöpfe **«Alle»** und **«Keine»**. Die Auswahl darf jetzt leer sein (dann gibt es nichts zu üben, bis man eine Unit antippt).
 - Sätze übersetzen: Richtung wählbar, **EN → DE, DE → EN oder beides** (wie bei den Wörtern). Bei EN → DE wird der deutsche Satz geprüft (Gross-/Kleinschreibung, Satzzeichen und ß/ss egal, kleine Tippfehler als «fast richtig»). Weicht die Antwort ab, kann man Marty fragen. Fortschritt wird pro Richtung gespeichert.
