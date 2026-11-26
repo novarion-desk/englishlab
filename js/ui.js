@@ -6,7 +6,8 @@ const hasEx=t=>!!t.gen;
 function initTopics(){
  TOPICS.forEach(t=>{if(t.gen)ST[t.id]={types:t.typeDef.slice(),subs:(t.subDef||[]).slice()}});
 }
-const effTypes=()=>topic.types().filter(x=>ST[topic.id].types.includes(x.k)&&(!x.A||S.lvl==='A')).map(x=>x.k);
+let FORMSEL=null; /* nur beim Bauen eines Tests gesetzt: {has:k=>…} = vom Schüler gewählte Aufgabenformen */
+const effTypes=()=>{const all=topic.types().filter(x=>!x.A||S.lvl==='A');const dflt=all.filter(x=>ST[topic.id].types.includes(x.k)).map(x=>x.k);if(!FORMSEL)return dflt;const w=all.filter(x=>FORMSEL.has(x.k)).map(x=>x.k);return w.length?w:dflt};
 function typeSeq(n){const m=effTypes();let bag=[],seq=[];for(let i=0;i<n;i++){if(!bag.length)bag=shuffle(m);let j=0;if(m.length>1&&seq.length&&bag[0]===seq[seq.length-1])j=bag.findIndex(x=>x!==seq[seq.length-1])||0;if(j<0)j=0;seq.push(bag.splice(j,1)[0])}return seq}
 /* «Frag Marty» (KI-Erklärung): für alle sichtbar; mit «#ki-aus» im Link auf dem Gerät abschaltbar */
 const KI_URL='https://tc-ki-proxy.novarian-desk.workers.dev/ask';

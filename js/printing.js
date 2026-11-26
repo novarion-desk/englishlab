@@ -1,5 +1,5 @@
 /* ===== Drucken: Theorie (A4) und Unit-Test (nur Grammatik) ===== */
-const UT={s:2,u:1,per:5,off:{},key:'',free:false,sel:new Set(),total:20,custom:20,timer:false,fb:false};
+const UT={s:2,u:1,per:5,off:{},key:'',free:false,sel:new Set(),total:20,custom:20,timer:false,fb:false,noForm:new Set()};
 const ptsOf=it=>(it.type==='order'||it.type==='text')?2:1;
 const utBack=()=>UT.free?renderTprep():renderUnitTest(UT.s,UT.u);
 const THK='el-tests';
@@ -7,6 +7,20 @@ const tHist=()=>{try{return JSON.parse(localStorage.getItem(THK))||{}}catch(e){r
 const tSave=h=>{try{localStorage.setItem(THK,JSON.stringify(h))}catch(e){}};
 const unitOf=(s,u)=>UNITS.find(x=>x.s===s&&x.u===u);
 const utTopics=()=>UT.free?TOPICS.filter(t=>hasEx(t)&&UT.sel.has(t.id)):[...new Set((unitOf(UT.s,UT.u)||{t:[]}).t)].map(id=>TOPICS.find(t=>t.id===id)).filter(t=>t&&hasEx(t));
+
+/* --- Aufgabenformen wählen (nur Formen, die die gewählten Themen auch haben, sind wählbar) --- */
+const FORM_ORD=['fill','choice','errors','order','question','neg','short','whq','forms'];
+function formsInner(){
+ const ts=utTopics().filter(t=>UT.free||!UT.off[t.id]),cat={},cnt={};
+ TOPICS.filter(hasEx).forEach(t=>t.types().forEach(x=>{if(!cat[x.k])cat[x.k]=x}));
+ ts.forEach(t=>t.types().forEach(x=>{if(x.A&&S.lvl!=='A')return;cnt[x.k]=(cnt[x.k]||0)+1}));
+ const keys=Object.keys(cat).sort((a,b)=>{const i=FORM_ORD.indexOf(a),j=FORM_ORD.indexOf(b);return (i<0?99:i)-(j<0?99:j)});
+ return `<div class="chips">${keys.map(k=>{const c=cnt[k]||0,x=cat[k];return `<button class="chip ${c&&!UT.noForm.has(k)?'on':''} ${c?'':'dis'}" data-pform="${k}" ${c?'':'disabled'}>${x.icon} ${esc(x.label)}${ts.length?`<span class="hist">${c}/${ts.length}</span>`:''}</button>`}).join('')}</div>
+ <p class="muted" style="margin:8px 0 0;font-size:.9em">${L('Ausgegraut: kommt in den gewählten Themen nicht vor. Die Zahl zeigt, in wie vielen Themen die Form vorkommt. Hat ein Thema keine der gewählten Formen, bekommt es seine Standardformen.','Greyed out: not available in the chosen topics. The number shows in how many topics the form is available. A topic without any of the chosen forms gets its default forms.')}</p>`;
+}
+const formsCard=n=>`<div class="card"><h2>${n} · ${L('Aufgabenformen','Task types')}</h2><div id="tpForms">${formsInner()}</div></div>`;
+const formsRefresh=()=>{const e=document.getElementById('tpForms');if(e)e.innerHTML=formsInner()};
+const formsToggle=k=>{UT.noForm.has(k)?UT.noForm.delete(k):UT.noForm.add(k);formsRefresh()};
 
 /* --- Theorie drucken --- */
 function openTheoryPrint(){
@@ -57,13 +71,15 @@ function renderUnitTest(s,u){
  <div class="hero"><h1>📝 ${L('Unit-Test','Unit test')}: ${stageName(s)} · ${unitName(x)}</h1><p>${L('Ein Arbeitsblatt mit Aufgaben zu den Grammatikthemen dieser Unit, dazu das Lösungsblatt. Ohne Vokabeln.','A worksheet with tasks on the grammar topics of this unit, plus an answer sheet. No vocabulary.')}</p></div>
  <div class="card"><h2>1 · ${L('Themen','Topics')}</h2><div class="chips">${ts.map(t=>`<button class="chip ${UT.off[t.id]?'':'on'}" data-ut="${t.id}">${t.ic} ${esc(t.name())}${hist[t.id]?`<span class="hist">${hist[t.id][0]} %</span>`:''}</button>`).join('')}</div></div>
  <div class="card"><h2>2 · ${L('Niveau','Level')}</h2><div class="seg">${[['C',L('C (einfach)','C (easy)')],['B',L('B (mittel)','B (medium)')],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-ulv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
- <div class="card"><h2>3 · ${L('Aufgaben pro Thema','Tasks per topic')}</h2><div class="seg">${[3,5,8,10].map(n=>`<button data-uper="${n}" class="${UT.per===n?'on':''}">${n}</button>`).join('')}</div></div>
- <div class="card"><h2>4 · ${L('Rückmeldung am Bildschirm','Feedback on screen')}</h2><div class="seg">${[[0,L('Erst am Ende','At the end')],[1,L('Nach jeder Aufgabe','After each task')]].map(([k,l])=>`<button data-ufb="${k}" class="${(UT.fb?1:0)===k?'on':''}">${l}</button>`).join('')}</div><p class="muted" style="margin:6px 0 0;font-size:.9em">${UT.fb?L('Nach jeder Antwort siehst du sofort, ob sie stimmt, mit Erklärung und «Frag Marty».','After each answer you see at once whether it is right, with an explanation and «Ask Marty».'):L('Wie in einer echten Prüfung: Du siehst die Lösungen erst in der Auswertung.','Like a real test: you see the solutions only in the results.')}</p></div>
+ ${formsCard(3)}
+ <div class="card"><h2>4 · ${L('Aufgaben pro Thema','Tasks per topic')}</h2><div class="seg">${[3,5,8,10].map(n=>`<button data-uper="${n}" class="${UT.per===n?'on':''}">${n}</button>`).join('')}</div></div>
+ <div class="card"><h2>5 · ${L('Rückmeldung am Bildschirm','Feedback on screen')}</h2><div class="seg">${[[0,L('Erst am Ende','At the end')],[1,L('Nach jeder Aufgabe','After each task')]].map(([k,l])=>`<button data-ufb="${k}" class="${(UT.fb?1:0)===k?'on':''}">${l}</button>`).join('')}</div><p class="muted" style="margin:6px 0 0;font-size:.9em">${UT.fb?L('Nach jeder Antwort siehst du sofort, ob sie stimmt, mit Erklärung und «Frag Marty».','After each answer you see at once whether it is right, with an explanation and «Ask Marty».'):L('Wie in einer echten Prüfung: Du siehst die Lösungen erst in der Auswertung.','Like a real test: you see the solutions only in the results.')}</p></div>
  <button class="primary" id="utDigi">${L('▶️ Test am Bildschirm lösen','▶️ Take the test on screen')}</button>
  <button class="secondary" id="utMake" style="margin-top:10px">${L('🖨 Arbeitsblatt zum Drucken','🖨 Printable worksheet')}</button><p class="err" id="utErr"></p>
  ${Object.keys(hist).length?`<p class="muted" style="margin-top:12px">${L('Die Prozentzahl bei den Themen ist dein letztes Testergebnis.','The percentage on each topic is your last test result.')}</p>`:''}`;
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;
   if(b.id==='utBack')return renderHome();
+  if(b.dataset.pform)return formsToggle(b.dataset.pform);
   if(b.dataset.ut){UT.off[b.dataset.ut]=!UT.off[b.dataset.ut];return renderUnitTest(s,u)}
   if(b.dataset.ulv){S.lvl=b.dataset.ulv;return renderUnitTest(s,u)}
   if(b.dataset.uper){UT.per=+b.dataset.uper;return renderUnitTest(s,u)}
@@ -73,12 +89,12 @@ function renderUnitTest(s,u){
  window.scrollTo({top:0});
 }
 function buildUnitItems(){
- const secs=[];
+ const secs=[];FORMSEL={has:k=>!UT.noForm.has(k)};
  const act=utTopics().filter(t=>UT.free||!UT.off[t.id]);
  const tot=UT.total==='custom'?Math.max(1,Math.min(60,parseInt(UT.custom,10)||20)):+UT.total;
  const cnt=act.map((t,i)=>UT.free?Math.floor(tot/act.length)+(i<tot%act.length?1:0):UT.per);
  act.forEach((t,i)=>{if(!cnt[i])return;topic=t;seenG.clear();secs.push({t,name:t.name(),ic:t.ic,its:build(cnt[i])})});
- topic=null;seenG.clear();return secs;
+ topic=null;FORMSEL=null;seenG.clear();return secs;
 }
 function renderUnitSheet(){
  screen='usheet';topic=null;setHeader();
@@ -103,7 +119,7 @@ function startTimer(){clearInterval(UT.clk);if(!UT.timer)return;UT.clk=setInterv
 /* --- Testvorbereitung: Themen frei mischen, Punkte, Blatt --- */
 function tprepInfo(){
  const el=document.getElementById('tpInfo');if(!el)return;
- const n=UT.sel.size,tot=UT.total==='custom'?Math.max(1,Math.min(60,parseInt(UT.custom,10)||20)):+UT.total;
+ formsRefresh();const n=UT.sel.size,tot=UT.total==='custom'?Math.max(1,Math.min(60,parseInt(UT.custom,10)||20)):+UT.total;
  el.textContent=n?L(`${n} Themen, ${tot} Aufgaben (Niveau ${S.lvl}). Punkte: Einsetzen und Auswählen 1, Satz ordnen und Umformen 2.`,`${n} topics, ${tot} tasks (level ${S.lvl}). Points: fill in and choose 1, word order and rewriting 2.`):L('Wähle mindestens ein Thema.','Choose at least one topic.');
  ['tpGo','tpSheet'].forEach(id=>{const b=document.getElementById(id);if(b)b.disabled=!n});
 }
@@ -115,15 +131,17 @@ function renderTprep(){
  <div class="hero"><h1>📝 ${L('Testvorbereitung','Test preparation')}</h1><p>${L('Wähle die Themen deines Tests. Die Aufgaben werden gemischt und du sammelst Punkte. Danach siehst du, was du noch üben musst.','Pick the topics of your test. The tasks are mixed and you collect points. Then you see what to practise.')}</p></div>
  <div class="card"><h2>1 · ${L('Themen','Topics')}</h2>${grp.map(x=>`<div class="tlab">${x.g.ic} ${x.g.n()} <button class="btn-link" data-tg="${x.ts.map(t=>t.id).join(',')}">${L('alle/keine','all/none')}</button></div><div class="chips">${x.ts.map(t=>`<button class="chip ${UT.sel.has(t.id)?'on':''}" data-tp="${t.id}">${t.ic} ${esc(t.name())}</button>`).join('')}</div>`).join('')}</div>
  <div class="card"><h2>2 · ${L('Niveau','Level')}</h2><div class="seg">${[['C',L('C (einfach)','C (easy)')],['B',L('B (mittel)','B (medium)')],['A',L('A (anspruchsvoll)','A (demanding)')]].map(([k,l])=>`<button data-plv="${k}" class="${S.lvl===k?'on':''}">${l}</button>`).join('')}</div></div>
- <div class="card"><h2>3 · ${L('Anzahl Aufgaben','Number of tasks')}</h2><div class="seg">${['10','20','30','custom'].map(v=>`<button data-ptot="${v}" class="${String(UT.total)===v?'on':''}">${v==='custom'?L('eigene','custom'):v}</button>`).join('')}</div>
+ ${formsCard(3)}
+ <div class="card"><h2>4 · ${L('Anzahl Aufgaben','Number of tasks')}</h2><div class="seg">${['10','20','30','custom'].map(v=>`<button data-ptot="${v}" class="${String(UT.total)===v?'on':''}">${v==='custom'?L('eigene','custom'):v}</button>`).join('')}</div>
   <label class="cntown" id="tpCw" ${UT.total==='custom'?'':'hidden'}>${L('Anzahl:','Number:')} <input id="tpCust" type="number" inputmode="numeric" min="1" max="60" value="${UT.custom}"></label></div>
- <div class="card"><h2>4 · ${L('Weiteres','More')}</h2><div class="chips"><button class="chip ${UT.timer?'on':''}" data-ptimer="1">⏱ ${L('Stoppuhr anzeigen','Show stopwatch')}</button><button class="chip ${UT.fb?'on':''}" data-pfb="1">💡 ${L('Lösung nach jeder Aufgabe zeigen','Show the solution after each task')}</button></div></div>
+ <div class="card"><h2>5 · ${L('Weiteres','More')}</h2><div class="chips"><button class="chip ${UT.timer?'on':''}" data-ptimer="1">⏱ ${L('Stoppuhr anzeigen','Show stopwatch')}</button><button class="chip ${UT.fb?'on':''}" data-pfb="1">💡 ${L('Lösung nach jeder Aufgabe zeigen','Show the solution after each task')}</button></div></div>
  <p class="muted" id="tpInfo"></p>
  <button class="primary" id="tpGo">${L('▶️ Test starten','▶️ Start test')}</button>
  <button class="secondary" id="tpSheet" style="margin-top:10px">${L('🖨 Übungsprüfung zum Drucken (mit Lösungen)','🖨 Printable practice test (with answers)')}</button>`;
  tprepInfo();
  app.onclick=e=>{const b=e.target.closest('button');if(!b)return;
   if(b.id==='tpHome')return renderHome();
+  if(b.dataset.pform)return formsToggle(b.dataset.pform);
   if(b.dataset.tp){const k=b.dataset.tp;UT.sel.has(k)?UT.sel.delete(k):UT.sel.add(k);b.classList.toggle('on',UT.sel.has(k));return tprepInfo()}
   if(b.dataset.tg){const ids=b.dataset.tg.split(',');const all=ids.every(k=>UT.sel.has(k));ids.forEach(k=>all?UT.sel.delete(k):UT.sel.add(k));app.querySelectorAll('[data-tp]').forEach(x=>x.classList.toggle('on',UT.sel.has(x.dataset.tp)));return tprepInfo()}
   if(b.dataset.plv){S.lvl=b.dataset.plv;app.querySelectorAll('[data-plv]').forEach(x=>x.classList.toggle('on',x.dataset.plv===S.lvl));return tprepInfo()}

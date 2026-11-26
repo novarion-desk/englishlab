@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.21
+- **Testvorbereitung und Unit-Test: Aufgabenformen wählen.** Neuer Schritt nach dem Niveau. Alle Formen sind vorausgewählt (Einsetzen, Auswählen, Fehler finden, Satz ordnen, Frage bilden, Verneinen, Kurzantwort, Fragewort, Formen bilden). Formen, die die gewählten Themen nicht haben, sind ausgegraut; die Zahl zeigt, in wie vielen Themen eine Form vorkommt. Hat ein Thema keine der gewählten Formen, bekommt es seine Standardformen. Gilt auch fürs Druckblatt. Das Üben (ausserhalb der Tests) bleibt unverändert.
+
 ## 2.20
 - Lehrer-Anmeldung: Neu **«Passwort vergessen?»** (Link zum Festlegen des Passworts per E-Mail) und ein Hinweis «Zugang auf Anfrage bei Kevin». So kann eine Kollegin oder ein Kollege, dessen Konto in Firebase angelegt wurde, sein Passwort selber setzen. Texte in Deutsch und Englisch.
 - Knopf **«Lehrer ✓»** (angemeldet) öffnet jetzt das Fenster **«Lehrer-Einstellungen»** mit der angemeldeten E-Mail-Adresse und dem Knopf **«Abmelden»** (statt der bisherigen Rückfrage). Das Fenster ist für weitere Einstellungen vorbereitet.

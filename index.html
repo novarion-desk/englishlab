@@ -27,6 +27,7 @@ button{font:inherit;cursor:pointer}
 h2{font-size:13px;text-transform:uppercase;letter-spacing:.08em;color:var(--muted);margin:0 0 12px}
 .chips{display:flex;flex-wrap:wrap;gap:8px}
 .chip{border:2px solid var(--line);background:#fff;border-radius:999px;padding:8px 14px;font-weight:600;color:var(--ink)}
+.chip.dis,.chip:disabled{opacity:.4;border-style:dashed}
 .chip.on{border-color:var(--c,var(--accent));background:color-mix(in srgb,var(--c,var(--accent)) 13%,#fff)}
 .links{margin-top:8px}
 .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
