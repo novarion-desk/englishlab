@@ -6,6 +6,7 @@ const hasEx=t=>!!t.gen;
 function initTopics(){
  TOPICS.forEach(t=>{if(t.gen)ST[t.id]={types:t.typeDef.slice(),subs:(t.subDef||[]).slice()}});
 }
+let mpick=[];
 let FORMSEL=null; /* nur beim Bauen eines Tests gesetzt: {has:k=>…} = vom Schüler gewählte Aufgabenformen */
 const effTypes=()=>{const all=topic.types().filter(x=>!x.A||S.lvl==='A');const dflt=all.filter(x=>ST[topic.id].types.includes(x.k)).map(x=>x.k);if(!FORMSEL)return dflt;const w=all.filter(x=>FORMSEL.has(x.k)).map(x=>x.k);return w.length?w:dflt};
 function typeSeq(n){const m=effTypes();let bag=[],seq=[];for(let i=0;i<n;i++){if(!bag.length)bag=shuffle(m);let j=0;if(m.length>1&&seq.length&&bag[0]===seq[seq.length-1])j=bag.findIndex(x=>x!==seq[seq.length-1])||0;if(j<0)j=0;seq.push(bag.splice(j,1)[0])}return seq}
@@ -25,8 +26,8 @@ async function askKI(ctx){
  const r0=ctx||results[results.length-1],box=ctx?ctx.box:document.getElementById('kiBox'),btn=ctx?ctx.btn:document.getElementById('kiBtn');
  if(!r0||!box||kiBusy)return;
  const it=r0.it,st=v=>String(v==null?'':v).replace(/<[^>]+>/g,' ').replace(/\s+/g,' ').trim();
- const free=!['fill','choice','order'].includes(it.type);
- const task=[st(it.instr||''),it.src?st(it.src):'',it.before!=null?st(it.before)+' ____ '+st(it.after||''):'',it.stem?st(it.stem):'',it.words?'Wörter: '+it.words.map(st).join(' / '):'',it.opts?'Auswahl: '+it.opts.map(st).join(' / '):''].filter(Boolean).join(' – ');
+ const free=!['fill','choice','order','match'].includes(it.type);
+ const task=[st(it.instr||''),it.src?st(it.src):'',it.before!=null?st(it.before)+' ____ '+st(it.after||''):'',it.stem?st(it.stem):'',it.words?'Wörter: '+it.words.map(st).join(' / '):'',it.opts?'Auswahl: '+it.opts.map(st).join(' / '):'',it.left?'Zuordnen: '+it.left.map(st).join(' / ')+' ↔ '+it.right.map(st).join(' / '):''].filter(Boolean).join(' – ');
  kiBusy=true;if(btn)btn.disabled=true;
  box.innerHTML='<div class="ki wait">'+L('Marty überlegt …','Marty is thinking …')+'</div>';
  try{
@@ -166,7 +167,7 @@ function start(){
 }
 const stemHtml=s=>esc(s).replace('___','<span class="gap">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;</span>');
 function renderTask(){
- screen='task';const it=items[idx];answered=false;built=[];
+ screen='task';const it=items[idx];answered=false;built=[];mpick=[];
  let body='';
  const instr=`<p class="instr">${it.instr||''}</p>`;
  if(it.type==='fill'){
@@ -179,6 +180,8 @@ function renderTask(){
  }else if(it.type==='order'){
   body=instr+`<div class="built" id="built"></div><div class="wb" id="wb">${it.words.map((w,i)=>`<button data-w="${i}">${esc(w)}</button>`).join('')}</div>
    <div><button class="btn-link" id="reset">${L('↺ Zurücksetzen','↺ Reset')}</button></div>`;
+ }else if(it.type==='match'){
+  body=instr+`<div class="mrights">${it.right.map((r,j)=>`<div class="mr"><b>${ML[j]}</b> ${esc(r)}</div>`).join('')}</div>${it.left.map((l,i)=>`<div class="mrow" data-mr="${i}"><span class="mt"><b>${i+1}.</b> ${esc(l)}</span><span class="mpk">${it.right.map((r,j)=>`<button data-mp="${i}:${j}">${ML[j]}</button>`).join('')}</span></div>`).join('')}`;
  }else{
   body=instr+`<div class="src">${it.src}</div><textarea class="full tin" id="inp" rows="2" placeholder="${L('Schreib den ganzen Satz …','Write the whole sentence …')}" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false"></textarea>`;
  }
@@ -195,6 +198,7 @@ function renderTask(){
    if(testMode){testMode=false;clearInterval(UT.clk);return utBack()}
    return renderPractice();
   }
+  if(b.dataset.mp!==undefined&&!answered){const [i,j]=b.dataset.mp.split(':').map(Number);mpick[i]=j;app.querySelectorAll('[data-mp^="'+i+':"]').forEach(x=>x.classList.toggle('on',x===b));const r=app.querySelector('[data-mr="'+i+'"]');if(r)r.classList.remove('miss');return}
   if(b.dataset.o!==undefined&&!answered)return answerChoice(+b.dataset.o);
   if(b.dataset.w!==undefined&&!answered){built.push(it.words[+b.dataset.w]);b.disabled=true;drawBuilt();return}
   if(b.id==='reset'&&!answered){built=[];app.querySelectorAll('#wb button').forEach(x=>x.disabled=false);drawBuilt();return}
@@ -211,7 +215,7 @@ function done(ok,val){
  if(testMode&&!UT.fb){fb.innerHTML='';const go0=document.getElementById('go');const last0=idx===items.length-1,lab0=last0?L('Auswertung','See results'):L('Weiter →','Next →');if(go0){go0.textContent=lab0}else{document.querySelector('.actions').innerHTML=`<button class="primary" id="go">${lab0}</button>`}const inp0=document.getElementById('inp');if(inp0)inp0.readOnly=true;return}
  const praise=rnd(L('Richtig!|Super!|Genau!|Stark!','Correct!|Great!|Well done!|Nice one!').split('|'));
  fb.innerHTML=ok?`<div class="fb ok"><div class="fbt">${praise}</div></div>`:`<div class="fb bad"><div class="fbt">${L('Nicht ganz.','Not quite.')}</div>${L('Richtig wäre:','Correct:')} <b>${esc(it.sol)}</b><div class="rule">${it.why}</div></div>`;
- if(KI_ON()){const fr=!['fill','choice','order'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Frag Marty: Ist mein Satz auch richtig?','Ask Marty: Is my sentence also right?'):L('Frag Marty','Ask Marty'))+'</button></div><div id="kiBox"></div>')}
+ if(KI_ON()){const fr=!['fill','choice','order','match'].includes(it.type);fb.insertAdjacentHTML('beforeend','<div class="kirow"><button class="btn-link" id="kiBtn">💡 '+((fr&&!ok)?L('Frag Marty: Ist mein Satz auch richtig?','Ask Marty: Is my sentence also right?'):L('Frag Marty','Ask Marty'))+'</button></div><div id="kiBox"></div>')}
  const go=document.getElementById('go');
  const last=!infinite&&idx===items.length-1;
  const lab=last?L('Ergebnis','Results'):L('Weiter →','Next →');
@@ -220,6 +224,14 @@ function done(ok,val){
 }
 function check(){
  const it=items[idx];let val;
+ if(it.type==='match'){
+  const miss=it.left.map((l,i)=>mpick[i]==null?i:-1).filter(i=>i>=0);
+  if(miss.length){miss.forEach(i=>{const r=app.querySelector('[data-mr="'+i+'"]');if(r)r.classList.add('miss')});return}
+  const ok=it.correct.every((c,i)=>mpick[i]===c);val=it.left.map((l,i)=>(i+1)+'→'+ML[mpick[i]]).join(', ');
+  if(!(testMode&&!UT.fb))it.left.forEach((l,i)=>{const r=app.querySelector('[data-mr="'+i+'"]');if(r)r.classList.add(mpick[i]===it.correct[i]?'right':'wrong')});
+  app.querySelectorAll('[data-mp]').forEach(x=>x.disabled=true);
+  return done(ok,val);
+ }
  if(it.type==='order'){val=built.join(' ');if(!built.length)return}
  else{const inp=document.getElementById('inp');val=inp.value;if(!val.trim()){inp.focus();return}}
  done(it.answers.some(a=>nrm(a)===nrm(val)),val);
@@ -251,6 +263,7 @@ function sheetTask(it,n,p){
  const num=`<span class="n">${n}.</span>`+(p?`<span class="pt">${p} ${L('P.','pts')}</span>`:'');
  if(it.type==='fill')return `<div class="t"><div class="ins">${it.instr}${it.hint?' <span class="hint">'+esc(it.hint)+'</span>':''}</div>${num}${esc(it.before)}<span class="blank" style="width:${Math.max(9,it.answers[0].length+5)}ch"></span>${esc(it.after)}</div>`;
  if(it.type==='choice')return `<div class="t"><div class="ins">${it.instr}</div>${it.stem?`<div>${num}${esc(it.stem)}</div><div>${it.opts.map(o=>`<span class="opt"><span class="box"></span>${esc(o)}</span>`).join('')}</div>`:it.opts.map((o,i)=>`<div style="margin:2px 0">${i===0?num:'<span class="n" style="visibility:hidden">0.</span>'}<span class="box"></span>${esc(o)}</div>`).join('')}</div>`;
+ if(it.type==='match')return `<div class="t"><div class="ins">${it.instr}</div>${num}<table style="width:100%;border-collapse:collapse;margin-top:4px"><tr><td style="vertical-align:top;width:55%">${it.left.map((l,i)=>`<div style="margin:3px 0">${i+1}. ${esc(l)} <b>____</b></div>`).join('')}</td><td style="vertical-align:top">${it.right.map((r,j)=>`<div style="margin:3px 0"><b>${ML[j]}</b> ${esc(r)}</div>`).join('')}</td></tr></table></div>`;
  if(it.type==='order')return `<div class="t"><div class="ins">${it.instr}</div>${num}<span class="wbx">${it.words.map(w=>`<span>${esc(w)}</span>`).join('')}</span><div class="wl"></div></div>`;
  return `<div class="t"><div class="ins">${it.instr}</div>${num}${it.src}<div class="wl"></div></div>`;
 }

@@ -70,6 +70,10 @@ textarea.full:focus{outline:none;border-color:var(--accent)}
 .opts button.right{border-color:var(--ok);background:var(--okbg)}
 .opts button.wrong{border-color:var(--bad);background:var(--badbg)}
 .opts button:disabled{cursor:default}
+.mrights{display:grid;gap:6px;margin:6px 0 12px;padding:10px 12px;border:2px dashed var(--line);border-radius:12px}.mr b{display:inline-block;min-width:1.6em;color:var(--accent)}
+.mrow{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:8px;padding:8px 6px;border-bottom:1px solid var(--line);border-radius:8px}.mrow .mt{flex:1 1 220px;font-size:1.05em}
+.mpk{display:flex;gap:6px}.mpk button{min-width:44px;min-height:44px;border:2px solid var(--line);background:#fff;border-radius:10px;font-weight:800;color:var(--ink)}.mpk button.on{background:var(--accent);border-color:var(--accent);color:#fff}.mpk button:disabled{cursor:default}
+.mrow.miss{background:var(--badbg)}.mrow.right{background:var(--okbg)}.mrow.wrong{background:var(--badbg)}
 .gap{display:inline-block;min-width:3.2em;border-bottom:3px solid var(--accent);vertical-align:baseline}
 mark{background:#fff0a8;padding:0 3px;border-radius:4px}
 .fb{border-radius:12px;padding:14px 16px;margin-top:14px;font-size:16px}
@@ -582,6 +586,7 @@ dialog#login::backdrop,dialog#tset::backdrop{background:rgba(20,24,35,.5)}
 <script src="topics/zz_misc4.js"></script>
 <script src="topics/zzz_tensetrainer.js"></script>
 <script src="topics/zzzz_umformen.js"></script>
+<script src="topics/zzzz_zuordnen.js"></script>
 <script src="topics/zzzz_intro.js"></script>
 <script src="topics/zzzzz_units.js"></script>
 <script src="js/ui.js"></script>

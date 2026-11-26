@@ -1,5 +1,8 @@
 # Changelog
 
+## 2.23
+- **Neue Aufgabenform «Zuordnen»** (🔗): 4 Satzteile werden den passenden Gegenstücken zugeordnet (Buchstaben antippen, 2 Punkte, alles muss stimmen). 38 Gruppen in 18 Themen: Aussage ↔ Frage (Zeiten), If-Sätze, Passiv, Indirekte Rede, Steigerung, Relativpronomen, Question Tags, Linking Words, Reflexivpronomen, Verb + Präposition. Auch auf dem Druckblatt (Zahlen und Buchstaben) und mit Lösungsblatt. Zum Üben im Thema zuschaltbar, im Test über «Aufgabenformen» wählbar.
+
 ## 2.22
 - **Neue Aufgabenform «Umformen»** (🔄): Ein Satz wird nach Vorgabe umgeschrieben (2 Punkte, mehrere richtige Schreibweisen erlaubt). Themen: Present simple: be, Present simple, Present continuous, Past simple, Present perfect, Future, If-Sätze Typ 1 und 2, Passiv, Indirekte Rede (Aussagen, Aufforderungen, Fragen), Vergleiche. 76 Sätze in drei Niveaustufen. Zum Üben im Thema zuschaltbar, im Test über «Aufgabenformen» wählbar.
 - **Neue Aufgabenform «Fehler korrigieren»** (🛠️): Ein Satz mit einem Fehler wird angezeigt, man schreibt den ganzen Satz richtig (2 Punkte, mehrere richtige Schreibweisen erlaubt). Sie ist in allen Themen mit Aufgaben-Bank dabei (Zeiten, Konditionalsätze, Passiv, Indirekte Rede, Pronomen, Adjektive, Präpositionen, Mengenwörter usw.) und nutzt die vorhandenen, bereits geprüften Sätze. Zeit-Hinweise in eckigen Klammern erscheinen in der Aufgabe. Im Test über «Aufgabenformen» wählbar, im normalen Üben optional zuschaltbar.

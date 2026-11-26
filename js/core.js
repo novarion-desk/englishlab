@@ -17,6 +17,8 @@ function pickOpts(ok,pool,n){const w=shuffle([...new Set(pool.filter(x=>x!==ok))
 function mkWords(ok,wrongs,instr,why){const p=pickOpts(ok,[ok,...wrongs],2);return mkChoice('',p.opts,p.idx,instr,why)}
 const mkText=(src,instr,answers,why)=>({type:'text',src:esc(src),instr,answers,sol:answers[0],why});
 const mkOrder=(sentence,why)=>({type:'order',words:shuffle(sentence.split(' ')),instr:L('Bringe die Wörter in die richtige Reihenfolge.','Put the words in the correct order.'),answers:[sentence],sol:sentence,why});
+const ML='ABCDEFGH';
+function mkMatch(pairs,instr,why){const P=shuffle(pairs),R=shuffle(pairs.map(p=>p[1]));return {type:'match',instr,left:P.map(p=>p[0]),right:R,correct:P.map(p=>R.indexOf(p[1])),sol:P.map(p=>p[0]+' '+p[1]).join(' / '),why}}
 const fillStem=(stem,w)=>stem.replace('___',w);
 /* Bank-basierte Generatoren: Eintrag {s:Satz mit ___, ok:[..], bad:[..], lv:1-3, sub, h:Hinweis, w:'de|en'} */
 function bankGens(pool,whyDefault,fillInstr){

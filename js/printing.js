@@ -1,6 +1,6 @@
 /* ===== Drucken: Theorie (A4) und Unit-Test (nur Grammatik) ===== */
 const UT={s:2,u:1,per:5,off:{},key:'',free:false,sel:new Set(),total:20,custom:20,timer:false,fb:false,noForm:new Set()};
-const ptsOf=it=>(it.type==='order'||it.type==='text')?2:1;
+const ptsOf=it=>(it.type==='order'||it.type==='text'||it.type==='match')?2:1;
 const utBack=()=>UT.free?renderTprep():renderUnitTest(UT.s,UT.u);
 const THK='el-tests';
 const tHist=()=>{try{return JSON.parse(localStorage.getItem(THK))||{}}catch(e){return {}}};
